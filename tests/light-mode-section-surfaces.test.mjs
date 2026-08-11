@@ -133,6 +133,19 @@ test("keeps the cinematic and closing sections dark", () => {
   }
 });
 
+test("reserves the square grid texture for a restrained methodology accent", () => {
+  const methodologyStart = html.indexOf("Methodology");
+  const programsStart = html.indexOf("Elite Programs", methodologyStart);
+  const methodology = html.slice(methodologyStart, programsStart);
+  assert.match(methodology, /opacity-\[0\.02\]/);
+  assert.match(methodology, /background-size:\s*48px 48px/);
+
+  const finalCtaStart = html.indexOf("Final CTA");
+  const footerStart = html.indexOf("Footer", finalCtaStart);
+  const finalCta = html.slice(finalCtaStart, footerStart);
+  assert.doesNotMatch(finalCta, /background-image:\s*linear-gradient/);
+});
+
 test("retains dark-mode backgrounds and accessible canonical mentor profiles", () => {
   for (const className of ["surface-results", "surface-methodology"]) {
     const section = html.match(new RegExp(`<section[^>]*${className}[^>]*>`))?.[0] ?? "";
