@@ -160,6 +160,22 @@ test("defines the Balanced Premium responsive spacing utilities", () => {
   }
 });
 
+test("maps sections to the Balanced Premium rhythm", () => {
+  for (const surface of ["surface-methodology", "surface-programs", "surface-mentors", "surface-track-record"]) {
+    assert.match(html, new RegExp(`<section[^>]*${surface}[^>]*section-space-major`));
+  }
+  assert.match(html, /<section[^>]*surface-results[^>]*section-space-dense/);
+  assert.match(html, /<section[^>]*surface-universities[^>]*section-space-band/);
+  assert.match(html, /<section[^>]*section-space-band[^>]*>[\s\S]*?Scrolling Track/);
+  assert.match(html, /<section[^>]*section-space-major[^>]*scroll-reveal[^>]*>/);
+  assert.match(html.match(/<footer[^>]*>/)?.[0] ?? "", /section-space-dense/);
+
+  const body = html.slice(html.indexOf("</style>"));
+  assert.equal((body.match(/section-intro-gap/g) ?? []).length, 4);
+  assert.match(html, /class="lg:hidden program-selector-clearance"/);
+  assert.doesNotMatch(html, /class="lg:hidden pb-24"/);
+});
+
 test("uses a compact accessible Elite Programs mobile selector", () => {
   const programsStart = html.indexOf("Elite Programs");
   const mentorsStart = html.indexOf("Meet The Mentors", programsStart);

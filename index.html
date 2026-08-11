@@ -230,6 +230,12 @@
     .section-space-band { padding-block: 2.5rem; }
     .section-intro-gap { margin-bottom: 2rem; }
 
+    .program-selector-clearance { padding-bottom: 5rem; }
+
+    @media (min-width: 1024px) {
+      .program-selector-clearance { padding-bottom: 0; }
+    }
+
     @media (min-width: 768px) {
       .section-space-major { padding-block: 5.5rem; }
       .section-space-dense { padding-block: 4.5rem; }
@@ -420,7 +426,7 @@
 
   <main>
     <!-- ----------------- Cinematic Hero Section ----------------- -->
-    <section id="hero-section" class="surface-hero relative w-full pt-28 md:pt-32 pb-16 md:pb-32 group bg-background text-foreground">
+    <section id="hero-section" class="surface-hero relative w-full pt-28 md:pt-32 pb-16 md:pb-[5.5rem] lg:pb-32 group bg-background text-foreground">
       
       <!-- Isolated Background Layer for Performance -->
       <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -605,7 +611,7 @@
     </section>
 
     <!-- ----------------- By The Numbers (Success Rate) ----------------- -->
-    <section class="surface-results py-16 md:py-24 bg-slate-50 dark:bg-zinc-950 relative overflow-hidden">
+    <section class="surface-results section-space-dense bg-slate-50 dark:bg-zinc-950 relative overflow-hidden">
       <div class="max-w-7xl mx-auto px-6 relative z-10">
          <div class="text-center mb-10 md:mb-16">
            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-4 font-display tracking-tighter">The numbers speak for themselves.</h2>
@@ -640,7 +646,7 @@
     </section>
 
     <!-- ----------------- University Ribbon ----------------- -->
-    <section class="surface-universities border-y border-black/10 dark:border-white/10 bg-muted/10 py-10 overflow-hidden relative flex flex-col items-center">
+    <section class="surface-universities section-space-band border-y border-black/10 dark:border-white/10 bg-muted/10 overflow-hidden relative flex flex-col items-center">
       <p class="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6 text-center relative z-20 font-display">
         Our students gain admission to
       </p>
@@ -689,9 +695,9 @@
     </section>
 
     <!-- ----------------- Methodology ----------------- -->
-    <section class="surface-methodology relative overflow-hidden bg-slate-50 dark:bg-zinc-950 border-b border-black/5 dark:border-white/5 py-20 md:py-32">
+    <section class="surface-methodology section-space-major relative overflow-hidden bg-slate-50 dark:bg-zinc-950 border-b border-black/5 dark:border-white/5">
       <div class="max-w-7xl mx-auto px-6 relative z-10">
-        <div class="text-center mb-16 md:mb-24">
+        <div class="text-center section-intro-gap">
           <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400 text-sm font-bold uppercase tracking-wider mb-6 font-display">Our Methodology</span>
           <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-6 font-display tracking-tighter text-foreground">Why Our Students Succeed</h2>
           <p class="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">We replace generic tutoring with targeted, highly efficient strategies that drive real results.</p>
@@ -787,15 +793,15 @@
 
   
     <!-- ----------------- Elite Programs ----------------- -->
-    <section class="surface-programs surface-full-bleed py-20 md:py-32 max-w-7xl mx-auto px-6">
-      <div class="mb-12 md:mb-20">
+    <section class="surface-programs surface-full-bleed section-space-major max-w-7xl mx-auto px-6">
+      <div class="section-intro-gap">
         <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-4 font-display tracking-tighter">Elite Programs</h2>
         <p class="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">Choose the program that best fits your child's needs and goals.</p>
       </div>
 
       <!-- Container for both mobile and desktop views -->
       <div id="programs-container">
-        <div class="lg:hidden pb-24">
+        <div class="lg:hidden program-selector-clearance">
           <div class="program-tab-rail -mx-6 px-6 pb-3 flex gap-2 overflow-x-auto snap-x snap-mandatory" role="tablist" aria-label="Choose a program">
             <button id="program-mobile-tab-0" class="program-mobile-tab snap-start shrink-0 rounded-full border px-4 py-3 text-sm font-bold transition-all" type="button" role="tab" aria-selected="true" aria-controls="program-mobile-panel" tabindex="0" onclick="setActiveProgram(0, this)" onkeydown="handleProgramTabKeydown(event, 0)">AP STEM</button>
             <button id="program-mobile-tab-1" class="program-mobile-tab snap-start shrink-0 rounded-full border px-4 py-3 text-sm font-bold transition-all" type="button" role="tab" aria-selected="false" aria-controls="program-mobile-panel" tabindex="-1" onclick="setActiveProgram(1, this)" onkeydown="handleProgramTabKeydown(event, 1)">SAT Math</button>
@@ -1617,9 +1623,9 @@
 
   
         <!-- ----------------- Meet The Mentors ----------------- -->
-        <section class="surface-mentors bg-muted/30 border-t border-border/50 py-16 md:py-32">
+        <section class="surface-mentors section-space-major bg-muted/30 border-t border-border/50">
           <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-12 md:mb-20">
+            <div class="text-center section-intro-gap">
               <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-4 font-display tracking-tighter">Meet The Mentors</h2>
               <p class="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">Learn directly from Olympiad medalists, medical doctors, and top-percentile experts.</p>
             </div>
@@ -1751,7 +1757,7 @@
         </section>
   
         <!-- ----------------- Results & Quotes Ticker ----------------- -->
-        <section class="bg-slate-950 overflow-hidden relative flex items-center py-8">
+        <section class="section-space-band bg-slate-950 overflow-hidden relative flex items-center">
           <div class="relative w-full flex items-center">
             <!-- Scrolling Track (Slowed down to 80s) -->
             <div class="animate-marquee flex gap-12 pr-12 items-center" style="animation-duration: 80s">
@@ -2265,8 +2271,8 @@
         </section>
   
         <!-- ----------------- Verified Impact & Video Testimonials ----------------- -->
-        <section class="surface-track-record surface-full-bleed pt-16 pb-16 md:py-32 max-w-7xl mx-auto px-6">
-          <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-6">
+        <section class="surface-track-record surface-full-bleed section-space-major max-w-7xl mx-auto px-6">
+          <div class="flex flex-col md:flex-row items-start md:items-end justify-between section-intro-gap gap-6">
             <div>
               <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-4 font-display tracking-tighter">The Track Record</h2>
               <p class="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">We let the results do the talking. Undeniable data, followed by the students who lived it.</p>
@@ -2501,7 +2507,7 @@
 
 
   <!-- ----------------- Final CTA ----------------- -->
-  <section class="py-20 md:py-32 bg-zinc-950 relative overflow-hidden scroll-reveal border-t border-white/5">
+  <section class="section-space-major bg-zinc-950 relative overflow-hidden scroll-reveal border-t border-white/5">
     <!-- Background Accents -->
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-full opacity-40 pointer-events-none">
       <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-emerald-500/20 blur-3xl rounded-[100%]"></div>
@@ -2532,7 +2538,7 @@
   </section>
 
   <!-- ----------------- Footer ----------------- -->
-  <footer class="border-t border-white/10 py-12 md:py-16 bg-black">
+  <footer class="section-space-dense border-t border-white/10 bg-black">
      <div class="max-w-7xl mx-auto px-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-10 md:mb-16">
            
