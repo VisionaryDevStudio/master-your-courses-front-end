@@ -212,12 +212,27 @@
       width: max-content;
     }
   </style>
+  <style>
+    /* Scroll Reveal Animations */
+    @media (prefers-reduced-motion: no-preference) {
+      .scroll-reveal {
+        opacity: 0;
+        transform: translateY(60px) scale(0.95);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+      }
+      .scroll-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
 </head>
 
 <body class="antialiased min-h-screen font-sans text-foreground overflow-x-hidden">
   
   <!-- ----------------- Header ----------------- -->
-  <header class="dark fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/80 text-foreground backdrop-blur-xl">
+  <header class="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/80 text-foreground backdrop-blur-xl">
     <!-- Desktop Header -->
     <div class="hidden md:flex max-w-7xl mx-auto px-6 h-20 items-center justify-between">
       <div class="flex items-center gap-2">
@@ -287,7 +302,7 @@
 
   <main>
     <!-- ----------------- Cinematic Hero Section ----------------- -->
-    <section id="hero-section" class="dark relative w-full pt-28 md:pt-32 pb-16 md:pb-32 group bg-background text-foreground">
+    <section id="hero-section" class="relative w-full pt-28 md:pt-32 pb-16 md:pb-32 group bg-background text-foreground">
       
       <!-- Isolated Background Layer for Performance -->
       <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -556,66 +571,100 @@
     </section>
 
     <!-- ----------------- Methodology ----------------- -->
-    <section class="bg-slate-50 dark:bg-zinc-950 border-b border-black/5 dark:border-white/5 py-20 md:py-32">
-      <div class="max-w-7xl mx-auto px-6">
+    <section class="relative overflow-hidden bg-slate-50 dark:bg-zinc-950 border-b border-black/5 dark:border-white/5 py-20 md:py-32">
+      <!-- Light Mode Grid -->
+      <div class="absolute inset-0 opacity-[0.03] pointer-events-none block dark:hidden" style="background-image: linear-gradient(black 1px, transparent 1px), linear-gradient(90deg, black 1px, transparent 1px); background-size: 32px 32px; mask-image: radial-gradient(circle at top center, black, transparent 80%); -webkit-mask-image: radial-gradient(circle at top center, black, transparent 80%)"></div>
+      <!-- Dark Mode Grid -->
+      <div class="absolute inset-0 opacity-[0.03] pointer-events-none hidden dark:block" style="background-image: linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px); background-size: 32px 32px; mask-image: radial-gradient(circle at top center, black, transparent 80%); -webkit-mask-image: radial-gradient(circle at top center, black, transparent 80%)"></div>
+      
+      <div class="max-w-7xl mx-auto px-6 relative z-10">
         <div class="text-center mb-16 md:mb-24">
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-6 font-display tracking-tighter">Why Our Students Succeed</h2>
+          <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400 text-sm font-bold uppercase tracking-wider mb-6 font-display">Our Methodology</span>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-6 font-display tracking-tighter text-foreground">Why Our Students Succeed</h2>
           <p class="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">We replace generic tutoring with targeted, highly efficient strategies that drive real results.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-           <!-- Massive Feature Card -->
-           <div class="spotlight-card group/card relative overflow-hidden rounded-[2rem] border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-colors hover:shadow-[0_8px_30px_rgb(0,0,0,0.14)] md:col-span-2 md:row-span-2 min-h-[260px] md:min-h-0 bg-gradient-to-br from-indigo-500/10 via-white to-slate-50 dark:from-indigo-500/10 dark:via-zinc-900 dark:to-zinc-950 border-slate-200/80 dark:border-slate-800" data-glow-color="rgba(99, 102, 241, 0.2)">
-             <div class="spotlight-overlay pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover/card:opacity-100 z-0"></div>
-             <div class="relative z-10 h-full w-full p-8 md:p-10 flex flex-col">
-               <div class="w-12 h-12 md:w-16 md:h-16 bg-indigo-500/10 text-indigo-500 rounded-xl md:rounded-2xl flex items-center justify-center mb-6 md:mb-8 shadow-sm shrink-0">
-                 <svg class="lucide w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+           <!-- Card 1: Elite Tutors -->
+           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
+             <div class="h-2 w-full bg-blue-500"></div>
+             <div class="p-8 flex flex-col flex-1">
+               <div class="w-14 h-14 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+                 <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
                </div>
                <div class="flex-1">
-                 <h3 class="text-2xl md:text-3xl font-black mb-4 text-foreground font-display tracking-tight">Personalized Study Plans</h3>
-                 <p class="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl">We identify exactly where a student is struggling and focus entirely on those gaps, eliminating wasted time. Our adaptive learning engine customizes the curriculum to each student's unique learning curve.</p>
+                 <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Elite Tutors</h3>
+                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">Top 1% mentors from world-renowned universities who understand exactly what it takes to excel.</p>
                </div>
              </div>
            </div>
            
-           <!-- Small Feature 1 -->
-           <div class="spotlight-card group/card relative overflow-hidden rounded-[2rem] border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-colors hover:shadow-[0_8px_30px_rgb(0,0,0,0.14)] bg-gradient-to-br from-emerald-500/10 via-white to-slate-50 dark:from-emerald-500/10 dark:via-zinc-900 dark:to-zinc-950 border-slate-200/80 dark:border-slate-800" data-glow-color="rgba(16, 185, 129, 0.2)">
-             <div class="spotlight-overlay pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover/card:opacity-100 z-0"></div>
-             <div class="relative z-10 h-full w-full p-8 md:p-10 flex flex-col">
-               <div class="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center justify-center mb-6 shadow-sm shrink-0">
-                 <svg class="lucide w-6 h-6" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+           <!-- Card 2: Personalized Plans -->
+           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
+             <div class="h-2 w-full bg-indigo-500"></div>
+             <div class="p-8 flex flex-col flex-1">
+               <div class="w-14 h-14 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+                 <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                </div>
                <div class="flex-1">
-                 <h3 class="text-xl font-black mb-3 text-foreground font-display tracking-tight">High-Impact Learning</h3>
-                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">No fluff or busywork. Every lesson is designed to directly increase scores.</p>
+                 <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Personalized Plans</h3>
+                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">We identify exactly where a student is struggling and focus entirely on those gaps, eliminating wasted time.</p>
                </div>
              </div>
            </div>
            
-           <!-- Small Feature 2 -->
-           <div class="spotlight-card group/card relative overflow-hidden rounded-[2rem] border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-colors hover:shadow-[0_8px_30px_rgb(0,0,0,0.14)] bg-gradient-to-br from-red-500/10 via-white to-slate-50 dark:from-red-500/10 dark:via-zinc-900 dark:to-zinc-950 border-slate-200/80 dark:border-slate-800" data-glow-color="rgba(239, 68, 68, 0.2)">
-             <div class="spotlight-overlay pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover/card:opacity-100 z-0"></div>
-             <div class="relative z-10 h-full w-full p-8 md:p-10 flex flex-col">
-               <div class="w-12 h-12 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center mb-6 shadow-sm shrink-0">
-                 <svg class="lucide w-6 h-6" viewBox="0 0 24 24"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4 4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/></svg>
+           <!-- Card 3: Weekly Assessments -->
+           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
+             <div class="h-2 w-full bg-red-500"></div>
+             <div class="p-8 flex flex-col flex-1">
+               <div class="w-14 h-14 bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+                 <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
                </div>
                <div class="flex-1">
-                 <h3 class="text-xl font-black mb-3 text-foreground font-display tracking-tight">True-to-Test Practice</h3>
-                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">Rigorous mock exams that perfectly mirror the actual test format.</p>
+                 <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Weekly Assessments</h3>
+                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">Rigorous mock exams and weekly checkpoints that perfectly mirror actual test formats to ensure steady growth.</p>
                </div>
              </div>
            </div>
            
-           <!-- Wide Feature -->
-           <div class="spotlight-card group/card relative overflow-hidden rounded-[2rem] border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-colors hover:shadow-[0_8px_30px_rgb(0,0,0,0.14)] md:col-span-3 flex flex-col md:flex-row items-start md:items-center gap-5 md:gap-8 bg-gradient-to-r from-purple-500/10 via-white to-slate-50 dark:from-purple-500/10 dark:via-zinc-900 dark:to-zinc-950 border-slate-200/80 dark:border-slate-800" data-glow-color="rgba(168, 85, 247, 0.2)">
-             <div class="spotlight-overlay pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover/card:opacity-100 z-0"></div>
-             <div class="relative z-10 h-full w-full p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10">
-               <div class="flex-shrink-0 w-14 h-14 md:w-20 md:h-20 bg-purple-500/10 text-purple-500 rounded-xl md:rounded-[1.25rem] flex items-center justify-center shadow-sm">
-                 <svg class="lucide w-7 h-7 md:w-10 md:h-10" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+           <!-- Card 4: Comprehensive Resources -->
+           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
+             <div class="h-2 w-full bg-emerald-500"></div>
+             <div class="p-8 flex flex-col flex-1">
+               <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+                 <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                </div>
                <div class="flex-1">
-                 <h3 class="text-xl md:text-2xl font-black mb-3 md:mb-4 text-foreground font-display tracking-tight">Clear Progress Tracking Dashboard</h3>
-                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed md:max-w-3xl">See exactly how your child is improving with real-time transparent dashboards. No more guessing. Parents and students get full visibility into mastery levels across every topic.</p>
+                 <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Comprehensive Resources</h3>
+                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">No fluff or busywork. Access a curated library of high-impact study materials designed to directly increase scores.</p>
+               </div>
+             </div>
+           </div>
+
+           <!-- Card 5: Supportive Community -->
+           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
+             <div class="h-2 w-full bg-pink-500"></div>
+             <div class="p-8 flex flex-col flex-1">
+               <div class="w-14 h-14 bg-pink-100 dark:bg-pink-500/20 text-pink-600 dark:text-pink-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+                 <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+               </div>
+               <div class="flex-1">
+                 <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Supportive Community</h3>
+                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">Join a network of highly motivated peers. Collaborate, ask questions, and grow together in a positive environment.</p>
+               </div>
+             </div>
+           </div>
+
+           <!-- Card 6: Progress Tracking Dashboard -->
+           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
+             <div class="h-2 w-full bg-purple-500"></div>
+             <div class="p-8 flex flex-col flex-1">
+               <div class="w-14 h-14 bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+                 <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+               </div>
+               <div class="flex-1">
+                 <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Clear Progress Tracking Dashboard</h3>
+                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">See exactly how your child is improving with real-time transparent dashboards. Get full visibility into mastery levels.</p>
                </div>
              </div>
            </div>
@@ -873,7 +922,7 @@
                               </div>
                     </div>
                 </div>
-                <p class="text-muted-foreground text-base mb-6 leading-relaxed relative z-10">Self-guided, interactive practice courses. (AP Biology - Available Now!)</p>
+                <p class="text-muted-foreground text-base mb-6 leading-relaxed relative z-10">Self-guided, interactive practice courses.</p>
                 <button class="bg-foreground text-background w-full py-3.5 rounded-xl font-bold active:scale-[0.98] transition-transform flex items-center justify-center gap-2 shadow-xl relative z-10 text-sm">
                   Preview Mastery Engine <svg class="lucide w-4 h-4" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </button>
@@ -1125,7 +1174,7 @@
                 <div>
                   <h3 class="program-list-title font-bold text-lg transition-colors text-muted-foreground font-display tracking-tight">Mastery Engines</h3>
                   <p class="program-list-desc text-sm text-muted-foreground mt-2 leading-relaxed overflow-hidden transition-all duration-300" style="max-height: 0px; opacity: 0;">
-                    Self-guided, interactive practice courses. (AP Biology - Available Now!)
+                    Self-guided, interactive practice courses.
                   </p>
                 </div>
             </div>
@@ -1270,7 +1319,7 @@
     </div>
   
     <script>
-      const PROGRAMS_DATA = [{"title":"AP STEM Bootcamps","desc":"Intensive classes to master the most difficult AP subjects.","iconColor":"text-emerald-600 dark:text-emerald-400","glowColor":"rgba(16, 185, 129, 0.12)","cta":"View Bootcamp Schedule","proof":"98% Pass Rate (Score of 4 or 5)"},{"title":"SAT Math Bootcamp","desc":"Targeted practice and strategies designed for a perfect 800.","iconColor":"text-blue-600 dark:text-blue-400","glowColor":"rgba(59, 130, 246, 0.12)","cta":"See Upcoming Dates","proof":"Average +150 point increase"},{"title":"Mastery Engines","desc":"Self-guided, interactive practice courses. (AP Biology - Available Now!)","iconColor":"text-orange-500 dark:text-orange-400","glowColor":"rgba(249, 115, 22, 0.12)","cta":"Preview Mastery Engine","proof":"Trusted by 500+ top students"},{"title":"1-on-1 AP Mentorship","desc":"Private, individualized tutoring for maximum improvement.","iconColor":"text-purple-600 dark:text-purple-400","glowColor":"rgba(168, 85, 247, 0.12)","cta":"Apply for Mentorship","proof":"Top 1% Mentors Worldwide"},{"title":"University Tutoring","desc":"Advanced support for difficult college-level courses.","iconColor":"text-blue-600 dark:text-blue-400","glowColor":"rgba(59, 130, 246, 0.12)","cta":"Find a Subject Expert","proof":"Supports 50+ College Courses"},{"title":"Olympiad & Contests","desc":"Preparation for highly competitive exams like AMC and Physics Olympiad.","iconColor":"text-red-600 dark:text-red-400","glowColor":"rgba(239, 68, 68, 0.12)","cta":"Start Competitive Prep","proof":"Multiple AIME Qualifiers"}];
+      const PROGRAMS_DATA = [{"title":"AP STEM Bootcamps","desc":"Intensive classes to master the most difficult AP subjects.","iconColor":"text-emerald-600 dark:text-emerald-400","glowColor":"rgba(16, 185, 129, 0.12)","cta":"View Bootcamp Schedule","proof":"98% Pass Rate (Score of 4 or 5)"},{"title":"SAT Math Bootcamp","desc":"Targeted practice and strategies designed for a perfect 800.","iconColor":"text-blue-600 dark:text-blue-400","glowColor":"rgba(59, 130, 246, 0.12)","cta":"See Upcoming Dates","proof":"Average +150 point increase"},{"title":"Mastery Engines","desc":"Self-guided, interactive practice courses.","iconColor":"text-orange-500 dark:text-orange-400","glowColor":"rgba(249, 115, 22, 0.12)","cta":"Preview Mastery Engine","proof":"Trusted by 500+ top students"},{"title":"1-on-1 AP Mentorship","desc":"Private, individualized tutoring for maximum improvement.","iconColor":"text-purple-600 dark:text-purple-400","glowColor":"rgba(168, 85, 247, 0.12)","cta":"Apply for Mentorship","proof":"Top 1% Mentors Worldwide"},{"title":"University Tutoring","desc":"Advanced support for difficult college-level courses.","iconColor":"text-blue-600 dark:text-blue-400","glowColor":"rgba(59, 130, 246, 0.12)","cta":"Find a Subject Expert","proof":"Supports 50+ College Courses"},{"title":"Olympiad & Contests","desc":"Preparation for highly competitive exams like AMC and Physics Olympiad.","iconColor":"text-red-600 dark:text-red-400","glowColor":"rgba(239, 68, 68, 0.12)","cta":"Start Competitive Prep","proof":"Multiple AIME Qualifiers"}];
       const PROGRAMS_MOCKUPS = ["\n        <div class=\"w-full h-full p-3 flex flex-col gap-2 z-10 text-foreground bg-slate-50/90 dark:bg-zinc-900/90 backdrop-blur-xl rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-black/10 dark:border-white/10\">\n           <div class=\"flex justify-between items-center mb-1\">\n             <div class=\"font-bold text-sm\">Bootcamp Schedule</div>\n             <div class=\"flex gap-1 bg-muted/30 p-0.5 rounded-md\">\n                <div class=\"px-2 py-0.5 text-[8px] font-bold rounded bg-background shadow-sm\">Agenda</div>\n                <div class=\"px-2 py-0.5 text-[8px] font-bold text-muted-foreground\">Month</div>\n             </div>\n           </div>\n           <div class=\"flex-1 flex flex-col gap-2\">\n             <div class=\"text-[10px] font-bold text-muted-foreground mt-1 mb-1 uppercase tracking-widest text-center\">Today</div>\n             \n             <!-- Session 1 -->\n             <div class=\"flex items-center justify-between p-3 rounded-xl bg-white dark:bg-zinc-800 border border-black/10 dark:border-white/10 shadow-sm relative group overflow-hidden\">\n               <div class=\"absolute left-0 top-0 bottom-0 w-1 text-emerald-600 dark:text-emerald-400\" style=\"background-color: currentColor\"></div>\n               <div class=\"text-[10px] font-mono font-bold text-muted-foreground w-12\">4:00<span class=\"text-[8px]\">PM</span></div>\n               \n               <div class=\"flex-1 flex flex-col items-center text-center px-2\">\n                 <div class=\"text-[11px] font-bold text-foreground\">AP Chemistry</div>\n                 <div class=\"text-[10px] text-muted-foreground\">Unit 4: Kinetics & Rates</div>\n               </div>\n\n               <div class=\"w-12 flex justify-end\">\n                  <div class=\"text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400\">Live</div>\n               </div>\n             </div>\n\n             <!-- Session 2 -->\n             <div class=\"flex items-center justify-between p-3 rounded-xl bg-white dark:bg-zinc-800 border border-black/10 dark:border-white/10 shadow-sm relative group overflow-hidden\">\n               <div class=\"text-[10px] font-mono font-bold text-muted-foreground w-12\">5:30<span class=\"text-[8px]\">PM</span></div>\n               \n               <div class=\"flex-1 flex flex-col items-center text-center px-2\">\n                 <div class=\"text-[11px] font-bold text-blue-700 dark:text-blue-300\">AP Calc BC</div>\n                 <div class=\"text-[10px] text-muted-foreground\">Series Convergence</div>\n               </div>\n               \n               <div class=\"w-12 flex justify-end\"></div>\n             </div>\n           </div>\n        </div>\n    ","\n        <div class=\"w-full h-full p-4 flex flex-col gap-3 z-10 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-black/10 dark:border-white/10\">\n           <!-- Header -->\n           <div class=\"flex justify-between items-end border-b border-border/50 pb-2\">\n              <div>\n                 <div class=\"text-xs font-bold\">SAT Math Performance</div>\n                 <div class=\"text-[10px] text-muted-foreground mt-0.5\">Diagnostic to Current</div>\n              </div>\n              <div class=\"text-right\">\n                 <div class=\"font-black text-xl text-foreground leading-none\">790<span class=\"text-xs font-medium text-muted-foreground\">/800</span></div>\n                 <div class=\"text-[9px] font-bold text-emerald-500 mt-1\">+140 Points</div>\n              </div>\n           </div>\n           \n           <!-- Chart Area -->\n           <div class=\"flex-1 flex items-end gap-2 relative mt-2\">\n             <!-- Target Line -->\n             <div class=\"absolute left-6 right-0 top-[10%] border-t border-dashed border-emerald-500/50 z-0\">\n               <span class=\"absolute -top-3.5 right-0 text-[8px] font-bold text-emerald-500 bg-background/80 px-1\">Goal: 800</span>\n             </div>\n             <!-- Y-axis labels -->\n             <div class=\"absolute left-0 top-0 bottom-4 flex flex-col justify-between text-[8px] font-mono text-muted-foreground z-0\">\n                <span>800</span>\n                <span>700</span>\n                <span>600</span>\n                <span>500</span>\n             </div>\n             <!-- Bars -->\n             <div class=\"ml-7 flex-1 flex items-end gap-2 h-full z-10\">\n               <div class=\"flex-1 flex flex-col items-center gap-1.5 h-full justify-end relative group\">\n                 <div class=\"absolute -top-5 text-[9px] font-bold transition-all px-1.5 py-0.5 rounded border shadow-sm z-20 opacity-0 group-hover:opacity-100 bg-background text-foreground border-border\">650</div>\n                 <div class=\"w-full rounded-t-md relative transition-all opacity-40 hover:opacity-80 text-blue-600 dark:text-blue-400\" style=\"height: 50%; background-color: currentColor\"></div>\n                 <span class=\"text-[8px] font-bold uppercase text-muted-foreground\">PT1</span>\n               </div>\n               <div class=\"flex-1 flex flex-col items-center gap-1.5 h-full justify-end relative group\">\n                 <div class=\"absolute -top-5 text-[9px] font-bold transition-all px-1.5 py-0.5 rounded border shadow-sm z-20 opacity-0 group-hover:opacity-100 bg-background text-foreground border-border\">680</div>\n                 <div class=\"w-full rounded-t-md relative transition-all opacity-40 hover:opacity-80 text-blue-600 dark:text-blue-400\" style=\"height: 60%; background-color: currentColor\"></div>\n                 <span class=\"text-[8px] font-bold uppercase text-muted-foreground\">PT2</span>\n               </div>\n               <div class=\"flex-1 flex flex-col items-center gap-1.5 h-full justify-end relative group\">\n                 <div class=\"absolute -top-5 text-[9px] font-bold transition-all px-1.5 py-0.5 rounded border shadow-sm z-20 opacity-0 group-hover:opacity-100 bg-background text-foreground border-border\">720</div>\n                 <div class=\"w-full rounded-t-md relative transition-all opacity-40 hover:opacity-80 text-blue-600 dark:text-blue-400\" style=\"height: 73.3%; background-color: currentColor\"></div>\n                 <span class=\"text-[8px] font-bold uppercase text-muted-foreground\">PT3</span>\n               </div>\n               <div class=\"flex-1 flex flex-col items-center gap-1.5 h-full justify-end relative group\">\n                 <div class=\"absolute -top-5 text-[9px] font-bold transition-all px-1.5 py-0.5 rounded border shadow-sm z-20 opacity-0 group-hover:opacity-100 bg-background text-foreground border-border\">750</div>\n                 <div class=\"w-full rounded-t-md relative transition-all opacity-40 hover:opacity-80 text-blue-600 dark:text-blue-400\" style=\"height: 83.3%; background-color: currentColor\"></div>\n                 <span class=\"text-[8px] font-bold uppercase text-muted-foreground\">PT4</span>\n               </div>\n               <div class=\"flex-1 flex flex-col items-center gap-1.5 h-full justify-end relative group\">\n                 <div class=\"absolute -top-5 text-[9px] font-bold transition-all px-1.5 py-0.5 rounded border shadow-sm z-20 opacity-0 group-hover:opacity-100 bg-background text-foreground border-border\">770</div>\n                 <div class=\"w-full rounded-t-md relative transition-all opacity-40 hover:opacity-80 text-blue-600 dark:text-blue-400\" style=\"height: 90%; background-color: currentColor\"></div>\n                 <span class=\"text-[8px] font-bold uppercase text-muted-foreground\">PT5</span>\n               </div>\n               <div class=\"flex-1 flex flex-col items-center gap-1.5 h-full justify-end relative group\">\n                 <div class=\"absolute -top-5 text-[9px] font-bold transition-all px-1.5 py-0.5 rounded border shadow-sm z-20 opacity-100 bg-foreground text-background border-foreground\">790</div>\n                 <div class=\"w-full rounded-t-md relative transition-all opacity-100 text-blue-600 dark:text-blue-400\" style=\"height: 96.6%; background-color: currentColor\"></div>\n                 <span class=\"text-[8px] font-bold uppercase text-foreground\">PT6</span>\n               </div>\n             </div>\n           </div>\n\n           <!-- Skills Breakdown Footer -->\n           <div class=\"grid grid-cols-3 gap-2 mt-1 border-t border-border/50 pt-2\">\n             <div class=\"flex flex-col gap-0.5\">\n                <div class=\"text-[8px] text-muted-foreground truncate\">Heart of Algebra</div>\n                <div class=\"w-full h-1 bg-muted rounded-full overflow-hidden\"><div class=\"h-full w-full bg-emerald-500\"></div></div>\n             </div>\n             <div class=\"flex flex-col gap-0.5\">\n                <div class=\"text-[8px] text-muted-foreground truncate\">Adv. Math</div>\n                <div class=\"w-full h-1 bg-muted rounded-full overflow-hidden\"><div class=\"h-full w-[85%] bg-amber-500\"></div></div>\n             </div>\n             <div class=\"flex flex-col gap-0.5\">\n                <div class=\"text-[8px] text-muted-foreground truncate\">Data Analysis</div>\n                <div class=\"w-full h-1 bg-muted rounded-full overflow-hidden\"><div class=\"h-full w-[95%] bg-emerald-500\"></div></div>\n             </div>\n           </div>\n        </div>\n    ","\n        <div class=\"w-full h-full p-4 flex z-10 text-foreground bg-slate-50/90 dark:bg-zinc-900/90 backdrop-blur-xl rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-black/10 dark:border-white/10 items-center justify-center\">\n           <div class=\"w-full bg-white dark:bg-zinc-800 rounded-2xl border border-black/10 dark:border-white/10 shadow-sm overflow-hidden flex\">\n              <!-- Left Side: Modules -->\n              <div class=\"w-[120px] p-5 border-r border-black/10 dark:border-white/10 flex flex-col\">\n                 <div class=\"font-bold text-[11px] text-center text-foreground mb-4\">Modules</div>\n                 <div class=\"flex flex-col gap-3.5\">\n                    <div class=\"flex justify-between items-center text-[10px] font-bold\">\n                       <span class=\"text-foreground truncate w-[55px]\">1. Cell ...</span>\n                       <span class=\"text-emerald-500\">100%</span>\n                    </div>\n                    <div class=\"flex justify-between items-center text-[10px] font-bold\">\n                       <span class=\"text-foreground truncate w-[55px]\">2. Gene...</span>\n                       <span class=\"text-amber-500\">75%</span>\n                    </div>\n                    <div class=\"flex justify-between items-center text-[10px] font-bold\">\n                       <span class=\"text-muted-foreground truncate w-[55px]\">3. Ecology</span>\n                       <span class=\"text-muted-foreground\">0%</span>\n                    </div>\n                 </div>\n              </div>\n              \n              <!-- Right Side: Mastery -->\n              <div class=\"flex-1 p-5 flex flex-col justify-center bg-black/[0.01] dark:bg-white/[0.01]\">\n                 <div class=\"flex items-center justify-center gap-5\">\n                    <!-- SVG Progress Ring -->\n                    <div class=\"relative w-14 h-14 flex items-center justify-center\">\n                      <svg class=\"absolute inset-0 w-full h-full transform -rotate-90\" viewBox=\"0 0 36 36\">\n                        <path class=\"stroke-black/5 dark:stroke-white/5\" stroke-width=\"3\" fill=\"none\" d=\"M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831\"></path>\n                        <path class=\"text-orange-500 dark:text-orange-400\" style=\"stroke: currentColor\" stroke-width=\"3.5\" stroke-dasharray=\"85, 100\" fill=\"none\" d=\"M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831\"></path>\n                      </svg>\n                      <span class=\"text-[13px] font-black text-foreground relative z-10\">85%</span>\n                    </div>\n                    \n                    <div class=\"flex flex-col\">\n                       <div class=\"text-[11px] font-bold text-foreground\">AP Biology</div>\n                       <div class=\"text-[10px] text-muted-foreground\">Mastery Level</div>\n                    </div>\n                 </div>\n                 \n                 <div class=\"w-full mt-5 pt-5 border-t border-slate-200 dark:border-white/10\">\n                    <div class=\"text-[10px] font-bold text-foreground mb-2 text-center\">Current Topic: Punnett Squares</div>\n                    <div class=\"w-full h-2.5 bg-slate-100 dark:bg-zinc-700 rounded-full overflow-hidden border border-black/5 dark:border-white/5\">\n                       <div class=\"h-full w-[85%] rounded-full text-orange-500 dark:text-orange-400\" style=\"background-color: currentColor\"></div>\n                    </div>\n                 </div>\n              </div>\n           </div>\n        </div>\n    ","\n        <div class=\"w-full h-full p-4 flex flex-col items-center justify-center gap-4 z-10 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-black/10 dark:border-white/10 text-center relative overflow-hidden\">\n           <div class=\"absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none\"></div>\n           <div class=\"absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none\"></div>\n           \n           <div class=\"w-[95%] max-w-[400px] bg-background border border-black/10 dark:border-white/10 rounded-2xl shadow-xl overflow-hidden relative z-10 flex group hover:border-emerald-500/30 transition-all duration-500 hover:shadow-emerald-500/10 hover:-translate-y-1\">\n              \n              <!-- Left Side: Avatar & Name -->\n              <div class=\"w-2/5 bg-gray-50 dark:bg-zinc-950 p-4 flex flex-col items-center justify-center border-r border-black/10 dark:border-white/10 relative\">\n                 <div class=\"absolute top-2 left-2\">\n                    <div class=\"w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse\"></div>\n                 </div>\n                 <div class=\"relative mb-2\">\n                    <div class=\"w-16 h-16 rounded-full overflow-hidden border-2 border-emerald-500/30 shadow-md p-0.5\">\n                       <div class=\"w-full h-full rounded-full overflow-hidden bg-muted\">\n                          <img src=\"mentors/sadr.jpeg\" alt=\"Mentor\" class=\"w-full h-full object-cover object-[center_10%]\"/>\n                       </div>\n                    </div>\n                    <!-- Rating Badge -->\n                    <div class=\"absolute -bottom-2 left-1/2 -translate-x-1/2 bg-background border border-black/10 shadow-sm rounded-full px-1.5 py-0.5 flex items-center gap-0.5\">\n                       <svg class=\"lucide w-2 h-2 fill-emerald-500 text-emerald-500\" viewBox=\"0 0 24 24\"><polygon points=\"12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2\"/></svg>\n                       <span class=\"text-[8px] font-bold text-foreground\">5.0</span>\n                    </div>\n                 </div>\n                 <h3 class=\"font-bold text-xs text-foreground mt-2 text-center\">Dr. Sherri, M.D.</h3>\n                 <p class=\"text-[8px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5 uppercase tracking-wide\">Top 1% Mentor</p>\n              </div>\n\n              <!-- Right Side: Info & Button -->\n              <div class=\"w-3/5 p-4 flex flex-col justify-center\">\n                 <div class=\"flex flex-wrap gap-1.5 mb-2\">\n                    <span class=\"bg-gray-100 dark:bg-zinc-900 px-2 py-0.5 rounded text-[8px] font-bold text-gray-600 dark:text-gray-300 border border-black/5 dark:border-white/5 uppercase tracking-wider\">M.D.</span>\n                    <span class=\"bg-gray-100 dark:bg-zinc-900 px-2 py-0.5 rounded text-[8px] font-bold text-gray-600 dark:text-gray-300 border border-black/5 dark:border-white/5 uppercase tracking-wider\">Medical Sciences</span>\n                 </div>\n                 <p class=\"text-[9px] text-muted-foreground leading-relaxed italic line-clamp-2 mb-3\">\"Expert 1-on-1 mentorship tailored to help you master your coursework.\"</p>\n                 <div class=\"w-full h-8 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-md shadow-emerald-500/20\">\n                    <span class=\"text-[10px] font-bold tracking-wide\">Book Session</span>\n                 </div>\n              </div>\n           </div>\n        </div>\n    ","\n        <div class=\"w-full h-full flex z-10 bg-white dark:bg-zinc-950 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-black/10 dark:border-white/10 overflow-hidden\">\n          <div class=\"w-1/3 flex flex-col gap-2 border-r border-black/10 dark:border-white/10 p-3 bg-gray-50 dark:bg-zinc-900\">\n             <div class=\"font-bold text-xs border-b border-black/10 dark:border-white/10 pb-2 text-muted-foreground\">Syllabus</div>\n             <div class=\"text-[9px] font-bold text-foreground\">1. Kinematics</div>\n             <div class=\"text-[9px] font-bold pl-2 border-l-2 text-blue-600 dark:text-blue-400\" style=\"border-color: currentColor\">1.1 Projectile Motion</div>\n             <div class=\"text-[9px] font-medium pl-2 border-l-2 border-transparent text-muted-foreground\">1.2 Circular Motion</div>\n             <div class=\"text-[9px] font-bold text-foreground mt-1\">2. Dynamics</div>\n          </div>\n          <div class=\"flex-1 flex flex-col p-4\">\n             <div class=\"font-black text-sm mb-1\">1.1 Projectile Motion</div>\n             <div class=\"text-[9px] text-muted-foreground mb-3\">University Physics I • Advanced Support</div>\n             \n             <div class=\"flex-1 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 p-2 flex flex-col gap-1.5 shadow-sm\">\n                <div class=\"w-full h-2 bg-gray-200 dark:bg-zinc-800 rounded-sm\"></div>\n                <div class=\"w-5/6 h-2 bg-gray-200 dark:bg-zinc-800 rounded-sm\"></div>\n                <div class=\"w-4/5 h-2 bg-gray-200 dark:bg-zinc-800 rounded-sm mb-1\"></div>\n                <div class=\"w-full h-12 bg-gray-100 dark:bg-zinc-800 rounded border border-black/5 dark:border-white/5 flex items-center justify-center font-mono text-[10px] text-muted-foreground\">\n                   y = v_0t - (1/2)gt^2\n                </div>\n             </div>\n          </div>\n        </div>\n    ","\n        <div class=\"w-full h-full p-4 flex flex-col z-10 bg-white dark:bg-zinc-950 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-black/10 dark:border-white/10 overflow-hidden relative font-sans\">\n           <div class=\"absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none\"></div>\n           \n           <div class=\"flex justify-between items-center mb-4 relative z-10\">\n              <div class=\"flex items-center gap-2\">\n                 <div class=\"w-6 h-6 rounded bg-purple-500/10 flex items-center justify-center border border-purple-500/20 shadow-inner\">\n                    <svg class=\"lucide w-3.5 h-3.5 text-purple-500\" viewBox=\"0 0 24 24\"><path d=\"M6 9H4.5a2.5 2.5 0 0 1 0-5H6\"/><path d=\"M18 9h1.5a2.5 2.5 0 0 0 0-5H18\"/><path d=\"M4 22h16\"/><path d=\"M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22\"/><path d=\"M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22\"/><path d=\"M18 2H6v7a6 6 0 0 0 12 0V2Z\"/></svg>\n                 </div>\n                 <span class=\"text-xs font-bold text-foreground\">USAPhO Simulator</span>\n              </div>\n              <div class=\"bg-gray-100 dark:bg-zinc-800 border border-black/5 dark:border-white/5 text-[9px] font-bold text-muted-foreground px-2 py-1 rounded-md shadow-sm\">\n                 Difficulty: <span class=\"text-red-500\">Hard</span>\n              </div>\n           </div>\n\n           <div class=\"flex-1 bg-slate-700 rounded-[1.25rem] border border-slate-600 p-5 flex flex-col relative overflow-hidden shadow-inner\">\n              <div class=\"absolute inset-0 opacity-[0.12]\" style=\"background-image: linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px); background-size: 12px 12px\"></div>\n              \n              <div class=\"relative z-10\">\n                 <h4 class=\"text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-2\">Problem 2: Rotational Dynamics</h4>\n                 <p class=\"text-[11px] text-slate-300 leading-relaxed font-medium\">\n                    A uniform solid cylinder of mass <span class=\"font-mono text-purple-300\">M</span> and radius <span class=\"font-mono text-purple-300\">R</span> rolls without slipping down an inclined plane of angle <span class=\"font-mono text-purple-300\">θ</span>. Determine the minimum coefficient of static friction <span class=\"font-mono text-purple-300\">μ_s</span> required.\n                 </p>\n                 \n                 <div class=\"mt-4 bg-slate-950/80 rounded-md p-3 border border-slate-800 shadow-inner\">\n                    <div class=\"text-[10px] text-slate-400 font-mono flex flex-col gap-2\">\n                       <div class=\"flex gap-2 items-center\">\n                          <span class=\"text-slate-600 select-none\">1</span>\n                          <span class=\"text-slate-200\">Mg sin(θ) - f = Ma</span>\n                       </div>\n                       <div class=\"flex gap-2 items-center\">\n                          <span class=\"text-slate-600 select-none\">2</span>\n                          <span class=\"text-slate-200\">fR = Iα = (1/2 MR²) (a/R)</span>\n                       </div>\n                       <div class=\"flex gap-2 items-center\">\n                          <span class=\"text-slate-600 select-none\">3</span>\n                          <span class=\"text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20\">f = (1/3) Mg sin(θ)</span>\n                       </div>\n                    </div>\n                 </div>\n              </div>\n\n              <div class=\"mt-auto relative z-10 flex gap-2 pt-4\">\n                 <div class=\"flex-1 bg-slate-950 border border-slate-700 rounded text-[10px] text-slate-300 px-3 py-2 font-mono flex items-center shadow-inner\">\n                    μ_s ≥ (1/3) tan(θ)\n                    <div class=\"w-1.5 h-3 bg-purple-400 animate-pulse ml-1\"></div>\n                 </div>\n                 <div class=\"bg-purple-600 hover:bg-purple-500 text-white rounded px-4 py-2 text-[10px] font-bold cursor-pointer transition-colors shadow-lg shadow-purple-500/20 flex items-center justify-center\">\n                    Verify\n                 </div>\n              </div>\n           </div>\n        </div>\n    "];
       let activeProgram = 0;
       let isPaused = false;
@@ -2279,48 +2328,40 @@
   
 <!-- MENTORS_AND_RESULTS_INSERTED -->
 </main>
+
+
   <!-- ----------------- Final CTA ----------------- -->
-  <section class="relative py-16 md:py-40 overflow-hidden bg-slate-950 border-t border-white/5">
-     <!-- Advanced Dynamic Background -->
-     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
-     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-[200px] bg-indigo-500/20 blur-[100px] rounded-full pointer-events-none"></div>
-     
-     <div class="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" style="mask-image: radial-gradient(circle at center, black, transparent 80%); -webkit-mask-image: radial-gradient(circle at center, black, transparent 80%)"></div>
-     
-     <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
-       <div class="flex flex-col items-center animate-fade-in-up" style="animation-delay: 200ms; animation-fill-mode: both;">
-         <h2 class="text-4xl sm:text-5xl md:text-7xl font-black mb-6 md:mb-8 text-white leading-tight font-display tracking-tighter">
-            Ready to secure <br class="hidden md:block"/> 
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-white to-purple-400 drop-shadow-sm">your edge?</span>
-         </h2>
-         <p class="text-lg md:text-2xl text-slate-300 mb-8 md:mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
-            Join the 1,200+ students who have already cracked the code to elite academic performance and top-tier university admissions.
-         </p>
-         
-         <button class="group relative w-full md:w-auto px-6 md:px-10 py-4 md:py-5 rounded-full bg-white text-slate-950 text-base sm:text-lg md:text-xl font-black hover:scale-105 active:scale-95 transition-all overflow-hidden flex items-center justify-center gap-3 border border-transparent hover:border-indigo-500/30">
-            <!-- Subtle sweep hover effect inside the button -->
-            <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out bg-gradient-to-r from-transparent via-slate-950/10 to-transparent pointer-events-none"></div>
-            
-            <span class="relative z-10 flex items-center justify-center gap-2 md:gap-3 text-center">
-               Book Your Free Strategy Session 
-               <svg class="lucide w-5 h-5 md:w-6 md:h-6 text-indigo-500 group-hover:translate-x-1 transition-transform shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </span>
-         </button>
-         
-         <!-- Trust signals -->
-         <div class="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-8 text-xs md:text-sm font-bold text-slate-400 uppercase tracking-widest font-display">
-            <span class="flex items-center gap-2">
-               <svg class="lucide w-4 h-4 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 
-               98% Success Rate
-            </span>
-            <div class="w-1 h-1 rounded-full bg-slate-700 hidden sm:block"></div>
-            <span class="flex items-center gap-2">
-               <svg class="lucide w-4 h-4 text-amber-500" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 
-               4.9/5 Rating
-            </span>
-         </div>
-       </div>
-     </div>
+  <section class="py-20 md:py-32 bg-zinc-950 relative overflow-hidden scroll-reveal border-t border-white/5">
+    <!-- Background Accents -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-full opacity-40 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-emerald-500/20 blur-3xl rounded-[100%]"></div>
+    </div>
+    
+    <!-- Decorative Elements -->
+    <div class="absolute -top-32 -right-32 w-96 h-96 bg-indigo-500 rounded-full blur-[100px] opacity-30 pointer-events-none"></div>
+    <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-purple-500 rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+    <!-- Grid pattern overlay -->
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px); background-size: 32px 32px;"></div>
+
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <div class="flex flex-col items-center">
+        <h2 class="text-4xl sm:text-5xl md:text-6xl font-black text-white font-display tracking-tight leading-[1.1] mb-6">
+          Ready to master your courses?
+        </h2>
+        <p class="text-lg md:text-xl text-zinc-400 mb-10 max-w-2xl leading-relaxed">
+          Join thousands of top-performing students. Start your journey today with personalized strategies that drive real results.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+          <button class="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-400 text-white px-10 py-4 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] hover:-translate-y-1 text-lg flex items-center justify-center gap-2">
+            Start Your Journey 
+            <svg class="lucide w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+          <button class="w-full sm:w-auto bg-white/5 hover:bg-white/10 text-white border border-white/10 px-8 py-4 rounded-xl font-bold transition-all hover:-translate-y-1 text-lg backdrop-blur-sm">
+            Contact Admissions
+          </button>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ----------------- Footer ----------------- -->
@@ -2643,6 +2684,28 @@
         floatingCtaChevron.classList.remove('rotate-180');
       }
     };
+  </script>
+  <script>
+    // Scroll reveal observer
+    document.addEventListener("DOMContentLoaded", () => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+              // Slight stagger delay
+              setTimeout(() => {
+                entry.target.classList.add('is-visible');
+              }, index * 150);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }
+      );
+      document.querySelectorAll('.scroll-reveal').forEach((el) => {
+        observer.observe(el);
+      });
+    });
   </script>
 </body>
 </html>
