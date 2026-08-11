@@ -182,10 +182,12 @@ const heroReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const HERO_MOTION_RANGE = 320;
 let heroMotionFrame = null;
 let spotlightFrame = null;
+let lastHeroProgress = null;
 
 function updateHeroMotion() {
   heroMotionFrame = null;
   if (heroReducedMotion.matches) {
+    lastHeroProgress = null;
     [heroCopy, heroCopyMobile].forEach(element => {
       if (element) element.style.opacity = '1';
     });
@@ -196,6 +198,8 @@ function updateHeroMotion() {
   }
 
   const progress = Math.min(Math.max(window.scrollY / HERO_MOTION_RANGE, 0), 1);
+  if (progress === lastHeroProgress) return;
+  lastHeroProgress = progress;
   const copyOpacity = 1 - progress * 0.65;
   const desktopMaxScale = 1.06;
   const mobileMaxScale = 1.03;
