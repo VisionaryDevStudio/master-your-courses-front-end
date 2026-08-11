@@ -40,48 +40,61 @@
     // Mentor Modal Logic
     const MENTORS_DATA = [
         {
-          name: "Dr. Sherri",
-          role: "Former Admissions Committee & Elite Strategist",
-          avatar: "mentors/sadr.jpeg",
-          bio: "Dr. Sherri served on the admissions committee at a top-tier university, reviewing thousands of applications. She knows exactly what stands out and what gets rejected. Now, she brings that insider knowledge to her students, helping them craft compelling narratives and build bulletproof academic profiles.",
-          accolades: [
-            "Former Ivy League Admissions Reader",
-            "15+ Years Mentoring High Achievers",
-            "Specialist in Passion Project Development",
-            "Expert in B.S./M.D. Program Admissions"
-          ]
-        },
-        {
-          name: "Dr. Piri",
-          role: "Biomedical Sciences Head Coach",
+          name: "Dr. Hossein Piri",
+          role: "Healthcare Operations & AI Expert",
           avatar: "mentors/Dr.piri.jpg",
-          bio: "Dr. Piri is a powerhouse in biomedical sciences, holding a Ph.D. and a track record of ground-breaking research. She specializes in mentoring students aiming for highly competitive premed tracks and STEM majors. Her students consistently place into top research internships and secure 5s on AP Biology and AP Chemistry.",
+          bio: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations. He focuses on practical systems that improve care delivery, including patient-centered warning systems and AI-driven approaches for addressing healthcare disparities.",
           accolades: [
-            "Ph.D. in Biomedical Sciences",
-            "Published Author in Top Tier Journals",
-            "Mentored 50+ students to T20 STEM programs",
-            "Lead AP Biology & AP Chemistry Strategist"
+            "40 Under 40 (2026)",
+            "Dean's Research Scholar, UCalgary",
+            "Killam Teaching Award, UBC"
           ]
         },
         {
-          name: "Elena Zhou",
-          role: "Quantitative Reasoning & Tech Lead",
+          name: "Elena Z.",
+          role: "Honors Biology, UWaterloo",
           avatar: "mentors/elena zhou.jpg",
-          bio: "A mathematics prodigy and competitive programming champion, Elena demystifies complex quantitative subjects for her students. Whether it's AMC/AIME preparation, AP Calculus BC, or AP Computer Science, her structured, logic-first approach turns challenging concepts into intuitive problem-solving frameworks.",
+          bio: "Elena is an Honors Biology powerhouse who has successfully cracked the code to top-percentile academic performance with a 4.0 GPA. As a Research Assistant at Sunnybrook Hospital, she loves breaking down complex sciences into highly digestible, university-level concepts.",
           accolades: [
-            "Former USA Math Olympiad Qualifier",
-            "Software Engineer at FAANG",
-            "100% 5-Rate on AP Calc BC for her students",
-            "Competitive Programming Coach"
+            "Bruce Weyler Kelley Memorial Prize",
+            "President's Scholarship of Distinction (>95%)"
+          ]
+        },
+        {
+          name: "Dr. Sherri Sadr",
+          role: "Dental Graduate, UBC",
+          avatar: "mentors/sadr.jpeg",
+          bio: "Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.",
+          accolades: [
+            "Biological Safety Certificate",
+            "Laser & Chemical Safety",
+            "Animal Care Training"
           ]
         }
     ];
 
-    function openMentorModal(index) {
+    let mentorModalTrigger = null;
+    let mentorModalCloseTimer = null;
+
+    function handleMentorCardKeydown(event, index, trigger) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openMentorModal(index, trigger);
+      }
+    }
+
+    function openMentorModal(index, trigger = document.activeElement) {
       const mentor = MENTORS_DATA[index];
       if(!mentor) return;
+
+      mentorModalTrigger = trigger;
+      if (mentorModalCloseTimer) {
+        clearTimeout(mentorModalCloseTimer);
+        mentorModalCloseTimer = null;
+      }
       
       document.getElementById('mentor-modal-avatar').src = mentor.avatar;
+      document.getElementById('mentor-modal-avatar').alt = `Portrait of ${mentor.name}`;
       document.getElementById('mentor-modal-name').innerText = mentor.name;
       document.getElementById('mentor-modal-role').innerText = mentor.role;
       document.getElementById('mentor-modal-bio').innerText = mentor.bio;
@@ -101,10 +114,15 @@
       const content = document.getElementById('mentor-modal-content');
       
       modal.classList.remove('hidden');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
       // Trigger reflow
       void modal.offsetWidth;
       modal.classList.remove('opacity-0');
       content.classList.remove('scale-95');
+      requestAnimationFrame(() => {
+        document.getElementById('mentor-modal-close')?.focus();
+      });
     }
 
     function closeMentorModal() {
@@ -113,11 +131,23 @@
       
       modal.classList.add('opacity-0');
       content.classList.add('scale-95');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      mentorModalTrigger?.focus();
       
-      setTimeout(() => {
+      mentorModalCloseTimer = setTimeout(() => {
         modal.classList.add('hidden');
+        mentorModalCloseTimer = null;
       }, 300);
     }
+
+    document.addEventListener('keydown', (event) => {
+      const modal = document.getElementById('mentor-modal');
+      if (event.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        event.preventDefault();
+        closeMentorModal();
+      }
+    });
   </script>
   
   <!-- Premium Fonts: Poppins for Headings, Inter for Body -->
@@ -1525,7 +1555,7 @@
 
              <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
   
-                  <div class="relative group flex flex-col h-full w-full cursor-pointer" onclick="openMentorModal(1)">
+                  <div class="relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="0" role="button" tabindex="0" aria-label="View profile for Dr. Hossein Piri" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(0, this)" onkeydown="handleMentorCardKeydown(event, 0, this)">
                      <!-- Blooming shadow effect -->
                      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-indigo-500/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none z-0"></div>
                      
@@ -1566,7 +1596,7 @@
                      </div>
                   </div>
     
-                  <div class="relative group flex flex-col h-full w-full cursor-pointer" onclick="openMentorModal(2)">
+                  <div class="relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="1" role="button" tabindex="0" aria-label="View profile for Elena Z." aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(1, this)" onkeydown="handleMentorCardKeydown(event, 1, this)">
                      <!-- Blooming shadow effect -->
                      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-indigo-500/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none z-0"></div>
                      
@@ -1604,7 +1634,7 @@
                      </div>
                   </div>
     
-                  <div class="relative group flex flex-col h-full w-full cursor-pointer" onclick="openMentorModal(0)">
+                  <div class="relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="2" role="button" tabindex="0" aria-label="View profile for Dr. Sherri Sadr" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(2, this)" onkeydown="handleMentorCardKeydown(event, 2, this)">
                      <!-- Blooming shadow effect -->
                      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-indigo-500/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none z-0"></div>
                      
@@ -2513,12 +2543,12 @@
   </footer>
 
   <!-- Modal for Deep Dive Mentor Profile -->
-  <div id="mentor-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-6 opacity-0 transition-opacity duration-300">
+  <div id="mentor-modal" role="dialog" aria-modal="true" aria-labelledby="mentor-modal-name" aria-describedby="mentor-modal-bio" aria-hidden="true" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-6 opacity-0 transition-opacity duration-300">
      <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" onclick="closeMentorModal()"></div>
      
      <div class="relative z-10 w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-slate-950 border border-white/10 rounded-3xl shadow-2xl overflow-hidden scale-95 transition-transform duration-300" id="mentor-modal-content">
         <div class="absolute top-4 right-4 z-20">
-           <button onclick="closeMentorModal()" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-red-500 hover:text-white transition-colors">
+           <button id="mentor-modal-close" aria-label="Close mentor profile" onclick="closeMentorModal()" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-red-500 hover:text-white transition-colors">
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
            </button>
         </div>

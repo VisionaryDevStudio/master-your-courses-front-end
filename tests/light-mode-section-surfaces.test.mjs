@@ -1,8 +1,50 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { runInNewContext } from "node:vm";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+
+const expectedMentors = [
+  {
+    name: "Dr. Hossein Piri",
+    role: "Healthcare Operations & AI Expert",
+    avatar: "mentors/Dr.piri.jpg",
+    bio: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations. He focuses on practical systems that improve care delivery, including patient-centered warning systems and AI-driven approaches for addressing healthcare disparities.",
+    accolades: [
+      "40 Under 40 (2026)",
+      "Dean's Research Scholar, UCalgary",
+      "Killam Teaching Award, UBC",
+    ],
+  },
+  {
+    name: "Elena Z.",
+    role: "Honors Biology, UWaterloo",
+    avatar: "mentors/elena zhou.jpg",
+    bio: "Elena is an Honors Biology powerhouse who has successfully cracked the code to top-percentile academic performance with a 4.0 GPA. As a Research Assistant at Sunnybrook Hospital, she loves breaking down complex sciences into highly digestible, university-level concepts.",
+    accolades: [
+      "Bruce Weyler Kelley Memorial Prize",
+      "President's Scholarship of Distinction (>95%)",
+    ],
+  },
+  {
+    name: "Dr. Sherri Sadr",
+    role: "Dental Graduate, UBC",
+    avatar: "mentors/sadr.jpeg",
+    bio: "Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.",
+    accolades: [
+      "Biological Safety Certificate",
+      "Laser & Chemical Safety",
+      "Animal Care Training",
+    ],
+  },
+];
+
+function extractMentorData() {
+  const source = html.match(/const MENTORS_DATA = (\[[\s\S]*?\n\s*\]);/)?.[1];
+  assert.ok(source, "MENTORS_DATA declaration is missing");
+  return JSON.parse(JSON.stringify(runInNewContext(`(${source})`)));
+}
 
 test("defines the premium light-mode surface tokens", () => {
   for (const token of [
@@ -73,17 +115,52 @@ test("keeps the cinematic and closing sections dark", () => {
   }
 });
 
-test("retains dark-mode backgrounds and existing mentor modal wiring", () => {
+test("retains dark-mode backgrounds and accessible canonical mentor profiles", () => {
   for (const className of ["surface-results", "surface-methodology"]) {
     const section = html.match(new RegExp(`<section[^>]*${className}[^>]*>`))?.[0] ?? "";
     assert.match(section, /dark:bg-zinc-950/);
   }
 
-  assert.ok(html.includes('id="mentor-modal-name"'), "mentor modal name target is missing");
-  for (const index of [0, 1, 2]) {
+  assert.deepEqual(extractMentorData(), expectedMentors);
+
+  const mentorsSectionStart = html.indexOf("Meet The Mentors");
+  const mentorsSectionEnd = html.indexOf("Results & Quotes Ticker", mentorsSectionStart);
+  const mentorsSection = html.slice(mentorsSectionStart, mentorsSectionEnd);
+  for (const [index, mentor] of expectedMentors.entries()) {
+    const cardStart = mentorsSection.indexOf(`data-mentor-index="${index}"`);
+    const nextCardStart = mentorsSection.indexOf(`data-mentor-index="${index + 1}"`);
+    assert.notEqual(cardStart, -1, `mentor card ${index} is missing its scoped mapping`);
+    const card = mentorsSection.slice(cardStart, nextCardStart === -1 ? undefined : nextCardStart);
+
+    assert.ok(card.includes('role="button"'), `${mentor.name} card is missing button semantics`);
+    assert.ok(card.includes('tabindex="0"'), `${mentor.name} card is not keyboard focusable`);
     assert.ok(
-      html.includes(`onclick="openMentorModal(${index})"`),
-      `mentor card ${index} is not wired to its modal data`,
+      card.includes(`onclick="openMentorModal(${index}, this)"`),
+      `${mentor.name} card is wired to the wrong modal record`,
     );
+    assert.ok(
+      card.includes(`onkeydown="handleMentorCardKeydown(event, ${index}, this)"`),
+      `${mentor.name} card is missing Enter/Space activation`,
+    );
+    for (const value of [mentor.name, mentor.role, mentor.bio, ...mentor.accolades]) {
+      assert.ok(card.includes(value), `${mentor.name} card is missing canonical content: ${value}`);
+    }
   }
+
+  const modal = html.slice(html.indexOf('id="mentor-modal"'), html.indexOf("Floating Contact CTA"));
+  for (const attribute of [
+    'role="dialog"',
+    'aria-modal="true"',
+    'aria-labelledby="mentor-modal-name"',
+    'aria-describedby="mentor-modal-bio"',
+    'aria-hidden="true"',
+    'id="mentor-modal-close"',
+    'aria-label="Close mentor profile"',
+  ]) {
+    assert.ok(modal.includes(attribute), `mentor dialog is missing ${attribute}`);
+  }
+
+  assert.match(html, /mentorModalTrigger\?\.focus\(\)/);
+  assert.match(html, /mentor-modal-close['"]\)\?\.focus\(\)/);
+  assert.match(html, /event\.key === ['"]Enter['"] \|\| event\.key === ['"] ['"]/);
 });
