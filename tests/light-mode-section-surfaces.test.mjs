@@ -278,6 +278,8 @@ test("uses the approved calm hero motion classes", () => {
   assert.equal((hero.match(/hero-copy-enter/g) ?? []).length, 2);
   assert.equal((hero.match(/hero-badge-drift-a/g) ?? []).length, 1);
   assert.equal((hero.match(/hero-badge-drift-b/g) ?? []).length, 1);
+  assert.match(hero, /hero-badge-drift-a rotate-6/);
+  assert.match(hero, /hero-badge-drift-b -rotate-6/);
   assert.doesNotMatch(hero, /animate-float-(?:slow|fast)/);
   assert.doesNotMatch(hero, /hover:scale-105/);
   assert.match(hero, /hover:scale-\[1\.02\]/);
@@ -287,5 +289,9 @@ test("uses the approved calm hero motion classes", () => {
   assert.match(styles, /transform:\s*translateY\(-5px\)/);
   assert.match(styles, /animation:\s*hero-badge-drift 12s/);
   assert.match(styles, /animation:\s*hero-badge-drift 14s/);
+  assert.match(styles, /\.hero-badge-drift-a\s*\{\s*--hero-badge-rotation:\s*6deg;/);
+  assert.match(styles, /\.hero-badge-drift-b\s*\{\s*--hero-badge-rotation:\s*-6deg;/);
+  assert.match(styles, /transform:\s*translateY\(-5px\) rotate\(var\(--hero-badge-rotation\)\)/);
   assert.match(styles, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*?\.hero-copy-enter/);
+  assert.match(styles, /\.hero-badge-drift-a,\s*\.hero-badge-drift-b\s*\{\s*animation:\s*none;\s*transform:\s*none;/s);
 });
