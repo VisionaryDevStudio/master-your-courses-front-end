@@ -2762,48 +2762,74 @@
     });
 
     // Spotlight Effect (Hero Section)
+    // Spotlight Effect and bounded scroll growth (Hero Section)
     const heroSection = document.getElementById('hero-section');
     const heroSpotlight = document.getElementById('hero-spotlight');
+    const heroCopy = document.getElementById('hero-copy');
+    const heroCopyMobile = document.getElementById('hero-copy-mobile');
+    const heroCard = document.getElementById('hero-card-container');
+    const heroCardMobile = document.getElementById('hero-card-container-mobile');
+    const heroReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const HERO_MOTION_RANGE = 320;
+    let heroMotionFrame = null;
+    let spotlightFrame = null;
+    let lastHeroProgress = null;
+
+    function updateHeroMotion() {
+      heroMotionFrame = null;
+      if (heroReducedMotion.matches) {
+        lastHeroProgress = null;
+        [heroCopy, heroCopyMobile].forEach(element => {
+          if (element) element.style.opacity = '1';
+        });
+        [heroCard, heroCardMobile].forEach(element => {
+          if (element) element.style.transform = 'scale(1)';
+        });
+        return;
+      }
+
+      const progress = Math.min(Math.max(window.scrollY / HERO_MOTION_RANGE, 0), 1);
+      if (progress === lastHeroProgress) return;
+      lastHeroProgress = progress;
+      const copyOpacity = 1 - progress * 0.65;
+      const desktopMaxScale = 1.06;
+      const mobileMaxScale = 1.03;
+      const desktopScale = 1 + progress * (desktopMaxScale - 1);
+      const mobileScale = 1 + progress * (mobileMaxScale - 1);
+
+      if (heroCopy) heroCopy.style.opacity = String(copyOpacity);
+      if (heroCopyMobile) heroCopyMobile.style.opacity = String(copyOpacity);
+      if (heroCard) {
+        const scale = desktopScale;
+        heroCard.style.transform = `scale(${scale})`;
+      }
+      if (heroCardMobile) {
+        const scale = mobileScale;
+        heroCardMobile.style.transform = `scale(${scale})`;
+      }
+    }
+
+    function scheduleHeroMotion() {
+      if (heroMotionFrame !== null) return;
+      heroMotionFrame = requestAnimationFrame(updateHeroMotion);
+    }
 
     if (heroSection && heroSpotlight) {
-      heroSection.addEventListener('mousemove', (e) => {
-        const rect = heroSection.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        heroSpotlight.style.background = `radial-gradient(800px circle at ${x}px ${y}px, rgba(99, 102, 241, 0.08), transparent 80%)`;
+      heroSection.addEventListener('mousemove', event => {
+        if (heroReducedMotion.matches || window.innerWidth < 1024 || spotlightFrame !== null) return;
+        spotlightFrame = requestAnimationFrame(() => {
+          spotlightFrame = null;
+          const rect = heroSection.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+          heroSpotlight.style.background = `radial-gradient(800px circle at ${x}px ${y}px, rgba(99, 102, 241, 0.08), transparent 80%)`;
+        });
       });
     }
 
-    // Parallax Scroll Effects
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      
-      // Hero Copy Parallax
-      const opacity = Math.max(0, 1 - scrollY / 400);
-      const y = Math.min(100, (scrollY / 400) * 100);
-      const heroCopy = document.getElementById('hero-copy');
-      const heroCopyMobile = document.getElementById('hero-copy-mobile');
-      if (heroCopy) {
-        heroCopy.style.opacity = opacity;
-        heroCopy.style.transform = `translateY(${y}px)`;
-      }
-      if (heroCopyMobile) {
-        heroCopyMobile.style.opacity = opacity;
-        heroCopyMobile.style.transform = `translateY(${y}px)`;
-      }
-
-      // Card Parallax
-      const scale = Math.min(1.1, 1 + (scrollY / 300) * 0.1);
-      const cardYVal = Math.min(40, (scrollY / 300) * 40);
-      const heroCard = document.getElementById('hero-card-container');
-      const heroCardMobile = document.getElementById('hero-card-container-mobile');
-      if (heroCard) {
-        heroCard.style.transform = `scale(${scale}) translateY(${cardYVal}px)`;
-      }
-      if (heroCardMobile) {
-        heroCardMobile.style.transform = `scale(${scale}) translateY(${cardYVal}px)`;
-      }
-    });
+    window.addEventListener('scroll', scheduleHeroMotion, { passive: true });
+    heroReducedMotion.addEventListener('change', scheduleHeroMotion);
+    scheduleHeroMotion();
 
     // CountUp Animation
     function animateValue(obj, start, end, duration) {

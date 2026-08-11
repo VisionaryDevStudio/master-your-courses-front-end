@@ -295,3 +295,19 @@ test("uses the approved calm hero motion classes", () => {
   assert.match(styles, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*?\.hero-copy-enter/);
   assert.match(styles, /\.hero-badge-drift-a,\s*\.hero-badge-drift-b\s*\{\s*animation:\s*none;\s*transform:\s*none;/s);
 });
+
+test("schedules bounded and reduced-motion-aware hero scroll growth", () => {
+  const scriptStart = html.indexOf("// Spotlight Effect (Hero Section)");
+  const scriptEnd = html.indexOf("// CountUp Animation", scriptStart);
+  const heroMotion = html.slice(scriptStart, scriptEnd);
+
+  assert.match(heroMotion, /const HERO_MOTION_RANGE = 320/);
+  assert.match(heroMotion, /const desktopMaxScale = 1\.06/);
+  assert.match(heroMotion, /const mobileMaxScale = 1\.03/);
+  assert.match(heroMotion, /const copyOpacity = 1 - progress \* 0\.65/);
+  assert.match(heroMotion, /requestAnimationFrame\(updateHeroMotion\)/);
+  assert.match(heroMotion, /prefers-reduced-motion:\s*reduce/);
+  assert.match(heroMotion, /scale\(\$\{scale\}\)/);
+  assert.doesNotMatch(heroMotion, /translateY\(/);
+  assert.doesNotMatch(heroMotion, /addEventListener\('scroll',\s*\(\)\s*=>/);
+});
