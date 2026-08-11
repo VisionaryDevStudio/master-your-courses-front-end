@@ -246,3 +246,14 @@ test("retains dark-mode backgrounds and accessible canonical mentor profiles", (
   assert.match(html, /mentor-modal-close['"]\)\?\.focus\(\)/);
   assert.match(html, /event\.key === ['"]Enter['"] \|\| event\.key === ['"] ['"]/);
 });
+
+test("keeps the Olympiad preview free of graph-paper squares", () => {
+  const programsStart = html.indexOf("Elite Programs");
+  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programs = html.slice(programsStart, mentorsStart);
+
+  assert.equal((programs.match(/USAPhO Simulator/g) ?? []).length, 2);
+  assert.doesNotMatch(programs, /background-size:\s*12px 12px/);
+  assert.doesNotMatch(programs, /linear-gradient\(white 1px, transparent 1px\)/);
+  assert.equal((programs.match(/bg-gradient-to-br from-slate-700 via-slate-700 to-slate-800/g) ?? []).length, 2);
+});
