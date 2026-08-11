@@ -176,6 +176,13 @@ test("maps sections to the Balanced Premium rhythm", () => {
   assert.doesNotMatch(html, /class="lg:hidden pb-24"/);
 });
 
+test("keeps the page from becoming a non-scrolling overflow ancestor of the sticky program stage", () => {
+  const body = html.match(/<body[^>]*>/)?.[0] ?? "";
+
+  assert.match(body, /overflow-x-clip/);
+  assert.doesNotMatch(body, /overflow-x-hidden/);
+});
+
 test("uses a compact accessible Elite Programs mobile selector", () => {
   const programsStart = html.indexOf("Elite Programs");
   const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
