@@ -133,12 +133,11 @@ test("keeps the cinematic and closing sections dark", () => {
   }
 });
 
-test("reserves the square grid texture for a restrained methodology accent", () => {
+test("keeps square grid textures out of methodology and the closing CTA", () => {
   const methodologyStart = html.indexOf("Methodology");
   const programsStart = html.indexOf("Elite Programs", methodologyStart);
   const methodology = html.slice(methodologyStart, programsStart);
-  assert.match(methodology, /opacity-\[0\.02\]/);
-  assert.match(methodology, /background-size:\s*48px 48px/);
+  assert.doesNotMatch(methodology, /background-image:\s*linear-gradient/);
 
   const finalCtaStart = html.indexOf("Final CTA");
   const footerStart = html.indexOf("Footer", finalCtaStart);
