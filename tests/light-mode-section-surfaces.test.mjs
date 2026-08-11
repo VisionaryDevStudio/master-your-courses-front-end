@@ -58,6 +58,24 @@ test("defines the premium light-mode surface tokens", () => {
   }
 });
 
+test("light section canvases have a visible luminance step down from white", () => {
+  const maximumLightness = {
+    "--surface-mist": 94,
+    "--surface-indigo": 94,
+    "--surface-warm": 94,
+    "--surface-track": 92,
+  };
+
+  for (const [token, maximum] of Object.entries(maximumLightness)) {
+    const match = html.match(new RegExp(`${token}:\\s*[\\d.]+\\s+[\\d.]+%\\s+([\\d.]+)%`));
+    assert.ok(match, `missing parseable ${token} HSL value`);
+    assert.ok(
+      Number(match[1]) <= maximum,
+      `${token} is too close to white to separate adjacent sections`,
+    );
+  }
+});
+
 test("scopes custom section surfaces to light mode", () => {
   for (const surface of [
     "surface-hero",
