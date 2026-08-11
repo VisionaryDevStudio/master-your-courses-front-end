@@ -145,6 +145,20 @@ test("keeps square grid textures out of methodology and the closing CTA", () => 
   assert.doesNotMatch(finalCta, /background-image:\s*linear-gradient/);
 });
 
+test("uses a compact accessible Elite Programs mobile selector", () => {
+  const programsStart = html.indexOf("Elite Programs");
+  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programs = html.slice(programsStart, mentorsStart);
+
+  assert.match(programs, /role="tablist"[^>]*aria-label="Choose a program"/);
+  assert.equal((programs.match(/class="program-mobile-tab\b/g) ?? []).length, 6);
+  assert.equal((programs.match(/role="tab"/g) ?? []).length, 6);
+  assert.equal((programs.match(/aria-controls="program-mobile-panel"/g) ?? []).length, 6);
+  assert.match(programs, /id="program-mobile-panel"[^>]*role="tabpanel"/);
+  assert.doesNotMatch(programs, /Abstract geometric grid background/);
+  assert.doesNotMatch(programs, /bg-\[size:24px_24px\]/);
+});
+
 test("retains dark-mode backgrounds and accessible canonical mentor profiles", () => {
   for (const className of ["surface-results", "surface-methodology"]) {
     const section = html.match(new RegExp(`<section[^>]*${className}[^>]*>`))?.[0] ?? "";
