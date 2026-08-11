@@ -39,3 +39,43 @@ test("provides a full-bleed canvas for constrained sections", () => {
   assert.match(html, /inset:\s*0 calc\(50% - 50vw\)/);
   assert.match(html, /pointer-events:\s*none/);
 });
+
+const sectionMappings = [
+  ["Cinematic Hero Section", "surface-hero"],
+  ["By The Numbers (Success Rate)", "surface-results"],
+  ["University Ribbon", "surface-universities"],
+  ["Methodology", "surface-methodology"],
+  ["Elite Programs", "surface-programs surface-full-bleed"],
+  ["Meet The Mentors", "surface-mentors"],
+  ["Verified Impact & Video Testimonials", "surface-track-record surface-full-bleed"],
+];
+
+test("maps every light section to the approved editorial sequence", () => {
+  for (const [comment, classes] of sectionMappings) {
+    const start = html.indexOf(comment);
+    assert.notEqual(start, -1, `missing section comment: ${comment}`);
+    const openingSection = html.slice(start, start + 320);
+    for (const className of classes.split(" ")) {
+      assert.ok(
+        openingSection.includes(className),
+        `${comment} is missing ${className}`,
+      );
+    }
+  }
+});
+
+test("keeps the cinematic and closing sections dark", () => {
+  for (const comment of ["Results & Quotes Ticker", "Final CTA"]) {
+    const start = html.indexOf(comment);
+    assert.notEqual(start, -1, `missing dark anchor: ${comment}`);
+    const openingSection = html.slice(start, start + 320);
+    assert.match(openingSection, /bg-(?:slate|zinc)-950/);
+  }
+});
+
+test("retains dark-mode backgrounds on sections that previously had them", () => {
+  for (const className of ["surface-results", "surface-methodology"]) {
+    const section = html.match(new RegExp(`<section[^>]*${className}[^>]*>`))?.[0] ?? "";
+    assert.match(section, /dark:bg-zinc-950/);
+  }
+});
