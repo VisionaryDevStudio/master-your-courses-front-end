@@ -145,6 +145,21 @@ test("keeps square grid textures out of methodology and the closing CTA", () => 
   assert.doesNotMatch(finalCta, /background-image:\s*linear-gradient/);
 });
 
+test("defines the Balanced Premium responsive spacing utilities", () => {
+  const style = html.slice(html.indexOf("<!-- Custom CSS classes -->"), html.indexOf("</style>", html.indexOf("<!-- Custom CSS classes -->")));
+
+  for (const rule of [
+    /\.section-space-major\s*\{[^}]*padding-block:\s*4rem;/s,
+    /\.section-space-dense\s*\{[^}]*padding-block:\s*3\.5rem;/s,
+    /\.section-space-band\s*\{[^}]*padding-block:\s*2\.5rem;/s,
+    /\.section-intro-gap\s*\{[^}]*margin-bottom:\s*2rem;/s,
+    /@media\s*\(min-width:\s*768px\)[\s\S]*?\.section-space-major\s*\{[^}]*padding-block:\s*5\.5rem;/,
+    /@media\s*\(min-width:\s*1024px\)[\s\S]*?\.section-space-major\s*\{[^}]*padding-block:\s*8rem;/,
+  ]) {
+    assert.match(style, rule);
+  }
+});
+
 test("uses a compact accessible Elite Programs mobile selector", () => {
   const programsStart = html.indexOf("Elite Programs");
   const mentorsStart = html.indexOf("Meet The Mentors", programsStart);

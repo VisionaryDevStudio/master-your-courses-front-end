@@ -225,6 +225,25 @@
       color: hsl(var(--foreground));
     }
 
+    .section-space-major { padding-block: 4rem; }
+    .section-space-dense { padding-block: 3.5rem; }
+    .section-space-band { padding-block: 2.5rem; }
+    .section-intro-gap { margin-bottom: 2rem; }
+
+    @media (min-width: 768px) {
+      .section-space-major { padding-block: 5.5rem; }
+      .section-space-dense { padding-block: 4.5rem; }
+      .section-space-band { padding-block: 3rem; }
+      .section-intro-gap { margin-bottom: 2.5rem; }
+    }
+
+    @media (min-width: 1024px) {
+      .section-space-major { padding-block: 8rem; }
+      .section-space-dense { padding-block: 6rem; }
+      .section-space-band { padding-block: 3.5rem; }
+      .section-intro-gap { margin-bottom: 3rem; }
+    }
+
     html:not(.dark) .surface-hero {
       background:
         radial-gradient(circle at 84% 28%, rgb(99 102 241 / 0.11), transparent 32rem),
