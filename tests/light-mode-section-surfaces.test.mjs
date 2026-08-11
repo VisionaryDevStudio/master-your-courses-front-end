@@ -269,3 +269,23 @@ test("keeps the Olympiad preview free of graph-paper squares", () => {
   assert.doesNotMatch(programs, /linear-gradient\(white 1px, transparent 1px\)/);
   assert.equal((programs.match(/bg-gradient-to-br from-slate-700 via-slate-700 to-slate-800/g) ?? []).length, 2);
 });
+
+test("uses the approved calm hero motion classes", () => {
+  const heroStart = html.indexOf("Cinematic Hero Section");
+  const resultsStart = html.indexOf("By The Numbers", heroStart);
+  const hero = html.slice(heroStart, resultsStart);
+
+  assert.equal((hero.match(/hero-copy-enter/g) ?? []).length, 2);
+  assert.equal((hero.match(/hero-badge-drift-a/g) ?? []).length, 1);
+  assert.equal((hero.match(/hero-badge-drift-b/g) ?? []).length, 1);
+  assert.doesNotMatch(hero, /animate-float-(?:slow|fast)/);
+  assert.doesNotMatch(hero, /hover:scale-105/);
+  assert.match(hero, /hover:scale-\[1\.02\]/);
+
+  const styles = html.slice(html.indexOf("<!-- Custom CSS classes -->"), html.indexOf("</head>"));
+  assert.match(styles, /@keyframes hero-badge-drift/);
+  assert.match(styles, /transform:\s*translateY\(-5px\)/);
+  assert.match(styles, /animation:\s*hero-badge-drift 12s/);
+  assert.match(styles, /animation:\s*hero-badge-drift 14s/);
+  assert.match(styles, /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*?\.hero-copy-enter/);
+});
