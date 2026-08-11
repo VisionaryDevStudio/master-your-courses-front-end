@@ -2770,14 +2770,18 @@
     const heroCard = document.getElementById('hero-card-container');
     const heroCardMobile = document.getElementById('hero-card-container-mobile');
     const heroReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const heroFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
     const HERO_MOTION_RANGE = 320;
     let heroMotionFrame = null;
     let spotlightFrame = null;
     let lastHeroProgress = null;
+    let reducedHeroStateApplied = false;
 
     function updateHeroMotion() {
       heroMotionFrame = null;
       if (heroReducedMotion.matches) {
+        if (reducedHeroStateApplied) return;
+        reducedHeroStateApplied = true;
         lastHeroProgress = null;
         [heroCopy, heroCopyMobile].forEach(element => {
           if (element) element.style.opacity = '1';
@@ -2788,6 +2792,7 @@
         return;
       }
 
+      reducedHeroStateApplied = false;
       const progress = Math.min(Math.max(window.scrollY / HERO_MOTION_RANGE, 0), 1);
       if (progress === lastHeroProgress) return;
       lastHeroProgress = progress;
@@ -2814,11 +2819,16 @@
       heroMotionFrame = requestAnimationFrame(updateHeroMotion);
     }
 
+    function canUpdateHeroSpotlight() {
+      return !heroReducedMotion.matches && heroFinePointer.matches && window.innerWidth >= 1024;
+    }
+
     if (heroSection && heroSpotlight) {
       heroSection.addEventListener('mousemove', event => {
-        if (heroReducedMotion.matches || window.innerWidth < 1024 || spotlightFrame !== null) return;
+        if (!canUpdateHeroSpotlight() || spotlightFrame !== null) return;
         spotlightFrame = requestAnimationFrame(() => {
           spotlightFrame = null;
+          if (!canUpdateHeroSpotlight()) return;
           const rect = heroSection.getBoundingClientRect();
           const x = event.clientX - rect.left;
           const y = event.clientY - rect.top;

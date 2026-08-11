@@ -5,6 +5,130 @@ import { runInNewContext } from "node:vm";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 
+const heroMotionStart = html.indexOf("// Spotlight Effect (Hero Section)");
+const heroMotionEnd = html.indexOf("// CountUp Animation", heroMotionStart);
+const heroMotionSource = html.slice(heroMotionStart, heroMotionEnd);
+
+function createHeroMotionHarness({
+  reducedMotion = false,
+  finePointer = true,
+  innerWidth = 1440,
+  scrollY = 0,
+} = {}) {
+  const mutations = [];
+  const animationFrames = new Map();
+  const windowListeners = new Map();
+  const mediaQueries = new Map();
+  let nextAnimationFrame = 1;
+
+  function createStyle(elementName) {
+    return new Proxy({}, {
+      set(target, property, value) {
+        mutations.push({ element: elementName, property: String(property), value });
+        target[property] = value;
+        return true;
+      },
+    });
+  }
+
+  function createEventTarget(extra = {}) {
+    const listeners = new Map();
+    return {
+      ...extra,
+      addEventListener(type, listener) {
+        const current = listeners.get(type) ?? [];
+        current.push(listener);
+        listeners.set(type, current);
+      },
+      dispatch(type, event = {}) {
+        for (const listener of listeners.get(type) ?? []) listener(event);
+      },
+    };
+  }
+
+  const elements = {
+    "hero-section": createEventTarget({
+      getBoundingClientRect: () => ({ left: 10, top: 20 }),
+    }),
+    "hero-spotlight": { style: createStyle("hero-spotlight") },
+    "hero-copy": { style: createStyle("hero-copy") },
+    "hero-copy-mobile": { style: createStyle("hero-copy-mobile") },
+    "hero-card-container": { style: createStyle("hero-card-container") },
+    "hero-card-container-mobile": { style: createStyle("hero-card-container-mobile") },
+  };
+
+  function getMediaQuery(query) {
+    if (!mediaQueries.has(query)) {
+      const initialMatches = query === "(prefers-reduced-motion: reduce)"
+        ? reducedMotion
+        : query === "(hover: hover) and (pointer: fine)"
+          ? finePointer
+          : false;
+      const listeners = [];
+      mediaQueries.set(query, {
+        matches: initialMatches,
+        addEventListener(type, listener) {
+          if (type === "change") listeners.push(listener);
+        },
+        setMatches(matches) {
+          this.matches = matches;
+          for (const listener of listeners) listener({ matches });
+        },
+      });
+    }
+    return mediaQueries.get(query);
+  }
+
+  const window = {
+    innerWidth,
+    scrollY,
+    matchMedia: getMediaQuery,
+    addEventListener(type, listener) {
+      const current = windowListeners.get(type) ?? [];
+      current.push(listener);
+      windowListeners.set(type, current);
+    },
+  };
+
+  function requestAnimationFrame(callback) {
+    const frame = nextAnimationFrame++;
+    animationFrames.set(frame, callback);
+    return frame;
+  }
+
+  window.requestAnimationFrame = requestAnimationFrame;
+  runInNewContext(heroMotionSource, {
+    document: { getElementById: id => elements[id] ?? null },
+    requestAnimationFrame,
+    window,
+  });
+
+  return {
+    elements,
+    flushAnimationFrames() {
+      const callbacks = [...animationFrames.values()];
+      animationFrames.clear();
+      for (const callback of callbacks) callback();
+    },
+    dispatchScroll(nextScrollY) {
+      window.scrollY = nextScrollY;
+      for (const listener of windowListeners.get("scroll") ?? []) listener();
+    },
+    dispatchHeroMousemove(event) {
+      elements["hero-section"].dispatch("mousemove", event);
+    },
+    setReducedMotion(matches) {
+      getMediaQuery("(prefers-reduced-motion: reduce)").setMatches(matches);
+    },
+    setFinePointer(matches) {
+      getMediaQuery("(hover: hover) and (pointer: fine)").setMatches(matches);
+    },
+    takeMutations() {
+      return mutations.splice(0);
+    },
+  };
+}
+
 const expectedMentors = [
   {
     name: "Dr. Hossein Piri",
@@ -305,9 +429,7 @@ test("releases hero entrance opacity to the scroll controller after entry", () =
 });
 
 test("schedules bounded and reduced-motion-aware hero scroll growth", () => {
-  const scriptStart = html.indexOf("// Spotlight Effect (Hero Section)");
-  const scriptEnd = html.indexOf("// CountUp Animation", scriptStart);
-  const heroMotion = html.slice(scriptStart, scriptEnd);
+  const heroMotion = heroMotionSource;
 
   assert.match(heroMotion, /const HERO_MOTION_RANGE = 320/);
   assert.match(heroMotion, /const desktopMaxScale = 1\.06/);
@@ -318,4 +440,63 @@ test("schedules bounded and reduced-motion-aware hero scroll growth", () => {
   assert.match(heroMotion, /scale\(\$\{scale\}\)/);
   assert.doesNotMatch(heroMotion, /translateY\(/);
   assert.doesNotMatch(heroMotion, /addEventListener\('scroll',\s*\(\)\s*=>/);
+});
+
+test("does not repeat reduced-motion style writes across scheduled scroll frames", () => {
+  const harness = createHeroMotionHarness({ reducedMotion: true });
+
+  harness.flushAnimationFrames();
+  assert.equal(harness.takeMutations().length, 4);
+
+  for (const scrollY of [160, 480, 960]) {
+    harness.dispatchScroll(scrollY);
+    harness.flushAnimationFrames();
+  }
+
+  assert.deepEqual(harness.takeMutations(), []);
+});
+
+test("reapplies the current hero state when reduced-motion preference changes", () => {
+  const harness = createHeroMotionHarness({ reducedMotion: true, scrollY: 160 });
+
+  harness.flushAnimationFrames();
+  harness.takeMutations();
+  harness.setReducedMotion(false);
+  harness.flushAnimationFrames();
+
+  assert.equal(harness.elements["hero-copy"].style.opacity, "0.675");
+  assert.equal(harness.elements["hero-card-container"].style.transform, "scale(1.03)");
+  assert.equal(harness.takeMutations().length, 4);
+
+  harness.setReducedMotion(true);
+  harness.flushAnimationFrames();
+
+  assert.equal(harness.elements["hero-copy"].style.opacity, "1");
+  assert.equal(harness.elements["hero-card-container"].style.transform, "scale(1)");
+  assert.equal(harness.takeMutations().length, 4);
+});
+
+test("does not update the hero spotlight for a wide coarse-pointer viewport", () => {
+  const harness = createHeroMotionHarness({ finePointer: false, innerWidth: 1440 });
+
+  harness.flushAnimationFrames();
+  harness.takeMutations();
+  harness.dispatchHeroMousemove({ clientX: 400, clientY: 300 });
+  harness.flushAnimationFrames();
+
+  assert.equal(harness.elements["hero-spotlight"].style.background, undefined);
+  assert.deepEqual(harness.takeMutations(), []);
+});
+
+test("drops a queued spotlight update when pointer eligibility changes", () => {
+  const harness = createHeroMotionHarness({ finePointer: true, innerWidth: 1440 });
+
+  harness.flushAnimationFrames();
+  harness.takeMutations();
+  harness.dispatchHeroMousemove({ clientX: 400, clientY: 300 });
+  harness.setFinePointer(false);
+  harness.flushAnimationFrames();
+
+  assert.equal(harness.elements["hero-spotlight"].style.background, undefined);
+  assert.deepEqual(harness.takeMutations(), []);
 });
