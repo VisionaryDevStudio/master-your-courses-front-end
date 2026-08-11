@@ -46,7 +46,8 @@ The tablet breakpoint begins at 768px, matching the existing `md` breakpoint. Th
    - Apply `section-space-major`.
    - Apply `section-intro-gap` between the introduction and program selector.
    - Remove the broad mobile `pb-24` from the selector wrapper.
-   - Reserve 80px of mobile-only clearance after the selector panel so its final action can scroll fully above the fixed advisor bar; do not add this clearance to the section itself.
+   - Do not add permanent selector clearance beneath the panel; the section's 64px mobile bottom padding owns this transition.
+   - Keep the program action usable with the fixed advisor bar through the compact panel geometry and normal scrolling behavior rather than stacked spacing.
 
 6. **Mentors — major**
    - Apply `section-space-major`.

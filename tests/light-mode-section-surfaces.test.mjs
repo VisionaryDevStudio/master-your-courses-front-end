@@ -172,7 +172,8 @@ test("maps sections to the Balanced Premium rhythm", () => {
 
   const body = html.slice(html.indexOf("</style>"));
   assert.equal((body.match(/section-intro-gap/g) ?? []).length, 4);
-  assert.match(html, /class="lg:hidden program-selector-clearance"/);
+  assert.match(html, /class="lg:hidden"/);
+  assert.doesNotMatch(html, /program-selector-clearance/);
   assert.doesNotMatch(html, /class="lg:hidden pb-24"/);
 });
 
@@ -195,6 +196,17 @@ test("uses a compact accessible Elite Programs mobile selector", () => {
   assert.match(programs, /id="program-mobile-panel"[^>]*role="tabpanel"/);
   assert.doesNotMatch(programs, /Abstract geometric grid background/);
   assert.doesNotMatch(programs, /bg-\[size:24px_24px\]/);
+});
+
+test("keeps the floating advisor from blocking content outside its visible controls", () => {
+  const floatingStart = html.indexOf('id="floating-cta-container"');
+  const floatingEnd = html.indexOf("// Scroll reveal observer", floatingStart);
+  const floating = html.slice(floatingStart, floatingEnd);
+
+  assert.match(floating, /id="floating-cta-container"[^>]*pointer-events-none/);
+  assert.match(floating, /id="floating-cta-menu"[^>]*pointer-events-auto/);
+  assert.match(floating, /aria-label="Speak with an Academic Advisor"[^>]*pointer-events-auto/);
+  assert.doesNotMatch(floating, /classList\.remove\([^)]*['"]pointer-events-none['"]/);
 });
 
 test("retains dark-mode backgrounds and accessible canonical mentor profiles", () => {

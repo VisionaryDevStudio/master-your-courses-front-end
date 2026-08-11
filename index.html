@@ -230,12 +230,6 @@
     .section-space-band { padding-block: 2.5rem; }
     .section-intro-gap { margin-bottom: 2rem; }
 
-    .program-selector-clearance { padding-bottom: 5rem; }
-
-    @media (min-width: 1024px) {
-      .program-selector-clearance { padding-bottom: 0; }
-    }
-
     @media (min-width: 768px) {
       .section-space-major { padding-block: 5.5rem; }
       .section-space-dense { padding-block: 4.5rem; }
@@ -801,7 +795,7 @@
 
       <!-- Container for both mobile and desktop views -->
       <div id="programs-container">
-        <div class="lg:hidden program-selector-clearance">
+        <div class="lg:hidden">
           <div class="program-tab-rail -mx-6 px-6 pb-3 flex gap-2 overflow-x-auto snap-x snap-mandatory" role="tablist" aria-label="Choose a program">
             <button id="program-mobile-tab-0" class="program-mobile-tab snap-start shrink-0 rounded-full border px-4 py-3 text-sm font-bold transition-all" type="button" role="tab" aria-selected="true" aria-controls="program-mobile-panel" tabindex="0" onclick="setActiveProgram(0, this)" onkeydown="handleProgramTabKeydown(event, 0)">AP STEM</button>
             <button id="program-mobile-tab-1" class="program-mobile-tab snap-start shrink-0 rounded-full border px-4 py-3 text-sm font-bold transition-all" type="button" role="tab" aria-selected="false" aria-controls="program-mobile-panel" tabindex="-1" onclick="setActiveProgram(1, this)" onkeydown="handleProgramTabKeydown(event, 1)">SAT Math</button>
@@ -2664,7 +2658,7 @@
     <div id="floating-cta-backdrop" class="fixed inset-0 bg-background/50 backdrop-blur-sm z-[-1] md:hidden opacity-0 invisible transition-all duration-300" onclick="toggleFloatingCTA()"></div>
 
     <!-- Popup Menu -->
-    <div id="floating-cta-menu" class="w-full md:w-80 bg-background/95 backdrop-blur-xl border border-border rounded-[2rem] shadow-2xl p-4 mb-4 origin-bottom flex flex-col gap-2 opacity-0 invisible scale-95 translate-y-4 transition-all duration-300">
+    <div id="floating-cta-menu" class="pointer-events-auto w-full md:w-80 bg-background/95 backdrop-blur-xl border border-border rounded-[2rem] shadow-2xl p-4 mb-4 origin-bottom flex flex-col gap-2 opacity-0 invisible scale-95 translate-y-4 transition-all duration-300">
       <div class="flex items-center justify-between px-2 mb-2">
         <h3 class="font-bold text-foreground">Speak with an Advisor</h3>
         <button onclick="toggleFloatingCTA()" class="p-1 rounded-full hover:bg-muted text-muted-foreground transition-colors" aria-label="Close menu">
@@ -2704,7 +2698,7 @@
     </div>
 
     <!-- Main Toggle Button -->
-    <button onclick="toggleFloatingCTA()" aria-expanded="false" aria-label="Speak with an Academic Advisor" class="w-full md:w-auto relative group overflow-hidden rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_40px_rgba(99,102,241,0.25)] transition-all duration-300">
+    <button onclick="toggleFloatingCTA()" aria-expanded="false" aria-label="Speak with an Academic Advisor" class="pointer-events-auto w-full md:w-auto relative group overflow-hidden rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_40px_rgba(99,102,241,0.25)] transition-all duration-300">
       <!-- Animated gradient background -->
       <div class="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-[length:200%_auto] animate-gradient"></div>
       
@@ -2832,7 +2826,7 @@
     function showFloatingCTA() {
       if (isCtaVisible || !floatingCtaContainer) return;
       isCtaVisible = true;
-      floatingCtaContainer.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-8');
+      floatingCtaContainer.classList.remove('opacity-0', 'translate-y-8');
     }
 
     setTimeout(showFloatingCTA, 7000);
