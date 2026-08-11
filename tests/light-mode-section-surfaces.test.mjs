@@ -296,6 +296,14 @@ test("uses the approved calm hero motion classes", () => {
   assert.match(styles, /\.hero-badge-drift-a,\s*\.hero-badge-drift-b\s*\{\s*animation:\s*none;\s*transform:\s*none;/s);
 });
 
+test("releases hero entrance opacity to the scroll controller after entry", () => {
+  const styles = html.slice(html.indexOf("<!-- Custom CSS classes -->"), html.indexOf("</head>"));
+  const heroCopyRule = styles.match(/\.hero-copy-enter\s*\{[^}]+\}/)?.[0] ?? "";
+
+  assert.match(heroCopyRule, /animation:\s*hero-copy-enter[^;]*\bbackwards\s*;/);
+  assert.doesNotMatch(heroCopyRule, /\bboth\b/);
+});
+
 test("schedules bounded and reduced-motion-aware hero scroll growth", () => {
   const scriptStart = html.indexOf("// Spotlight Effect (Hero Section)");
   const scriptEnd = html.indexOf("// CountUp Animation", scriptStart);
