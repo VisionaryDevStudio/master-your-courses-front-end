@@ -73,9 +73,17 @@ test("keeps the cinematic and closing sections dark", () => {
   }
 });
 
-test("retains dark-mode backgrounds on sections that previously had them", () => {
+test("retains dark-mode backgrounds and existing mentor modal wiring", () => {
   for (const className of ["surface-results", "surface-methodology"]) {
     const section = html.match(new RegExp(`<section[^>]*${className}[^>]*>`))?.[0] ?? "";
     assert.match(section, /dark:bg-zinc-950/);
+  }
+
+  assert.ok(html.includes('id="mentor-modal-name"'), "mentor modal name target is missing");
+  for (const index of [0, 1, 2]) {
+    assert.ok(
+      html.includes(`onclick="openMentorModal(${index})"`),
+      `mentor card ${index} is not wired to its modal data`,
+    );
   }
 });
