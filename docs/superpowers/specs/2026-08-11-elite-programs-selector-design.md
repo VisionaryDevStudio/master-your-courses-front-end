@@ -49,6 +49,14 @@ Use a horizontally scrollable program selector above one shared mobile preview c
 - Retain the program-specific radial color atmosphere, mockup, proof pill, title, description, and CTA.
 - Preserve desktop auto-advance and direct hover/click selection.
 
+## Olympiad Preview Refinement
+
+- Remove the graph-paper square grid from the dark USAPhO problem panel in both the shared mobile preview and desktop stage.
+- Preserve the dark slate panel, rounded geometry, problem copy, mathematical accents, purple label, and surrounding mockup structure.
+- Replace the grid with a smooth, restrained tonal gradient that adds depth without introducing a visible repeating pattern.
+- Keep the panel border subtle so it defines the surface without competing with the problem text.
+- Do not alter any other program mockup or the broader Elite Programs section background.
+
 ## Data and Interaction Architecture
 
 - Continue using `PROGRAMS_DATA` and `PROGRAMS_MOCKUPS` as the single program-content source.
@@ -80,6 +88,7 @@ Use a horizontally scrollable program selector above one shared mobile preview c
 - Show the floating advisor control and confirm it does not block the selector or preview CTA.
 - Verify no page-level horizontal overflow.
 - At 1440x900, confirm list selection, auto-advance, and the preview stage still work with the grid removed.
+- Select Olympiad & Contests at mobile and desktop widths and confirm no square grid remains inside the USAPhO problem panel.
 - Test light and dark modes at desktop and mobile widths.
 - Confirm no page errors are produced during repeated selections.
 
