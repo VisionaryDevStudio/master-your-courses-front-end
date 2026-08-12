@@ -693,3 +693,108 @@ test("finishes the results count when reduced motion becomes active", () => {
   assert.equal(harness.observer.unobserved.length, 2);
   assert.equal(harness.observer.unobserved.at(-1).id, "results-section");
 });
+
+test("defines an accessible mobile-only compact advisor state for results", () => {
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.results-advisor-compact/);
+  assert.match(html, /id="floating-cta-toggle"[^>]*aria-label="Speak with an Academic Advisor"/);
+  assert.match(html, /id="floating-cta-toggle-content"/);
+  assert.match(html, /id="floating-cta-label"/);
+  assert.match(html, /resultsAdvisorMedia = window\.matchMedia\('\(max-width: 767px\)'\)/);
+  assert.match(html, /results-advisor-compact/);
+});
+
+const floatingCtaStart = html.indexOf("// Floating CTA Logic");
+const floatingCtaEnd = html.indexOf("  </script>", floatingCtaStart);
+const floatingCtaSource = html.slice(floatingCtaStart, floatingCtaEnd);
+
+function createResultsAdvisorHarness({ mobile = true } = {}) {
+  const observers = [];
+  const mediaListeners = [];
+  const toggleAttributes = new Map([["aria-expanded", "false"]]);
+  const classList = () => {
+    const classes = new Set();
+    return {
+      add: (...tokens) => tokens.forEach(token => classes.add(token)),
+      remove: (...tokens) => tokens.forEach(token => classes.delete(token)),
+      toggle: (token, force) => {
+        const enabled = force ?? !classes.has(token);
+        if (enabled) classes.add(token); else classes.delete(token);
+        return enabled;
+      },
+      contains: token => classes.has(token),
+    };
+  };
+  const elements = {
+    "results-section": { id: "results-section" },
+    "floating-cta-container": { classList: classList() },
+    "floating-cta-menu": { classList: classList() },
+    "floating-cta-backdrop": { classList: classList() },
+    "floating-cta-ping": { style: {} },
+    "floating-cta-chevron": { classList: classList() },
+    "floating-cta-toggle": {
+      classList: classList(),
+      setAttribute: (name, value) => toggleAttributes.set(name, value),
+      getAttribute: name => toggleAttributes.get(name) ?? null,
+    },
+  };
+  const mediaQuery = {
+    matches: mobile,
+    addEventListener(type, listener) {
+      if (type === "change") mediaListeners.push(listener);
+    },
+    setMatches(matches) {
+      this.matches = matches;
+      mediaListeners.forEach(listener => listener({ matches }));
+    },
+  };
+  class HarnessIntersectionObserver {
+    constructor(callback, options) {
+      this.callback = callback;
+      this.options = options;
+      this.observed = [];
+      observers.push(this);
+    }
+    observe(element) { this.observed.push(element); }
+    intersect(isIntersecting) {
+      this.callback([{ isIntersecting, target: elements["results-section"] }]);
+    }
+  }
+  const window = {
+    matchMedia: () => mediaQuery,
+    addEventListener() {},
+    setTimeout() {},
+  };
+  runInNewContext(floatingCtaSource, {
+    IntersectionObserver: HarnessIntersectionObserver,
+    document: { getElementById: id => elements[id] ?? null },
+    resultsSection: elements["results-section"],
+    setTimeout() {},
+    window,
+  });
+  return {
+    container: elements["floating-cta-container"],
+    toggle: elements["floating-cta-toggle"],
+    intersect(isIntersecting) { observers.at(-1)?.intersect(isIntersecting); },
+    toggleMenu() { window.toggleFloatingCTA(); },
+  };
+}
+
+test("compacts the mobile advisor only while the results proof is visible and its menu is closed", () => {
+  const mobile = createResultsAdvisorHarness();
+  mobile.intersect(true);
+  assert.equal(mobile.container.classList.contains("results-advisor-compact"), true);
+
+  mobile.toggleMenu();
+  assert.equal(mobile.container.classList.contains("results-advisor-compact"), false);
+  assert.equal(mobile.toggle.getAttribute("aria-expanded"), "true");
+
+  mobile.toggleMenu();
+  assert.equal(mobile.container.classList.contains("results-advisor-compact"), true);
+
+  mobile.intersect(false);
+  assert.equal(mobile.container.classList.contains("results-advisor-compact"), false);
+
+  const desktop = createResultsAdvisorHarness({ mobile: false });
+  desktop.intersect(true);
+  assert.equal(desktop.container.classList.contains("results-advisor-compact"), false);
+});
