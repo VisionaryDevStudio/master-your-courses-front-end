@@ -706,12 +706,13 @@ test("hides the advisor over mobile results and uses a single accessible bottom 
   assert.doesNotMatch(html, /results-advisor-compact/);
 });
 
-test("uses a circular advisor trigger after the mobile scroll reveal", () => {
+test("keeps the closed mobile advisor circular while it transitions into the results-hidden state", () => {
   const mobileCss = html.match(/@media \(max-width:\s*767px\)\s*\{[\s\S]*?\n\s*\}/)?.[0] ?? "";
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*#floating-cta-container:not\(\.advisor-menu-open\):not\(\.results-advisor-hidden\)\s*\{[\s\S]*left:\s*auto;[\s\S]*width:\s*3\.5rem/);
-  assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\):not\(\.results-advisor-hidden\) #floating-cta-toggle\s*\{[\s\S]*width:\s*3\.5rem;[\s\S]*height:\s*3\.5rem/);
-  assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\):not\(\.results-advisor-hidden\) #floating-cta-toggle-content\s*\{[\s\S]*width:\s*3\.5rem;[\s\S]*height:\s*3\.5rem;[\s\S]*padding:\s*0/);
-  assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\):not\(\.results-advisor-hidden\) #floating-cta-label,[\s\S]*#floating-cta-chevron\s*\{[\s\S]*display:\s*none/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*#floating-cta-container:not\(\.advisor-menu-open\)\s*\{[\s\S]*left:\s*auto;[\s\S]*width:\s*3\.5rem/);
+  assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle\s*\{[\s\S]*width:\s*3\.5rem;[\s\S]*height:\s*3\.5rem/);
+  assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle-content\s*\{[\s\S]*width:\s*3\.5rem;[\s\S]*height:\s*3\.5rem;[\s\S]*padding:\s*0/);
+  assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-label,[\s\S]*#floating-cta-chevron\s*\{[\s\S]*display:\s*none/);
+  assert.doesNotMatch(mobileCss, /#floating-cta-container:not\(\.advisor-menu-open\):not\(\.results-advisor-hidden\)/);
   assert.match(html, /id="floating-cta-toggle"[^>]*aria-label="Speak with an Academic Advisor"/);
   assert.ok(mobileCss.length > 0);
 });
