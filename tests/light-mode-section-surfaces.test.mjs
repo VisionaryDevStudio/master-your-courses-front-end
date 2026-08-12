@@ -500,3 +500,15 @@ test("drops a queued spotlight update when pointer eligibility changes", () => {
   assert.equal(harness.elements["hero-spotlight"].style.background, undefined);
   assert.deepEqual(harness.takeMutations(), []);
 });
+
+test("uses the approved optical typography only on the hero headlines", () => {
+  const desktopHero = html.match(/<div id="hero-copy"[\s\S]*?<\/h1>/)?.[0] ?? "";
+  const mobileHero = html.match(/<div id="hero-copy-mobile"[\s\S]*?<\/h1>/)?.[0] ?? "";
+
+  assert.match(desktopHero, /<h1 class="[^"]*lg:text-\[68px\][^"]*xl:text-7xl[^"]*font-extrabold[^"]*leading-\[1\.02\][^"]*tracking-\[-0\.04em\][^"]*">/);
+  assert.match(desktopHero, /<span class="[^"]*font-black[^"]*">\s*Secure your/);
+  assert.match(mobileHero, /<h1 class="[^"]*text-4xl[^"]*sm:text-5xl[^"]*font-extrabold[^"]*leading-\[1\.08\][^"]*tracking-\[-0\.035em\][^"]*">/);
+  assert.match(mobileHero, /<span class="[^"]*font-black[^"]*">\s*Secure your/);
+  assert.equal((html.match(/lg:text-\[68px\]/g) ?? []).length, 1);
+  assert.equal((html.match(/tracking-\[-0\.035em\]/g) ?? []).length, 1);
+});
