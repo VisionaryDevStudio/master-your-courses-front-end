@@ -627,7 +627,7 @@
     </section>
 
     <!-- ----------------- By The Numbers (Success Rate) ----------------- -->
-    <section class="surface-results section-space-dense bg-slate-50 dark:bg-zinc-950 relative overflow-hidden">
+    <section id="results-section" class="surface-results section-space-dense bg-slate-50 dark:bg-zinc-950 relative overflow-hidden">
       <div class="max-w-7xl mx-auto px-6 relative z-10">
          <div class="text-center mb-10 md:mb-16">
            <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-4 font-display tracking-tighter">The numbers speak for themselves.</h2>
@@ -637,18 +637,18 @@
          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
             <!-- Stat 1 -->
             <div class="bg-white dark:bg-zinc-900 border-2 border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] text-center flex flex-col items-center justify-center shadow-[0_12px_40px_rgb(0,0,0,0.08)]">
-               <div class="text-5xl md:text-7xl font-black font-display text-foreground mb-2 md:mb-4"><span class="count-up" data-target="1200">0</span><span class="text-indigo-500">+</span></div>
+               <div class="text-5xl md:text-7xl font-black font-display text-foreground mb-2 md:mb-4"><span class="count-up" data-target="1200">1,200</span><span class="text-indigo-500">+</span></div>
                <p class="text-xs md:text-sm font-bold uppercase tracking-widest text-muted-foreground font-display">Students Mentored</p>
             </div>
             <!-- Stat 2 (Highlight) -->
             <div class="bg-slate-950 border-2 border-slate-700/80 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] text-center flex flex-col items-center justify-center shadow-[0_20px_50px_rgb(0,0,0,0.3)] transform md:-translate-y-4 relative overflow-hidden">
                <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
-               <div class="text-5xl md:text-7xl font-black font-display text-white mb-2 md:mb-4 relative z-10"><span class="count-up" data-target="77">0</span><span class="text-emerald-400">%</span></div>
+               <div class="text-5xl md:text-7xl font-black font-display text-white mb-2 md:mb-4 relative z-10"><span class="count-up" data-target="77">77</span><span class="text-emerald-400">%</span></div>
                <p class="text-xs md:text-sm font-bold uppercase tracking-widest text-white/70 relative z-10 font-display">Scored a perfect 5</p>
             </div>
             <!-- Stat 3 -->
             <div class="bg-white dark:bg-zinc-900 border-2 border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] text-center flex flex-col items-center justify-center shadow-[0_12px_40px_rgb(0,0,0,0.08)]">
-               <div class="text-5xl md:text-7xl font-black font-display text-foreground mb-2 md:mb-4"><span class="count-up" data-target="21">0</span><span class="text-purple-500">%</span></div>
+               <div class="text-5xl md:text-7xl font-black font-display text-foreground mb-2 md:mb-4"><span class="count-up" data-target="21">21</span><span class="text-purple-500">%</span></div>
                <p class="text-xs md:text-sm font-bold uppercase tracking-widest text-muted-foreground font-display">Scored a 4</p>
             </div>
          </div>
@@ -658,6 +658,9 @@
                <svg class="lucide w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> That's a 98% success rate on AP Exams.
             </p>
          </div>
+         <p class="mt-3 text-center text-xs font-medium text-muted-foreground">
+           Based on AP exam outcomes reported by participating students.
+         </p>
       </div>
     </section>
 
@@ -2841,36 +2844,81 @@
     heroReducedMotion.addEventListener('change', scheduleHeroMotion);
     scheduleHeroMotion();
 
-    // CountUp Animation
-    function animateValue(obj, start, end, duration) {
-      let startTimestamp = null;
-      const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        const value = Math.floor(progress * (end - start) + start);
-        obj.innerHTML = value.toLocaleString('en-US');
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        } else {
-          obj.innerHTML = end.toLocaleString('en-US');
-        }
-      };
-      window.requestAnimationFrame(step);
+    // Results Count-Up
+    const resultsSection = document.getElementById('results-section');
+    const resultsCountElements = resultsSection ? [...resultsSection.querySelectorAll('.count-up')] : [];
+    const resultsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const RESULTS_COUNT_DURATION = 1400;
+    let resultsCountFrame = null;
+    let resultsCountComplete = resultsReducedMotion.matches;
+    let resultsObserver = null;
+
+    function writeFinalResults() {
+      resultsCountElements.forEach(element => {
+        element.textContent = Number(element.dataset.target).toLocaleString('en-US');
+      });
     }
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          if (!entry.target.hasAttribute('data-animated')) {
-            entry.target.setAttribute('data-animated', 'true');
-            const target = parseInt(entry.target.getAttribute('data-target'));
-            animateValue(entry.target, 0, target, 2000);
-          }
+    function runResultsCount() {
+      if (resultsCountComplete || resultsReducedMotion.matches || resultsCountElements.length === 0) {
+        resultsCountComplete = true;
+        writeFinalResults();
+        return;
+      }
+      resultsCountElements.forEach(element => { element.textContent = '0'; });
+      let startTimestamp = null;
+      const step = timestamp => {
+        if (resultsReducedMotion.matches) {
+          resultsCountFrame = null;
+          resultsCountComplete = true;
+          writeFinalResults();
+          return;
         }
-      });
-    }, { threshold: 0.1 });
+        if (startTimestamp === null) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / RESULTS_COUNT_DURATION, 1);
+        const easedProgress = 1 - Math.pow(1 - progress, 3);
+        resultsCountElements.forEach(element => {
+          const target = Number(element.dataset.target);
+          element.textContent = Math.floor(target * easedProgress).toLocaleString('en-US');
+        });
+        if (progress < 1) {
+          resultsCountFrame = window.requestAnimationFrame(step);
+        } else {
+          resultsCountFrame = null;
+          resultsCountComplete = true;
+          writeFinalResults();
+        }
+      };
+      resultsCountFrame = window.requestAnimationFrame(step);
+    }
 
-    document.querySelectorAll('.count-up').forEach(el => observer.observe(el));
+    if (resultsSection) {
+      if (resultsReducedMotion.matches) {
+        writeFinalResults();
+      } else {
+        resultsObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              runResultsCount();
+              resultsObserver.unobserve(resultsSection);
+            }
+          });
+        }, { threshold: 0.35 });
+        resultsObserver.observe(resultsSection);
+      }
+    }
+
+    resultsReducedMotion.addEventListener('change', event => {
+      if (event.matches) {
+        if (resultsCountFrame !== null) {
+          window.cancelAnimationFrame(resultsCountFrame);
+          resultsCountFrame = null;
+        }
+        resultsCountComplete = true;
+        writeFinalResults();
+        resultsObserver?.unobserve(resultsSection);
+      }
+    });
 
     // Floating CTA Logic
     const floatingCtaContainer = document.getElementById('floating-cta-container');

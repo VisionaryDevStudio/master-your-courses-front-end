@@ -6,7 +6,7 @@ import { runInNewContext } from "node:vm";
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 
 const heroMotionStart = html.indexOf("// Spotlight Effect (Hero Section)");
-const heroMotionEnd = html.indexOf("// CountUp Animation", heroMotionStart);
+const heroMotionEnd = html.indexOf("// Results Count-Up", heroMotionStart);
 const heroMotionSource = html.slice(heroMotionStart, heroMotionEnd);
 
 function createHeroMotionHarness({
@@ -513,4 +513,183 @@ test("uses the approved optical typography only on the hero headlines", () => {
   assert.match(mobileHero, /<span class="[^"]*font-black[^"]*">\s*Secure your/);
   assert.equal((html.match(/lg:text-\[68px\]/g) ?? []).length, 1);
   assert.equal((html.match(/tracking-\[-0\.035em\]/g) ?? []).length, 1);
+});
+
+test("keeps final results values and the approved qualifier in HTML", () => {
+  const results = html.match(/<section id="results-section"[\s\S]*?<\/section>/)?.[0] ?? "";
+  assert.match(results, /class="count-up" data-target="1200">1,200<\/span>/);
+  assert.match(results, /class="count-up" data-target="77">77<\/span>/);
+  assert.match(results, /class="count-up" data-target="21">21<\/span>/);
+  assert.match(results, /Based on AP exam outcomes reported by participating students\./);
+});
+
+test("uses one synchronized reduced-motion-aware results counter", () => {
+  const controller = html.slice(html.indexOf("// Results Count-Up"), html.indexOf("// Floating CTA Logic"));
+  assert.match(controller, /const RESULTS_COUNT_DURATION = 1400/);
+  assert.match(controller, /const easedProgress = 1 - Math\.pow\(1 - progress, 3\)/);
+  assert.match(controller, /new IntersectionObserver\([\s\S]*threshold:\s*0\.35/);
+  assert.match(controller, /observe\(resultsSection\)/);
+  assert.match(controller, /prefers-reduced-motion:\s*reduce/);
+  assert.match(controller, /cancelAnimationFrame\(resultsCountFrame\)/);
+  assert.doesNotMatch(controller, /forEach\([^)]*=>\s*resultsObserver\.observe/);
+});
+
+const resultsCountStart = html.indexOf("// Results Count-Up");
+const resultsCountEnd = html.indexOf("// Floating CTA Logic", resultsCountStart);
+const resultsCountSource = html.slice(resultsCountStart, resultsCountEnd);
+
+function createResultsCountHarness({ reducedMotion = false } = {}) {
+  const animationFrames = new Map();
+  const observers = [];
+  let nextAnimationFrame = 1;
+  let cancelledAnimationFrame = null;
+  const mediaListeners = [];
+  const countElements = [1200, 77, 21].map(target => ({
+    dataset: { target: String(target) },
+    textContent: target.toLocaleString("en-US"),
+  }));
+  const resultsSection = {
+    id: "results-section",
+    querySelectorAll: selector => selector === ".count-up" ? countElements : [],
+  };
+
+  const mediaQuery = {
+    matches: reducedMotion,
+    addEventListener(type, listener) {
+      if (type === "change") mediaListeners.push(listener);
+    },
+    setMatches(matches) {
+      this.matches = matches;
+      for (const listener of mediaListeners) listener({ matches });
+    },
+  };
+
+  class HarnessIntersectionObserver {
+    constructor(callback, options) {
+      this.callback = callback;
+      this.options = options;
+      this.observed = [];
+      this.unobserved = [];
+      observers.push(this);
+    }
+
+    observe(element) {
+      this.observed.push(element);
+    }
+
+    unobserve(element) {
+      this.unobserved.push(element);
+    }
+
+    intersect(element = resultsSection) {
+      this.callback([{ isIntersecting: true, target: element }]);
+    }
+  }
+
+  function requestAnimationFrame(callback) {
+    const frame = nextAnimationFrame++;
+    animationFrames.set(frame, callback);
+    return frame;
+  }
+
+  function cancelAnimationFrame(frame) {
+    cancelledAnimationFrame = frame;
+    animationFrames.delete(frame);
+  }
+
+  const window = {
+    matchMedia: () => mediaQuery,
+    requestAnimationFrame,
+    cancelAnimationFrame,
+  };
+
+  runInNewContext(resultsCountSource, {
+    IntersectionObserver: HarnessIntersectionObserver,
+    document: {
+      getElementById: id => id === "results-section" ? resultsSection : null,
+    },
+    window,
+  });
+
+  return {
+    countElements,
+    observer: observers[0],
+    get scheduledFrameCount() {
+      return animationFrames.size;
+    },
+    get cancelledAnimationFrame() {
+      return cancelledAnimationFrame;
+    },
+    runNextFrame(timestamp) {
+      const [frame, callback] = animationFrames.entries().next().value ?? [];
+      if (frame === undefined) return;
+      animationFrames.delete(frame);
+      callback(timestamp);
+    },
+    intersect() {
+      observers[0]?.intersect();
+    },
+    setReducedMotion(matches) {
+      mediaQuery.setMatches(matches);
+    },
+  };
+}
+
+test("keeps final results values until the results section intersects", () => {
+  const harness = createResultsCountHarness();
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "21"]);
+});
+
+test("observes only the results section at the approved threshold", () => {
+  const harness = createResultsCountHarness();
+  assert.equal(harness.observer.options.threshold, 0.35);
+  assert.equal(harness.observer.observed.length, 1);
+  assert.equal(harness.observer.observed[0].id, "results-section");
+});
+
+test("counts all result metrics in one shared animation frame", () => {
+  const harness = createResultsCountHarness();
+  harness.intersect();
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["0", "0", "0"]);
+  assert.equal(harness.scheduledFrameCount, 1);
+
+  harness.runNextFrame(0);
+  harness.runNextFrame(700);
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,050", "67", "18"]);
+
+  harness.runNextFrame(1400);
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "21"]);
+  assert.equal(harness.observer.unobserved.length, 1);
+  assert.equal(harness.observer.unobserved[0].id, "results-section");
+});
+
+test("does not replay the results count after its first intersection", () => {
+  const harness = createResultsCountHarness();
+  harness.intersect();
+  harness.runNextFrame(0);
+  harness.runNextFrame(1400);
+  harness.intersect();
+  assert.equal(harness.scheduledFrameCount, 0);
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "21"]);
+});
+
+test("shows final results without observing or animating when reduced motion is initial", () => {
+  const harness = createResultsCountHarness({ reducedMotion: true });
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "21"]);
+  assert.equal(harness.observer, undefined);
+  assert.equal(harness.scheduledFrameCount, 0);
+});
+
+test("finishes the results count when reduced motion becomes active", () => {
+  const harness = createResultsCountHarness();
+  harness.intersect();
+  harness.runNextFrame(0);
+  const scheduledFrameCount = harness.scheduledFrameCount;
+  harness.setReducedMotion(true);
+  assert.equal(scheduledFrameCount, 1);
+  assert.equal(harness.cancelledAnimationFrame, 2);
+  assert.equal(harness.scheduledFrameCount, 0);
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "21"]);
+  assert.equal(harness.observer.unobserved.length, 2);
+  assert.equal(harness.observer.unobserved.at(-1).id, "results-section");
 });
