@@ -694,13 +694,26 @@ test("finishes the results count when reduced motion becomes active", () => {
   assert.equal(harness.observer.unobserved.at(-1).id, "results-section");
 });
 
-test("defines an accessible mobile-only compact advisor state for results", () => {
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.results-advisor-compact/);
-  assert.match(html, /id="floating-cta-toggle"[^>]*aria-label="Speak with an Academic Advisor"/);
-  assert.match(html, /id="floating-cta-toggle-content"/);
-  assert.match(html, /id="floating-cta-label"/);
-  assert.match(html, /resultsAdvisorMedia = window\.matchMedia\('\(max-width: 767px\)'\)/);
-  assert.match(html, /results-advisor-compact/);
+test("hides the advisor over mobile results and uses a single accessible bottom sheet elsewhere", () => {
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.results-advisor-hidden/);
+  assert.match(html, /#floating-cta-container\.advisor-menu-open[\s\S]*#floating-cta-menu/);
+  assert.match(html, /#floating-cta-container\.advisor-menu-open[\s\S]*#floating-cta-toggle[\s\S]*display:\s*none/);
+  assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-backdrop\s*\{[\s\S]*z-index:\s*0/);
+  assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-backdrop\s*\{[\s\S]*pointer-events:\s*auto/);
+  assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-menu\s*\{[\s\S]*z-index:\s*1/);
+  assert.match(html, /id="floating-cta-menu"[^>]*role="dialog"[^>]*aria-modal="true"[^>]*aria-labelledby="floating-cta-title"/);
+  assert.match(html, /id="floating-cta-title"/);
+  assert.doesNotMatch(html, /results-advisor-compact/);
+});
+
+test("coordinates results visibility, modal focus, and desktop preservation", () => {
+  const controller = html.slice(html.indexOf("// Floating CTA Logic"), html.indexOf("// Scroll reveal observer"));
+  assert.match(controller, /function setFloatingCtaOpen\(nextOpen/);
+  assert.match(controller, /results-advisor-hidden/);
+  assert.match(controller, /event\.key === 'Escape'/);
+  assert.match(controller, /event\.key === 'Tab'/);
+  assert.match(controller, /floatingCtaToggle\?\.focus/);
+  assert.match(controller, /resultsAdvisorMedia\.matches/);
 });
 
 const floatingCtaStart = html.indexOf("// Floating CTA Logic");
@@ -710,6 +723,8 @@ const floatingCtaSource = html.slice(floatingCtaStart, floatingCtaEnd);
 function createResultsAdvisorHarness({ mobile = true } = {}) {
   const observers = [];
   const mediaListeners = [];
+  const documentListeners = new Map();
+  const documentState = { activeElement: null };
   const toggleAttributes = new Map([["aria-expanded", "false"]]);
   const classList = () => {
     const classes = new Set();
@@ -724,10 +739,20 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
       contains: token => classes.has(token),
     };
   };
+  const focusableElements = ["floating-cta-close", "advisor-phone", "advisor-whatsapp", "advisor-email"].map(id => ({
+    id,
+    disabled: false,
+    focused: false,
+    hasAttribute(name) { return name === "disabled" && this.disabled; },
+    focus() { this.focused = true; },
+  }));
   const elements = {
     "results-section": { id: "results-section" },
     "floating-cta-container": { classList: classList() },
-    "floating-cta-menu": { classList: classList() },
+    "floating-cta-menu": {
+      classList: classList(),
+      querySelectorAll: () => focusableElements,
+    },
     "floating-cta-backdrop": { classList: classList() },
     "floating-cta-ping": { style: {} },
     "floating-cta-chevron": { classList: classList() },
@@ -735,6 +760,8 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
       classList: classList(),
       setAttribute: (name, value) => toggleAttributes.set(name, value),
       getAttribute: name => toggleAttributes.get(name) ?? null,
+      focus() { this.focused = true; },
+      focused: false,
     },
   };
   const mediaQuery = {
@@ -766,7 +793,11 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
   };
   runInNewContext(floatingCtaSource, {
     IntersectionObserver: HarnessIntersectionObserver,
-    document: { getElementById: id => elements[id] ?? null },
+    document: {
+      getElementById: id => elements[id] ?? null,
+      addEventListener(type, listener) { documentListeners.set(type, listener); },
+      get activeElement() { return documentState.activeElement; },
+    },
     resultsSection: elements["results-section"],
     setTimeout() {},
     window,
@@ -774,27 +805,64 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
   return {
     container: elements["floating-cta-container"],
     toggle: elements["floating-cta-toggle"],
+    menu: elements["floating-cta-menu"],
+    focusableElements,
     intersect(isIntersecting) { observers.at(-1)?.intersect(isIntersecting); },
     toggleMenu() { window.toggleFloatingCTA(); },
+    mediaChange(matches) { mediaQuery.setMatches(matches); },
+    keydown(key, { shiftKey = false, activeElement } = {}) {
+      documentState.activeElement = activeElement ?? null;
+      const event = { key, shiftKey, target: activeElement, prevented: false, preventDefault() { this.prevented = true; } };
+      documentListeners.get("keydown")?.(event);
+      return event;
+    },
   };
 }
 
-test("compacts the mobile advisor only while the results proof is visible and its menu is closed", () => {
+test("hides the mobile advisor throughout results and restores its full trigger after exit", () => {
   const mobile = createResultsAdvisorHarness();
+  mobile.toggleMenu();
+  assert.equal(mobile.container.classList.contains("advisor-menu-open"), true);
+
   mobile.intersect(true);
-  assert.equal(mobile.container.classList.contains("results-advisor-compact"), true);
-
-  mobile.toggleMenu();
-  assert.equal(mobile.container.classList.contains("results-advisor-compact"), false);
-  assert.equal(mobile.toggle.getAttribute("aria-expanded"), "true");
-
-  mobile.toggleMenu();
-  assert.equal(mobile.container.classList.contains("results-advisor-compact"), true);
+  assert.equal(mobile.container.classList.contains("results-advisor-hidden"), true);
+  assert.equal(mobile.container.classList.contains("advisor-menu-open"), false);
+  assert.equal(mobile.toggle.getAttribute("aria-expanded"), "false");
+  assert.equal(mobile.toggle.focused, false);
 
   mobile.intersect(false);
-  assert.equal(mobile.container.classList.contains("results-advisor-compact"), false);
+  assert.equal(mobile.container.classList.contains("results-advisor-hidden"), false);
+
+  mobile.toggleMenu();
+  assert.equal(mobile.container.classList.contains("advisor-menu-open"), true);
+  assert.equal(mobile.toggle.getAttribute("aria-expanded"), "true");
+  assert.equal(mobile.focusableElements[0].focused, true);
+
+  const tabForward = mobile.keydown("Tab", { activeElement: mobile.focusableElements.at(-1) });
+  assert.equal(tabForward.prevented, true);
+  assert.equal(mobile.focusableElements[0].focused, true);
+  const tabBackward = mobile.keydown("Tab", { shiftKey: true, activeElement: mobile.focusableElements[0] });
+  assert.equal(tabBackward.prevented, true);
+  assert.equal(mobile.focusableElements.at(-1).focused, true);
+
+  mobile.keydown("Escape");
+  assert.equal(mobile.container.classList.contains("advisor-menu-open"), false);
+  assert.equal(mobile.toggle.getAttribute("aria-expanded"), "false");
+  assert.equal(mobile.toggle.focused, true);
+});
+
+test("keeps desktop advisor popup behavior when a media change reaches 768px", () => {
+  const mobile = createResultsAdvisorHarness();
+  mobile.intersect(true);
+  assert.equal(mobile.container.classList.contains("results-advisor-hidden"), true);
+
+  mobile.mediaChange(false);
+  assert.equal(mobile.container.classList.contains("results-advisor-hidden"), false);
+  mobile.toggleMenu();
+  assert.equal(mobile.container.classList.contains("advisor-menu-open"), true);
+  assert.equal(mobile.toggle.getAttribute("aria-expanded"), "true");
 
   const desktop = createResultsAdvisorHarness({ mobile: false });
   desktop.intersect(true);
-  assert.equal(desktop.container.classList.contains("results-advisor-compact"), false);
+  assert.equal(desktop.container.classList.contains("results-advisor-hidden"), false);
 });

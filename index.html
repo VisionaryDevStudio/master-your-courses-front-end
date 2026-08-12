@@ -306,22 +306,39 @@
         background-size: 38rem 38rem, auto;
       }
 
-      #floating-cta-container.results-advisor-compact:not(.advisor-menu-open) {
-        left: auto;
-        width: 3.5rem;
+      #floating-cta-container.results-advisor-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(1rem);
       }
-      #floating-cta-container.results-advisor-compact:not(.advisor-menu-open) #floating-cta-toggle {
-        width: 3.5rem;
-        height: 3.5rem;
+
+      #floating-cta-container.advisor-menu-open {
+        inset: 0;
+        width: 100%;
+        justify-content: flex-end;
       }
-      #floating-cta-container.results-advisor-compact:not(.advisor-menu-open) #floating-cta-toggle-content {
-        width: 3.5rem;
-        height: 3.5rem;
-        padding: 0;
-        gap: 0;
+
+      #floating-cta-container.advisor-menu-open #floating-cta-menu {
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-height: min(85vh, 42rem);
+        margin: 0;
+        overflow-y: auto;
+        border-radius: 2rem 2rem 0 0;
+        padding-bottom: max(1rem, env(safe-area-inset-bottom));
       }
-      #floating-cta-container.results-advisor-compact:not(.advisor-menu-open) #floating-cta-label,
-      #floating-cta-container.results-advisor-compact:not(.advisor-menu-open) #floating-cta-chevron {
+
+      #floating-cta-container.advisor-menu-open #floating-cta-backdrop {
+        z-index: 0;
+        pointer-events: auto;
+      }
+
+      #floating-cta-container.advisor-menu-open #floating-cta-toggle {
         display: none;
       }
     }
@@ -2702,10 +2719,10 @@
     <div id="floating-cta-backdrop" class="fixed inset-0 bg-background/50 backdrop-blur-sm z-[-1] md:hidden opacity-0 invisible transition-all duration-300" onclick="toggleFloatingCTA()"></div>
 
     <!-- Popup Menu -->
-    <div id="floating-cta-menu" class="pointer-events-auto w-full md:w-80 bg-background/95 backdrop-blur-xl border border-border rounded-[2rem] shadow-2xl p-4 mb-4 origin-bottom flex flex-col gap-2 opacity-0 invisible scale-95 translate-y-4 transition-all duration-300">
+    <div id="floating-cta-menu" role="dialog" aria-modal="true" aria-labelledby="floating-cta-title" class="pointer-events-auto w-full md:w-80 bg-background/95 backdrop-blur-xl border border-border rounded-[2rem] shadow-2xl p-4 mb-4 origin-bottom flex flex-col gap-2 opacity-0 invisible scale-95 translate-y-4 transition-all duration-300">
       <div class="flex items-center justify-between px-2 mb-2">
-        <h3 class="font-bold text-foreground">Speak with an Advisor</h3>
-        <button onclick="toggleFloatingCTA()" class="p-1 rounded-full hover:bg-muted text-muted-foreground transition-colors" aria-label="Close menu">
+        <h3 id="floating-cta-title" class="font-bold text-foreground">Speak with an Advisor</h3>
+        <button id="floating-cta-close" onclick="toggleFloatingCTA()" class="p-1 rounded-full hover:bg-muted text-muted-foreground transition-colors" aria-label="Close menu">
           <svg class="lucide w-5 h-5" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       </div>
@@ -2951,24 +2968,63 @@
     const resultsAdvisorMedia = window.matchMedia('(max-width: 767px)');
     let resultsSectionIntersecting = false;
 
+    function getAdvisorFocusableElements() {
+      if (!floatingCtaMenu) return [];
+      return [...floatingCtaMenu.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])')]
+        .filter(element => !element.hasAttribute('disabled'));
+    }
+
     function syncResultsAdvisorState() {
       if (!floatingCtaContainer) return;
-      const compact = resultsAdvisorMedia.matches && resultsSectionIntersecting && !isCtaOpen;
-      floatingCtaContainer.classList.toggle('results-advisor-compact', compact);
-      floatingCtaContainer.classList.toggle('advisor-menu-open', isCtaOpen);
+      const shouldHide = resultsAdvisorMedia.matches && resultsSectionIntersecting;
+      floatingCtaContainer.classList.toggle('results-advisor-hidden', shouldHide);
+    }
+
+    function setFloatingCtaOpen(nextOpen, { restoreFocus = true } = {}) {
+      isCtaOpen = Boolean(nextOpen);
+      floatingCtaToggle?.setAttribute('aria-expanded', String(isCtaOpen));
+      floatingCtaContainer?.classList.toggle('advisor-menu-open', isCtaOpen);
+      floatingCtaMenu?.classList.toggle('opacity-0', !isCtaOpen);
+      floatingCtaMenu?.classList.toggle('invisible', !isCtaOpen);
+      floatingCtaMenu?.classList.toggle('scale-95', !isCtaOpen);
+      floatingCtaMenu?.classList.toggle('translate-y-4', !isCtaOpen);
+      floatingCtaBackdrop?.classList.toggle('opacity-0', !isCtaOpen);
+      floatingCtaBackdrop?.classList.toggle('invisible', !isCtaOpen);
+      floatingCtaChevron?.classList.toggle('rotate-180', isCtaOpen);
+      if (floatingCtaPing) floatingCtaPing.style.display = isCtaOpen ? 'none' : 'flex';
+      syncResultsAdvisorState();
+      if (isCtaOpen) {
+        getAdvisorFocusableElements()[0]?.focus();
+        window.requestAnimationFrame?.(() => {
+          if (isCtaOpen) getAdvisorFocusableElements()[0]?.focus();
+        });
+        window.setTimeout(() => {
+          if (isCtaOpen) getAdvisorFocusableElements()[0]?.focus();
+        }, 0);
+      } else if (restoreFocus) {
+        floatingCtaToggle?.focus();
+      }
     }
 
     if (resultsSection) {
       const resultsAdvisorObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           resultsSectionIntersecting = entry.isIntersecting;
+          if (resultsAdvisorMedia.matches && resultsSectionIntersecting && isCtaOpen) {
+            setFloatingCtaOpen(false, { restoreFocus: false });
+          }
           syncResultsAdvisorState();
         });
       }, { threshold: 0 });
       resultsAdvisorObserver.observe(resultsSection);
     }
 
-    resultsAdvisorMedia.addEventListener('change', syncResultsAdvisorState);
+    resultsAdvisorMedia.addEventListener('change', () => {
+      if (resultsAdvisorMedia.matches && resultsSectionIntersecting && isCtaOpen) {
+        setFloatingCtaOpen(false, { restoreFocus: false });
+      }
+      syncResultsAdvisorState();
+    });
 
     function showFloatingCTA() {
       if (isCtaVisible || !floatingCtaContainer) return;
@@ -2982,24 +3038,29 @@
       if (window.scrollY > 300) showFloatingCTA();
     });
 
-    window.toggleFloatingCTA = function() {
-      isCtaOpen = !isCtaOpen;
-      if (isCtaOpen) {
-        floatingCtaMenu.classList.remove('opacity-0', 'invisible', 'scale-95', 'translate-y-4');
-        floatingCtaBackdrop.classList.remove('opacity-0', 'invisible');
-        if(floatingCtaPing) floatingCtaPing.style.display = 'none';
-        floatingCtaChevron.classList.add('rotate-180');
-        floatingCtaToggle?.setAttribute('aria-expanded', String(isCtaOpen));
-        syncResultsAdvisorState();
-      } else {
-        floatingCtaMenu.classList.add('opacity-0', 'invisible', 'scale-95', 'translate-y-4');
-        floatingCtaBackdrop.classList.add('opacity-0', 'invisible');
-        if(floatingCtaPing) floatingCtaPing.style.display = 'flex';
-        floatingCtaChevron.classList.remove('rotate-180');
-        floatingCtaToggle?.setAttribute('aria-expanded', String(isCtaOpen));
-        syncResultsAdvisorState();
+    window.toggleFloatingCTA = () => setFloatingCtaOpen(!isCtaOpen);
+
+    document.addEventListener('keydown', event => {
+      if (!isCtaOpen) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setFloatingCtaOpen(false);
+        return;
       }
-    };
+      if (event.key === 'Tab') {
+        const focusableElements = getAdvisorFocusableElements();
+        if (!focusableElements.length) return;
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
+    });
   </script>
   <script>
     // Scroll reveal observer
