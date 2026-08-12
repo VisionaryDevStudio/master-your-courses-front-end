@@ -708,13 +708,13 @@ test("hides the advisor over mobile results and uses a single accessible bottom 
 
 test("uses the compact premium concierge presentation only for the open mobile advisor", () => {
   assert.match(html, /id="floating-cta-handle"[^>]*aria-hidden="true"/);
-  assert.match(html, /id="floating-cta-title"[^>]*>How can we help\?<\/h3>/);
+  assert.match(html, /id="floating-cta-title"[^>]*>[\s\S]*class="md:hidden"[^>]*>How can we help\?<\/span>/);
   assert.match(html, /class="advisor-sheet-subtitle[^>]*>Connect with our academic team\.<\/p>/);
   assert.equal((html.match(/class="advisor-contact-row/g) ?? []).length, 3);
   assert.equal((html.match(/class="advisor-contact-arrow/g) ?? []).length, 3);
   assert.match(html, /class="advisor-contact-list[^"]*divide-y/);
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*border-radius:\s*1\.5rem 1\.5rem 0 0/);
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-contact-row\s*\{[\s\S]*min-height:\s*2\.75rem/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-contact-row\s*\{[\s\S]*min-height:\s*4rem/);
   assert.match(html, /@media \(max-width:\s*767px\) and \(prefers-reduced-motion:\s*reduce\)[\s\S]*#floating-cta-menu[\s\S]*transition-duration:\s*0\.01ms/);
   assert.match(html, /@media \(max-width:\s*767px\) and \(prefers-reduced-motion:\s*reduce\)[\s\S]*#floating-cta-container\.advisor-menu-open #floating-cta-menu,[\s\S]*#floating-cta-container\.advisor-menu-open #floating-cta-backdrop/);
   assert.match(html, /href="tel:\+18001234567"/);
@@ -730,8 +730,24 @@ test("keeps the added concierge hooks constrained at desktop popup widths", () =
   assert.match(html, /class="advisor-contact-list[^"]*md:flex[^"]*md:flex-col[^"]*md:gap-2/);
 });
 
+test("uses breakpoint-specific visible and accessible advisor headings", () => {
+  assert.match(html, /id="floating-cta-menu"[^>]*aria-labelledby="floating-cta-title"/);
+  assert.match(html, /id="floating-cta-title"[^>]*>[\s\S]*class="md:hidden"[^>]*>How can we help\?<\/span>[\s\S]*class="hidden md:inline"[^>]*>Speak with an Advisor<\/span>[\s\S]*<\/h3>/);
+});
+
+test("closes the normal-motion mobile advisor faster than it opens", () => {
+  assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-menu\s*\{[\s\S]*transform 280ms/);
+  assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-menu\s*\{[\s\S]*transition:[^;]*transform 200ms/);
+  assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-backdrop\s*\{[\s\S]*transition:[^;]*opacity 180ms/);
+});
+
 test("keeps the compact concierge below the recorded mobile height target without changing the desktop popup", () => {
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-contact-row\s*\{[\s\S]*min-height:\s*2\.75rem/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-contact-row\s*\{[\s\S]*min-height:\s*4rem/);
+  assert.match(html, /\.advisor-sheet-header\s*\{[\s\S]*padding:\s*0\.375rem 3rem 0\.125rem 0\.125rem/);
+  assert.match(html, /\.advisor-sheet-header #floating-cta-close\s*\{[\s\S]*position:\s*absolute/);
+  assert.match(html, /#floating-cta-title\s*\{[\s\S]*line-height:\s*1\.125rem/);
+  assert.match(html, /\.advisor-sheet-subtitle\s*\{[\s\S]*line-height:\s*0\.75rem/);
+  assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-menu\s*\{[\s\S]*padding:\s*0 0\.75rem max\(0\.25rem, env\(safe-area-inset-bottom\)\)/);
   assert.match(html, /id="floating-cta-handle"[^>]*class="[^"]*md:hidden/);
   assert.match(html, /class="advisor-sheet-subtitle[^"]*md:hidden/);
   assert.match(html, /id="floating-cta-close"[^>]*class="[^"]*md:h-auto[^"]*md:w-auto[^"]*md:p-1/);
@@ -741,6 +757,7 @@ test("scopes reduced concierge motion to mobile open and closing states", () => 
   assert.match(html, /@media \(max-width:\s*767px\) and \(prefers-reduced-motion:\s*reduce\)/);
   assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-menu,[\s\S]*#floating-cta-menu\.opacity-0,[\s\S]*#floating-cta-container\.advisor-menu-open #floating-cta-backdrop,[\s\S]*#floating-cta-backdrop\.opacity-0\s*\{[\s\S]*transition-duration:\s*0\.01ms/);
   assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-menu,[\s\S]*#floating-cta-menu\.opacity-0\s*\{[\s\S]*transform:\s*translateY\(0\) scale\(1\)/);
+  assert.match(html, /transition-duration:\s*0\.01ms !important/);
 });
 
 test("keeps the closed mobile advisor circular while it transitions into the results-hidden state", () => {
