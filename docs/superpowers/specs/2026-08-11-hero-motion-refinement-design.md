@@ -18,8 +18,8 @@ The testimonial card moving toward the viewer during the opening scroll is the h
 
 - Remove continuous floating animation from the main testimonial card on desktop and mobile.
 - Keep the card stationary before the user scrolls.
-- Scale the desktop card from `1` to a maximum of `1.06` across the first 320px of page scroll.
-- Scale the mobile card from `1` to a maximum of `1.03` across the first 320px of page scroll to avoid edge pressure and clipping.
+- Scale the desktop card from `1` to a maximum of `1.10` across the first 320px of page scroll.
+- Scale the mobile card from `1` to a maximum of `1.06` across the first 320px of page scroll to restore a more noticeable effect without creating edge pressure or clipping.
 - Do not translate the card vertically during scroll; scaling is the single card-motion signal.
 - Use `transform-origin: center center` and preserve the existing card layout, shadow, border, and content.
 - Stop updating the card once the hero is outside the active scroll range.
@@ -73,15 +73,15 @@ When `prefers-reduced-motion: reduce` is active:
 
 ## Responsive Behavior
 
-- Desktop retains the full testimonial scroll-growth effect up to `1.06`.
-- Mobile retains a restrained version up to `1.03` but has no continuous ambient badge movement.
+- Desktop retains the full testimonial scroll-growth effect up to `1.10`.
+- Mobile retains a restrained version up to `1.06` but has no continuous ambient badge movement.
 - Neither viewport may develop horizontal overflow or testimonial-card clipping.
 - The fixed header and hero spacing remain unchanged.
 
 ## Verification
 
-- At `1440x900`, confirm the testimonial card scales smoothly from `1` to `1.06` over the first 320px while remaining vertically anchored.
-- At `390x844`, confirm the card scales no further than `1.03` and does not clip or create horizontal overflow.
+- At `1440x900`, confirm the testimonial card scales smoothly from `1` to `1.10` over the first 320px while remaining vertically anchored.
+- At `390x844`, confirm the card scales no further than `1.06` and does not clip or create horizontal overflow.
 - Confirm the main card no longer floats when the page is idle.
 - Confirm desktop badges move no more than 5px and mobile badges remain stationary.
 - Confirm hero copy never fades below `0.35` and no longer translates during scrolling.
