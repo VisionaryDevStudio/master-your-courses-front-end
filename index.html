@@ -2989,6 +2989,7 @@
     let isCtaOpen = false;
     const resultsAdvisorMedia = window.matchMedia('(max-width: 767px)');
     let resultsSectionIntersecting = false;
+    let hasPassedResultsSection = false;
 
     function getAdvisorFocusableElements() {
       if (!floatingCtaMenu) return [];
@@ -3000,6 +3001,19 @@
       if (!floatingCtaContainer) return;
       const shouldHide = resultsAdvisorMedia.matches && resultsSectionIntersecting;
       floatingCtaContainer.classList.toggle('results-advisor-hidden', shouldHide);
+    }
+
+    function hideFloatingCTA() {
+      if (!floatingCtaContainer) return;
+      isCtaVisible = false;
+      floatingCtaContainer.classList.add('opacity-0', 'translate-y-8');
+    }
+
+    function showFloatingCTA() {
+      if (isCtaVisible || !floatingCtaContainer) return;
+      if (resultsAdvisorMedia.matches && !hasPassedResultsSection) return;
+      isCtaVisible = true;
+      floatingCtaContainer.classList.remove('opacity-0', 'translate-y-8');
     }
 
     function setFloatingCtaOpen(nextOpen, { restoreFocus = true } = {}) {
@@ -3032,6 +3046,10 @@
       const resultsAdvisorObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           resultsSectionIntersecting = entry.isIntersecting;
+          if (resultsAdvisorMedia.matches && !entry.isIntersecting && entry.boundingClientRect.bottom <= 0) {
+            hasPassedResultsSection = true;
+            showFloatingCTA();
+          }
           if (resultsAdvisorMedia.matches && resultsSectionIntersecting && isCtaOpen) {
             setFloatingCtaOpen(false, { restoreFocus: false });
           }
@@ -3045,14 +3063,13 @@
       if (resultsAdvisorMedia.matches && resultsSectionIntersecting && isCtaOpen) {
         setFloatingCtaOpen(false, { restoreFocus: false });
       }
+      if (resultsAdvisorMedia.matches && !hasPassedResultsSection) {
+        hideFloatingCTA();
+      } else if (!resultsAdvisorMedia.matches && window.scrollY > 300) {
+        showFloatingCTA();
+      }
       syncResultsAdvisorState();
     });
-
-    function showFloatingCTA() {
-      if (isCtaVisible || !floatingCtaContainer) return;
-      isCtaVisible = true;
-      floatingCtaContainer.classList.remove('opacity-0', 'translate-y-8');
-    }
 
     setTimeout(showFloatingCTA, 7000);
 

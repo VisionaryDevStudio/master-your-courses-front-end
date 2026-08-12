@@ -737,8 +737,8 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
   const documentListeners = new Map();
   const documentState = { activeElement: null };
   const toggleAttributes = new Map([["aria-expanded", "false"]]);
-  const classList = () => {
-    const classes = new Set();
+  const classList = (initial = []) => {
+    const classes = new Set(initial);
     return {
       add: (...tokens) => tokens.forEach(token => classes.add(token)),
       remove: (...tokens) => tokens.forEach(token => classes.delete(token)),
@@ -759,7 +759,7 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
   }));
   const elements = {
     "results-section": { id: "results-section" },
-    "floating-cta-container": { classList: classList() },
+    "floating-cta-container": { classList: classList(["opacity-0", "translate-y-8"]) },
     "floating-cta-menu": {
       classList: classList(),
       querySelectorAll: () => focusableElements,
@@ -793,13 +793,16 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
       observers.push(this);
     }
     observe(element) { this.observed.push(element); }
-    intersect(isIntersecting) {
-      this.callback([{ isIntersecting, target: elements["results-section"] }]);
+    intersect(isIntersecting, { bottom = isIntersecting ? 100 : -1 } = {}) {
+      this.callback([{ isIntersecting, boundingClientRect: { bottom }, target: elements["results-section"] }]);
     }
   }
+  const windowListeners = new Map();
+  const scheduledTimeouts = [];
   const window = {
+    scrollY: 0,
     matchMedia: () => mediaQuery,
-    addEventListener() {},
+    addEventListener(type, listener) { windowListeners.set(type, listener); },
     setTimeout() {},
   };
   runInNewContext(floatingCtaSource, {
@@ -810,7 +813,7 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
       get activeElement() { return documentState.activeElement; },
     },
     resultsSection: elements["results-section"],
-    setTimeout() {},
+    setTimeout(callback) { scheduledTimeouts.push(callback); },
     window,
   });
   return {
@@ -818,7 +821,12 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
     toggle: elements["floating-cta-toggle"],
     menu: elements["floating-cta-menu"],
     focusableElements,
-    intersect(isIntersecting) { observers.at(-1)?.intersect(isIntersecting); },
+    intersect(isIntersecting, geometry) { observers.at(-1)?.intersect(isIntersecting, geometry); },
+    scroll(y) {
+      window.scrollY = y;
+      windowListeners.get("scroll")?.();
+    },
+    runRevealTimer() { scheduledTimeouts[0]?.(); },
     toggleMenu() { window.toggleFloatingCTA(); },
     mediaChange(matches) { mediaQuery.setMatches(matches); },
     keydown(key, { shiftKey = false, activeElement } = {}) {
@@ -829,6 +837,23 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
     },
   };
 }
+
+test("reveals the mobile advisor only after Results has been entered and exited", () => {
+  const mobile = createResultsAdvisorHarness();
+
+  mobile.scroll(301);
+  mobile.runRevealTimer();
+  assert.equal(mobile.container.classList.contains("opacity-0"), true);
+
+  mobile.intersect(true);
+  assert.equal(mobile.container.classList.contains("results-advisor-hidden"), true);
+  assert.equal(mobile.container.classList.contains("opacity-0"), true);
+
+  mobile.intersect(false);
+  assert.equal(mobile.container.classList.contains("results-advisor-hidden"), false);
+  assert.equal(mobile.container.classList.contains("opacity-0"), false);
+  assert.equal(mobile.container.classList.contains("translate-y-8"), false);
+});
 
 test("hides the mobile advisor throughout results and restores its full trigger after exit", () => {
   const mobile = createResultsAdvisorHarness();
