@@ -306,6 +306,28 @@
         background-size: 38rem 38rem, auto;
       }
 
+      #floating-cta-container:not(.advisor-menu-open):not(.results-advisor-hidden) {
+        left: auto;
+        width: 3.5rem;
+      }
+
+      #floating-cta-container:not(.advisor-menu-open):not(.results-advisor-hidden) #floating-cta-toggle {
+        width: 3.5rem;
+        height: 3.5rem;
+      }
+
+      #floating-cta-container:not(.advisor-menu-open):not(.results-advisor-hidden) #floating-cta-toggle-content {
+        width: 3.5rem;
+        height: 3.5rem;
+        padding: 0;
+        gap: 0;
+      }
+
+      #floating-cta-container:not(.advisor-menu-open):not(.results-advisor-hidden) #floating-cta-label,
+      #floating-cta-container:not(.advisor-menu-open):not(.results-advisor-hidden) #floating-cta-chevron {
+        display: none;
+      }
+
       #floating-cta-container.results-advisor-hidden {
         opacity: 0;
         visibility: hidden;

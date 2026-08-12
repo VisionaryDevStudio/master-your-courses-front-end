@@ -706,6 +706,16 @@ test("hides the advisor over mobile results and uses a single accessible bottom 
   assert.doesNotMatch(html, /results-advisor-compact/);
 });
 
+test("uses a circular advisor trigger after the mobile scroll reveal", () => {
+  const mobileCss = html.match(/@media \(max-width:\s*767px\)\s*\{[\s\S]*?\n\s*\}/)?.[0] ?? "";
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*#floating-cta-container:not\(\.advisor-menu-open\):not\(\.results-advisor-hidden\)\s*\{[\s\S]*left:\s*auto;[\s\S]*width:\s*3\.5rem/);
+  assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\):not\(\.results-advisor-hidden\) #floating-cta-toggle\s*\{[\s\S]*width:\s*3\.5rem;[\s\S]*height:\s*3\.5rem/);
+  assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\):not\(\.results-advisor-hidden\) #floating-cta-toggle-content\s*\{[\s\S]*width:\s*3\.5rem;[\s\S]*height:\s*3\.5rem;[\s\S]*padding:\s*0/);
+  assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\):not\(\.results-advisor-hidden\) #floating-cta-label,[\s\S]*#floating-cta-chevron\s*\{[\s\S]*display:\s*none/);
+  assert.match(html, /id="floating-cta-toggle"[^>]*aria-label="Speak with an Academic Advisor"/);
+  assert.ok(mobileCss.length > 0);
+});
+
 test("coordinates results visibility, modal focus, and desktop preservation", () => {
   const controller = html.slice(html.indexOf("// Floating CTA Logic"), html.indexOf("// Scroll reveal observer"));
   assert.match(controller, /function setFloatingCtaOpen\(nextOpen/);
