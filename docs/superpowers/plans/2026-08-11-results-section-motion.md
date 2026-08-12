@@ -1,10 +1,12 @@
 # Results Section Motion and Trust Implementation Plan
 
+> **Amendment:** The mobile-advisor portion of Task 2 is superseded by `docs/superpowers/plans/2026-08-11-results-advisor-bottom-sheet.md` after rendered QA proved that a fixed compact control still crossed the results proof. Task 1 remains authoritative.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Make the results proof appear at the right moment, remain correct without JavaScript, respect reduced motion, include accurate context, and stay unobstructed by the mobile advisor.
 
-**Architecture:** Give the results section one stable identity and one synchronized count-up controller driven by a section-level observer. Add a CSS-scoped compact state to the existing advisor and coordinate it through a second observer without changing the advisor menu or desktop behavior.
+**Architecture:** Give the results section one stable identity and one synchronized count-up controller driven by a section-level observer. Add a mobile-only results-hidden state and bottom-sheet presentation to the existing advisor while preserving its desktop popup, contact destinations, and accessible interaction contract.
 
 **Tech Stack:** Static HTML, Tailwind CSS CDN, scoped CSS, vanilla JavaScript, IntersectionObserver, matchMedia, requestAnimationFrame, Node.js built-in test runner, Browser plugin or the previously approved Playwright/Google Chrome fallback.
 
@@ -17,8 +19,10 @@
 - Format the student count with `en-US` thousands separators and always finish on exact targets.
 - Reduced-motion users receive final values immediately and no count-up frame.
 - A mid-animation change to reduced motion cancels the frame, restores final values, and never replays.
-- Below `768px`, compact the floating advisor only while the results section intersects; preserve a minimum `48px` target, accessible name, menu behavior, keyboard behavior, icon, and indicator.
-- At `768px` and above, preserve the current advisor presentation.
+- Below `768px`, hide the floating advisor completely while the results section intersects and restore it after leaving.
+- Below `768px` outside the results section, open the advisor as one modal bottom sheet and hide the duplicate gradient trigger while open.
+- Preserve all three contact choices, backdrop close, Escape close, contained Tab focus, focus restoration, and accessible naming.
+- At `768px` and above, preserve the current anchored advisor popup.
 - Add exactly: `Based on AP exam outcomes reported by participating students.`
 - Do not change animation systems or typography outside this section and its conditional mobile advisor state.
 

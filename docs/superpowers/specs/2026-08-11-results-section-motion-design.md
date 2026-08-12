@@ -49,12 +49,23 @@ This change applies to the results section, its count-up controller, and the mob
 ## Mobile Advisor Clearance
 
 - Give the results section a stable identifier for intersection tracking.
-- At viewport widths below `768px`, collapse the existing floating advisor from its full-width bar into its existing compact phone control while the results section intersects the viewport.
-- Keep the compact control fixed in the existing bottom-right safe area, with a minimum `48px` touch target and an accessible name that still communicates “Speak with an Advisor.”
-- Hide only the visible text and chevron in the compact state; preserve the existing phone icon, unread indicator, click behavior, menu, keyboard access, and focus behavior.
-- Restore the full advisor bar when the results section leaves the viewport.
+- At viewport widths below `768px`, hide the entire floating advisor while the results section intersects the viewport.
+- If the advisor is open when the results section enters, close it before hiding the control.
+- Restore the full advisor trigger when the results section leaves the viewport.
 - Desktop and tablet widths at or above `768px` retain the current advisor presentation.
-- Preference and viewport changes must update the presentation without leaving stale compact-state classes.
+- Viewport changes must update the presentation without leaving stale hidden-state classes.
+
+## Mobile Advisor Bottom Sheet
+
+- At viewport widths below `768px`, open the advisor choices as a bottom sheet rather than a floating popup above a duplicate trigger bar.
+- Anchor the sheet to the bottom edge, span the viewport width, and keep rounded top corners with safe-area-aware bottom padding.
+- Show one “Speak with an Advisor” heading and one close button inside the sheet.
+- Hide the gradient trigger button while the sheet is open; restore it after close.
+- Keep the three existing Call, WhatsApp, and Email choices, their copy, destinations, icons, and visual styling.
+- Keep the dimmed backdrop and allow backdrop click to close.
+- Allow Escape to close, move focus into the sheet when it opens, contain Tab focus within the open sheet, and restore focus to the trigger after close.
+- Expose the open sheet as a modal dialog with an accessible name derived from its heading.
+- Desktop and tablet widths at or above `768px` retain the existing anchored popup behavior rather than the bottom-sheet layout.
 
 ## Trust Qualifier
 
@@ -68,7 +79,7 @@ This change applies to the results section, its count-up controller, and the mob
 ## Accessibility
 
 - Keep the section heading as an `h2` and preserve reading order.
-- The compact advisor control remains a button with its existing menu semantics and accessible label.
+- The advisor trigger remains a button with its existing accessible label; the mobile sheet exposes modal dialog semantics and restores focus on close.
 - Do not add an `aria-live` region to the counters; the final statistics should be read as stable content rather than announcing every frame.
 - Reduced-motion users receive no count-up animation.
 - The qualifier remains real text in the document.
@@ -76,8 +87,9 @@ This change applies to the results section, its count-up controller, and the mob
 ## Verification
 
 - At `1440x900`, confirm the three counters begin together at 35% section visibility, ease to their final values in approximately `1,400ms`, and never replay.
-- At `390x844`, confirm the advisor collapses while the results section is visible, does not cover any card, badge, or qualifier, remains at least `48px`, opens the existing advisor menu, and returns to the full bar after the section leaves.
-- At `768x1024`, confirm the advisor remains full-width and does not use the mobile compact behavior.
+- At `390x844`, confirm the advisor is completely hidden while the results section is visible and cannot cover any card, badge, or qualifier, then returns to the full trigger after the section leaves.
+- Outside the results section at `390x844`, confirm the trigger opens one bottom sheet with no duplicate trigger bar, a dimmed backdrop, all three contact choices, modal semantics, Escape/backdrop close, contained Tab focus, and focus restoration.
+- At `768x1024`, confirm the advisor retains its current anchored popup and does not use the mobile bottom sheet or results-hidden behavior.
 - With reduced motion enabled before load, confirm final values are visible immediately and no count-up animation frame is scheduled.
 - Toggle reduced motion during an active count and confirm the final values appear immediately without replay.
 - Disable or block the count-up script and confirm the HTML still displays `1,200`, `77`, and `21`.
@@ -85,4 +97,4 @@ This change applies to the results section, its count-up controller, and the mob
 
 ## Success Criteria
 
-The section remains visually familiar, but its proof appears at the right moment, settles faster, respects motion preferences, survives JavaScript failure, includes accurate context, and is never obscured by the mobile advisor control.
+The section remains visually familiar, but its proof appears at the right moment, settles faster, respects motion preferences, survives JavaScript failure, includes accurate context, and is never obscured by the mobile advisor. Elsewhere on mobile, the advisor opens as a focused, non-duplicative bottom sheet.
