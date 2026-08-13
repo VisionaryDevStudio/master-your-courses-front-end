@@ -299,6 +299,54 @@
         hsl(var(--surface-track));
     }
 
+    .advisor-booking-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+      border: 1px solid hsl(var(--border) / 0.6);
+      border-radius: 1rem;
+      background: hsl(var(--background));
+      padding: 0.625rem;
+    }
+
+    .advisor-booking-copy {
+      margin: 0.125rem 0.25rem;
+      font-size: 0.75rem;
+      line-height: 1rem;
+    }
+
+    .advisor-booking-primary,
+    .advisor-booking-secondary {
+      display: flex;
+      align-items: center;
+      min-height: 2.75rem;
+      border-radius: 0.75rem;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .advisor-booking-primary {
+      justify-content: space-between;
+      gap: 0.75rem;
+      background: rgb(67 56 202);
+      color: white;
+    }
+
+    .advisor-booking-secondary {
+      justify-content: center;
+      gap: 0.5rem;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .advisor-booking-primary:focus-visible,
+    .advisor-booking-secondary:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgb(99 102 241 / 0.45);
+    }
+
+    .advisor-booking-primary:hover {
+      background: rgb(55 48 163);
+    }
+
     @media (max-width: 767px) {
       html:not(.dark) .surface-hero,
       html:not(.dark) .surface-methodology,
@@ -408,54 +456,6 @@
         margin-top: 0.125rem;
         font-size: 0.6875rem;
         line-height: 0.75rem;
-      }
-
-      .advisor-booking-panel {
-        display: flex;
-        flex-direction: column;
-        gap: 0.625rem;
-        border: 1px solid hsl(var(--border) / 0.6);
-        border-radius: 1rem;
-        background: hsl(var(--background));
-        padding: 0.625rem;
-      }
-
-      .advisor-booking-copy {
-        margin: 0.125rem 0.25rem;
-        font-size: 0.75rem;
-        line-height: 1rem;
-      }
-
-      .advisor-booking-primary,
-      .advisor-booking-secondary {
-        display: flex;
-        align-items: center;
-        min-height: 2.75rem;
-        border-radius: 0.75rem;
-        padding: 0.5rem 0.75rem;
-      }
-
-      .advisor-booking-primary {
-        justify-content: space-between;
-        gap: 0.75rem;
-        background: rgb(67 56 202);
-        color: white;
-      }
-
-      .advisor-booking-secondary {
-        justify-content: center;
-        gap: 0.5rem;
-        color: hsl(var(--muted-foreground));
-      }
-
-      .advisor-booking-primary:focus-visible,
-      .advisor-booking-secondary:focus-visible {
-        outline: none;
-        box-shadow: 0 0 0 3px rgb(99 102 241 / 0.45);
-      }
-
-      .advisor-booking-primary:hover {
-        background: rgb(55 48 163);
       }
 
       #floating-cta-container.advisor-menu-open #floating-cta-backdrop {

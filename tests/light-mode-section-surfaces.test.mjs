@@ -710,19 +710,25 @@ test("uses a booking-first advisor conversion panel in the open mobile sheet", (
   const advisorMenuStart = html.indexOf('id="floating-cta-menu"');
   const advisorMenuEnd = html.indexOf('id="floating-cta-toggle"', advisorMenuStart);
   const advisorMenu = html.slice(advisorMenuStart, advisorMenuEnd);
+  const bookingLinkStart = advisorMenu.indexOf('id="advisor-booking-link"');
+  const bookingLink = advisorMenu.slice(bookingLinkStart, advisorMenu.indexOf("</a>", bookingLinkStart));
+  const whatsappLinkStart = advisorMenu.indexOf('id="advisor-whatsapp-link"');
+  const whatsappLink = advisorMenu.slice(whatsappLinkStart, advisorMenu.indexOf("</a>", whatsappLinkStart));
 
   assert.match(html, /id="floating-cta-handle"[^>]*aria-hidden="true"/);
   assert.match(html, /id="floating-cta-title"[^>]*>[\s\S]*class="md:hidden"[^>]*>How can we help\?<\/span>/);
   assert.match(html, /class="advisor-sheet-subtitle[^>]*>Connect with our academic team\.<\/p>/);
   assert.equal((advisorMenu.match(/id="advisor-booking-link"/g) ?? []).length, 1);
   assert.match(advisorMenu, /id="advisor-booking-link"[^>]*href="https:\/\/cal\.com\/your-booking-link"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/);
+  assert.match(bookingLink, /<span>Book a Consultation<\/span>/);
   assert.match(advisorMenu, /class="advisor-booking-copy[^>]*>Choose a convenient time to discuss your student’s goals\.<\/p>/);
   assert.match(advisorMenu, /BOOKING_URL_PLACEHOLDER: replace this URL with the production scheduling link\./);
   assert.equal((advisorMenu.match(/id="advisor-whatsapp-link"/g) ?? []).length, 1);
   assert.match(advisorMenu, /id="advisor-whatsapp-link"[^>]*href="https:\/\/wa\.me\/18001234567"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/);
+  assert.match(whatsappLink, /<span>Prefer to message us\? <strong>Chat on WhatsApp<\/strong><\/span>/);
   assert.doesNotMatch(advisorMenu, /tel:\+18001234567|mailto:admissions@masteryourcourses\.com|Call an Advisor|Email Admissions/);
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*border-radius:\s*1\.5rem/);
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-booking-primary,\s*\.advisor-booking-secondary\s*\{[\s\S]*min-height:\s*2\.75rem/);
+  assert.match(html, /\.advisor-booking-primary,\s*\.advisor-booking-secondary\s*\{[\s\S]*min-height:\s*2\.75rem/);
   assert.match(html, /@media \(max-width:\s*767px\) and \(prefers-reduced-motion:\s*reduce\)[\s\S]*#floating-cta-menu[\s\S]*transition-duration:\s*0\.01ms/);
   assert.match(html, /@media \(max-width:\s*767px\) and \(prefers-reduced-motion:\s*reduce\)[\s\S]*#floating-cta-container\.advisor-menu-open #floating-cta-menu,[\s\S]*#floating-cta-container\.advisor-menu-open #floating-cta-backdrop/);
 });
@@ -738,10 +744,17 @@ test("polishes the mobile concierge focus treatment and inset geometry", () => {
 });
 
 test("keeps the added concierge hooks constrained at desktop popup widths", () => {
+  const sharedAdvisorStyles = html.slice(0, html.indexOf("@media (max-width: 767px)"));
+
   assert.match(html, /class="advisor-sheet-header[^"]*md:flex[^"]*md:items-center[^"]*md:justify-between/);
   assert.match(html, /class="advisor-booking-panel[^\"]*md:flex[^\"]*md:flex-col[^\"]*md:gap-3/);
   assert.match(html, /class="advisor-booking-primary[^\"]*md:min-h-\[44px\]/);
   assert.match(html, /class="advisor-booking-secondary[^\"]*md:min-h-\[44px\]/);
+  assert.match(sharedAdvisorStyles, /\.advisor-booking-panel\s*\{[\s\S]*display:\s*flex;[\s\S]*border-radius:\s*1rem;[\s\S]*padding:\s*0\.625rem/);
+  assert.match(sharedAdvisorStyles, /\.advisor-booking-primary,\s*\.advisor-booking-secondary\s*\{[\s\S]*display:\s*flex;[\s\S]*min-height:\s*2\.75rem;[\s\S]*border-radius:\s*0\.75rem/);
+  assert.match(sharedAdvisorStyles, /\.advisor-booking-primary\s*\{[\s\S]*background:\s*rgb\(67 56 202\);[\s\S]*color:\s*white/);
+  assert.match(sharedAdvisorStyles, /\.advisor-booking-secondary\s*\{[\s\S]*color:\s*hsl\(var\(--muted-foreground\)\)/);
+  assert.match(sharedAdvisorStyles, /\.advisor-booking-primary:focus-visible,\s*\.advisor-booking-secondary:focus-visible\s*\{[\s\S]*outline:\s*none;[\s\S]*box-shadow:\s*0 0 0 3px/);
 });
 
 test("uses breakpoint-specific visible and accessible advisor headings", () => {
@@ -756,7 +769,7 @@ test("closes the normal-motion mobile advisor faster than it opens", () => {
 });
 
 test("keeps the compact concierge below the recorded mobile height target without changing the desktop popup", () => {
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-booking-primary,\s*\.advisor-booking-secondary\s*\{[\s\S]*min-height:\s*2\.75rem/);
+  assert.match(html, /\.advisor-booking-primary,\s*\.advisor-booking-secondary\s*\{[\s\S]*min-height:\s*2\.75rem/);
   assert.match(html, /\.advisor-sheet-header\s*\{[\s\S]*padding:\s*0\.5rem 3rem 0\.25rem 0\.25rem/);
   assert.match(html, /\.advisor-sheet-header #floating-cta-close\s*\{[\s\S]*position:\s*absolute/);
   assert.match(html, /#floating-cta-title\s*\{[\s\S]*line-height:\s*1\.125rem/);
