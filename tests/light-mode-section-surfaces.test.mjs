@@ -5,6 +5,23 @@ import { runInNewContext } from "node:vm";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 
+function extractCssBlock(source, marker) {
+  const markerIndex = source.indexOf(marker);
+  assert.notEqual(markerIndex, -1, `Missing CSS marker: ${marker}`);
+
+  const openingBrace = source.indexOf("{", markerIndex);
+  assert.notEqual(openingBrace, -1, `Missing opening brace for: ${marker}`);
+
+  let depth = 1;
+  for (let index = openingBrace + 1; index < source.length; index += 1) {
+    if (source[index] === "{") depth += 1;
+    if (source[index] === "}") depth -= 1;
+    if (depth === 0) return source.slice(openingBrace + 1, index);
+  }
+
+  assert.fail(`Missing closing brace for: ${marker}`);
+}
+
 const heroMotionStart = html.indexOf("// Spotlight Effect (Hero Section)");
 const heroMotionEnd = html.indexOf("// Results Count-Up", heroMotionStart);
 const heroMotionSource = html.slice(heroMotionStart, heroMotionEnd);
@@ -749,8 +766,14 @@ test("polishes the mobile concierge focus treatment and inset geometry", () => {
 });
 
 test("centers the mobile advisor heading independently of its close control", () => {
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-sheet-header\s*\{[\s\S]*padding:\s*0\.5rem 3rem 0\.25rem/);
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-sheet-header\s*>\s*div\s*\{[\s\S]*width:\s*100%;[\s\S]*text-align:\s*center/);
+  const mobileMarker = "@media (max-width: 767px)";
+  const mobileCss = extractCssBlock(html, mobileMarker);
+  const sharedCss = html.slice(0, html.indexOf(mobileMarker));
+
+  assert.match(mobileCss, /\.advisor-sheet-header\s*\{[^}]*padding:\s*0\.5rem 3rem 0\.25rem\s*;[^}]*\}/);
+  assert.doesNotMatch(mobileCss, /\.advisor-sheet-header\s*\{[^}]*padding:\s*0\.5rem 3rem 0\.25rem 0\.25rem\s*;/);
+  assert.match(mobileCss, /\.advisor-sheet-header\s*>\s*div\s*\{[^}]*width:\s*100%\s*;[^}]*text-align:\s*center\s*;[^}]*\}/);
+  assert.doesNotMatch(sharedCss, /\.advisor-sheet-header\s*>\s*div\s*\{/);
   assert.match(html, /\.advisor-sheet-header #floating-cta-close\s*\{[\s\S]*position:\s*absolute;[\s\S]*right:\s*0/);
   assert.match(html, /id="floating-cta-close"[^>]*class="[^"]*h-11[^"]*w-11/);
   assert.match(html, /id="floating-cta-close"[\s\S]*?<svg class="lucide w-5 h-5"/);
@@ -795,8 +818,10 @@ test("closes the normal-motion mobile advisor faster than it opens", () => {
 });
 
 test("keeps the compact concierge below the recorded mobile height target without changing the desktop popup", () => {
+  const mobileCss = extractCssBlock(html, "@media (max-width: 767px)");
+
   assert.match(html, /\.advisor-booking-primary,\s*\.advisor-booking-secondary\s*\{[\s\S]*min-height:\s*2\.75rem/);
-  assert.match(html, /\.advisor-sheet-header\s*\{[\s\S]*padding:\s*0\.5rem 3rem 0\.25rem/);
+  assert.match(mobileCss, /\.advisor-sheet-header\s*\{[^}]*padding:\s*0\.5rem 3rem 0\.25rem\s*;[^}]*\}/);
   assert.match(html, /\.advisor-sheet-header #floating-cta-close\s*\{[\s\S]*position:\s*absolute/);
   assert.match(html, /#floating-cta-title\s*\{[\s\S]*line-height:\s*1\.125rem/);
   assert.match(html, /\.advisor-sheet-subtitle\s*\{[\s\S]*line-height:\s*0\.75rem/);
