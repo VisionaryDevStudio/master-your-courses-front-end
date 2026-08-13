@@ -11,8 +11,8 @@ test("uses an accessible three-group university marquee with silent duplicates",
   const section = html.slice(start, end);
   const groups = [...section.matchAll(/<div class="university-logo-group"([^>]*)>([\s\S]*?)<\/div>/g)];
 
-  assert.match(section, /class="university-ribbon-viewport[^"]*"[^>]*tabindex="0"[^>]*role="region"[^>]*aria-label="Universities our students have gained admission to"/);
-  assert.match(section, /class="university-marquee university-ribbon-reveal"/);
+  assert.match(section, /class="university-ribbon-viewport university-ribbon-reveal"[^>]*tabindex="0"[^>]*role="region"[^>]*aria-label="Universities our students have gained admission to"/);
+  assert.doesNotMatch(section, /class="university-marquee university-ribbon-reveal"/);
   assert.equal(groups.length, 3);
   assert.equal((groups[0][2].match(/class="university-logo(?:\s|")/g) ?? []).length, 10);
   assert.doesNotMatch(groups[0][1], /aria-hidden="true"/);
@@ -23,13 +23,13 @@ test("uses an accessible three-group university marquee with silent duplicates",
 });
 
 test("reveals the university ribbon once with reduced-motion protection", () => {
-  assert.match(html, /@media \(prefers-reduced-motion:\s*no-preference\)[\s\S]*\.university-ribbon-reveal\s*\{[\s\S]*opacity:\s*0;[\s\S]*transform:\s*translateY\(0\.75rem\);[\s\S]*transition:[^;]*450ms/);
-  assert.match(html, /\.university-ribbon-reveal\s*\{[\s\S]*translate:\s*0 0\.75rem;[\s\S]*transition:[^;]*translate 450ms/);
-  assert.match(html, /\.university-ribbon-reveal\.is-visible\s*\{[\s\S]*opacity:\s*1;[\s\S]*transform:\s*translateY\(0\)/);
-  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.university-ribbon-reveal\s*\{[\s\S]*opacity:\s*1;[\s\S]*transform:\s*none;[\s\S]*transition:\s*none/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*no-preference\)[\s\S]*\.university-ribbon-reveal\s*\{[\s\S]*transform:\s*translateY\(0\.75rem\);[\s\S]*transition:\s*transform 450ms/);
+  assert.doesNotMatch(html, /\.university-ribbon-reveal\s*\{[^}]*opacity:\s*0/);
+  assert.match(html, /\.university-ribbon-reveal\.is-visible\s*\{\s*transform:\s*translateY\(0\);\s*\}/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.university-ribbon-reveal\s*\{[\s\S]*transform:\s*none;[\s\S]*transition:\s*none/);
   assert.match(html, /document\.querySelectorAll\('\.scroll-reveal, \.university-ribbon-reveal'\)/);
   assert.match(html, /entry\.target\.classList\.add\('is-visible'\);[\s\S]*observer\.unobserve\(entry\.target\)/);
-  assert.match(html, /const universityRibbonObserver = new IntersectionObserver\([\s\S]*threshold:\s*0[\s\S]*universityRibbonObserver\.observe\(universityRibbon\)/);
+  assert.doesNotMatch(html, /universityRibbonObserver/);
 });
 
 test("defines the approved university marquee density and reduced-motion layout", () => {
