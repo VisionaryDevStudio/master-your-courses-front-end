@@ -760,7 +760,8 @@ test("keeps the added concierge hooks constrained at desktop popup widths", () =
   const sharedAdvisorStyles = html.slice(0, html.indexOf("@media (max-width: 767px)"));
 
   assert.match(html, /class="advisor-sheet-header[^"]*md:flex[^"]*md:items-center[^"]*md:justify-between/);
-  assert.match(html, /class="advisor-booking-panel[^\"]*md:flex[^\"]*md:flex-col[^\"]*md:gap-3/);
+  assert.match(html, /class="advisor-booking-panel[^\"]*md:flex[^\"]*md:flex-col/);
+  assert.doesNotMatch(html, /class="advisor-booking-panel[^"]*md:gap-3/);
   assert.doesNotMatch(html, /id="advisor-booking-link"[^>]*class="[^"]*md:min-h-\[44px\]/);
   assert.match(html, /class="advisor-booking-secondary[^\"]*md:min-h-\[44px\]/);
   assert.match(sharedAdvisorStyles, /\.advisor-booking-panel\s*\{[\s\S]*display:\s*flex;[\s\S]*border-radius:\s*1rem/);
