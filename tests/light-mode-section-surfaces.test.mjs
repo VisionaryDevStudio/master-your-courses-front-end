@@ -794,7 +794,8 @@ test("keeps the compact concierge below the recorded mobile height target withou
   assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-menu\s*\{[\s\S]*padding:\s*0 0\.75rem max\(0\.25rem, env\(safe-area-inset-bottom\)\)/);
   assert.match(html, /id="floating-cta-handle"[^>]*class="[^"]*md:hidden/);
   assert.match(html, /class="advisor-sheet-subtitle[^"]*md:hidden/);
-  assert.match(html, /id="floating-cta-close"[^>]*class="[^"]*md:h-auto[^"]*md:w-auto[^"]*md:p-1/);
+  assert.match(html, /id="floating-cta-close"[^>]*class="[^"]*h-11[^"]*w-11/);
+  assert.doesNotMatch(html, /id="floating-cta-close"[^>]*class="[^"]*md:h-auto|id="floating-cta-close"[^>]*class="[^"]*md:w-auto|id="floating-cta-close"[^>]*class="[^"]*md:p-1/);
 });
 
 test("scopes reduced concierge motion to mobile open and closing states", () => {
