@@ -706,38 +706,42 @@ test("hides the advisor over mobile results and uses a single accessible bottom 
   assert.doesNotMatch(html, /results-advisor-compact/);
 });
 
-test("uses the compact premium concierge presentation only for the open mobile advisor", () => {
+test("uses a booking-first advisor conversion panel in the open mobile sheet", () => {
+  const advisorMenuStart = html.indexOf('id="floating-cta-menu"');
+  const advisorMenuEnd = html.indexOf('id="floating-cta-toggle"', advisorMenuStart);
+  const advisorMenu = html.slice(advisorMenuStart, advisorMenuEnd);
+
   assert.match(html, /id="floating-cta-handle"[^>]*aria-hidden="true"/);
   assert.match(html, /id="floating-cta-title"[^>]*>[\s\S]*class="md:hidden"[^>]*>How can we help\?<\/span>/);
   assert.match(html, /class="advisor-sheet-subtitle[^>]*>Connect with our academic team\.<\/p>/);
-  assert.equal((html.match(/class="advisor-contact-row/g) ?? []).length, 3);
-  assert.equal((html.match(/class="advisor-contact-arrow/g) ?? []).length, 3);
-  assert.match(html, /class="advisor-contact-list[^"]*divide-y/);
+  assert.equal((advisorMenu.match(/id="advisor-booking-link"/g) ?? []).length, 1);
+  assert.match(advisorMenu, /id="advisor-booking-link"[^>]*href="https:\/\/cal\.com\/your-booking-link"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/);
+  assert.match(advisorMenu, /class="advisor-booking-copy[^>]*>Choose a convenient time to discuss your student’s goals\.<\/p>/);
+  assert.match(advisorMenu, /BOOKING_URL_PLACEHOLDER: replace this URL with the production scheduling link\./);
+  assert.equal((advisorMenu.match(/id="advisor-whatsapp-link"/g) ?? []).length, 1);
+  assert.match(advisorMenu, /id="advisor-whatsapp-link"[^>]*href="https:\/\/wa\.me\/18001234567"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/);
+  assert.doesNotMatch(advisorMenu, /tel:\+18001234567|mailto:admissions@masteryourcourses\.com|Call an Advisor|Email Admissions/);
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*border-radius:\s*1\.5rem/);
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-contact-row\s*\{[\s\S]*min-height:\s*4rem/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-booking-primary,\s*\.advisor-booking-secondary\s*\{[\s\S]*min-height:\s*2\.75rem/);
   assert.match(html, /@media \(max-width:\s*767px\) and \(prefers-reduced-motion:\s*reduce\)[\s\S]*#floating-cta-menu[\s\S]*transition-duration:\s*0\.01ms/);
   assert.match(html, /@media \(max-width:\s*767px\) and \(prefers-reduced-motion:\s*reduce\)[\s\S]*#floating-cta-container\.advisor-menu-open #floating-cta-menu,[\s\S]*#floating-cta-container\.advisor-menu-open #floating-cta-backdrop/);
-  assert.match(html, /href="tel:\+18001234567"/);
-  assert.match(html, /href="https:\/\/wa\.me\/18001234567"/);
-  assert.match(html, /href="mailto:admissions@masteryourcourses\.com"/);
 });
 
 test("polishes the mobile concierge focus treatment and inset geometry", () => {
   assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-menu\s*\{[\s\S]*left:\s*0\.5rem;[\s\S]*right:\s*0\.5rem;[\s\S]*bottom:\s*0\.5rem;[\s\S]*width:\s*auto/);
   assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-menu\s*\{[\s\S]*border-radius:\s*1\.5rem/);
-  assert.match(html, /\.advisor-contact-row:focus-visible\s*\{[\s\S]*outline:\s*none;[\s\S]*box-shadow:\s*inset 0 0 0 2px/);
-  assert.match(html, /\.advisor-contact-list\s*\{[\s\S]*border:\s*1px solid hsl\(var\(--border\) \/ 0\.6\)/);
+  assert.match(html, /\.advisor-booking-primary:focus-visible,[\s\S]*\.advisor-booking-secondary:focus-visible\s*\{[\s\S]*outline:\s*none;[\s\S]*box-shadow:\s*0 0 0 3px/);
+  assert.match(html, /\.advisor-booking-panel\s*\{[\s\S]*border:\s*1px solid hsl\(var\(--border\) \/ 0\.6\)/);
   assert.match(html, /#floating-cta-handle\s*\{[\s\S]*top:\s*0\.375rem/);
   assert.match(html, /\.advisor-sheet-header #floating-cta-close\s*\{[\s\S]*top:\s*0/);
-  assert.match(html, /class="advisor-contact-list[^\"]*divide-slate-200\/50/);
+  assert.match(html, /class="advisor-booking-panel[^\"]*md:flex[^\"]*md:flex-col/);
 });
 
 test("keeps the added concierge hooks constrained at desktop popup widths", () => {
   assert.match(html, /class="advisor-sheet-header[^"]*md:flex[^"]*md:items-center[^"]*md:justify-between/);
-  assert.equal((html.match(/class="advisor-contact-row[^"]*md:flex[^"]*md:items-center/g) ?? []).length, 3);
-  assert.equal((html.match(/class="advisor-contact-icon[^"]*md:flex[^"]*md:items-center[^"]*md:justify-center/g) ?? []).length, 3);
-  assert.equal((html.match(/class="advisor-contact-arrow[^"]*md:hidden/g) ?? []).length, 3);
-  assert.match(html, /class="advisor-contact-list[^"]*md:flex[^"]*md:flex-col[^"]*md:gap-2/);
+  assert.match(html, /class="advisor-booking-panel[^\"]*md:flex[^\"]*md:flex-col[^\"]*md:gap-3/);
+  assert.match(html, /class="advisor-booking-primary[^\"]*md:min-h-\[44px\]/);
+  assert.match(html, /class="advisor-booking-secondary[^\"]*md:min-h-\[44px\]/);
 });
 
 test("uses breakpoint-specific visible and accessible advisor headings", () => {
@@ -752,7 +756,7 @@ test("closes the normal-motion mobile advisor faster than it opens", () => {
 });
 
 test("keeps the compact concierge below the recorded mobile height target without changing the desktop popup", () => {
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-contact-row\s*\{[\s\S]*min-height:\s*4rem/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-booking-primary,\s*\.advisor-booking-secondary\s*\{[\s\S]*min-height:\s*2\.75rem/);
   assert.match(html, /\.advisor-sheet-header\s*\{[\s\S]*padding:\s*0\.5rem 3rem 0\.25rem 0\.25rem/);
   assert.match(html, /\.advisor-sheet-header #floating-cta-close\s*\{[\s\S]*position:\s*absolute/);
   assert.match(html, /#floating-cta-title\s*\{[\s\S]*line-height:\s*1\.125rem/);
@@ -814,7 +818,7 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
       contains: token => classes.has(token),
     };
   };
-  const focusableElements = ["floating-cta-close", "advisor-phone", "advisor-whatsapp", "advisor-email"].map(id => ({
+  const focusableElements = ["floating-cta-close", "advisor-booking-link", "advisor-whatsapp-link"].map(id => ({
     id,
     disabled: false,
     focused: false,
