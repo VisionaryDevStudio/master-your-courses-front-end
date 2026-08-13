@@ -979,6 +979,7 @@ function createResultsAdvisorHarness({ mobile = true } = {}) {
   });
   return {
     container: elements["floating-cta-container"],
+    ping: elements["floating-cta-ping"],
     toggle: elements["floating-cta-toggle"],
     menu: elements["floating-cta-menu"],
     focusableElements,
@@ -1062,4 +1063,17 @@ test("keeps desktop advisor popup behavior when a media change reaches 768px", (
   const desktop = createResultsAdvisorHarness({ mobile: false });
   desktop.intersect(true);
   assert.equal(desktop.container.classList.contains("results-advisor-hidden"), false);
+});
+
+test("keeps the advisor ping hidden after mobile close and restores it at desktop width", () => {
+  const mobile = createResultsAdvisorHarness();
+
+  mobile.toggleMenu();
+  assert.equal(mobile.ping.style.display, "none");
+
+  mobile.toggleMenu();
+  assert.equal(mobile.ping.style.display, "none");
+
+  mobile.mediaChange(false);
+  assert.equal(mobile.ping.style.display, "flex");
 });
