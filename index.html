@@ -565,10 +565,7 @@
     .university-ribbon-focus-surface {
       border-radius: 0.25rem;
     }
-    .university-ribbon-focus-surface:focus-visible {
-      outline: none;
-    }
-    .university-ribbon-focus-surface:focus-visible::after {
+    .university-ribbon-focus-surface:focus-within::after {
       content: "";
       position: absolute;
       inset: 0;
@@ -604,7 +601,6 @@
       object-fit: contain;
       flex: 0 0 auto;
     }
-    .university-ribbon-focus-surface:focus .university-marquee,
     .university-ribbon-viewport:focus .university-marquee {
       animation-play-state: paused;
     }
@@ -968,12 +964,12 @@
       
       <div
         class="university-ribbon-focus-surface relative w-full max-w-[1400px] mx-auto"
-        tabindex="0"
-        role="region"
-        aria-label="Universities our students have gained admission to"
       >
         <div
           class="university-ribbon-viewport"
+          tabindex="0"
+          role="region"
+          aria-label="Universities our students have gained admission to"
           style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);"
         >
           <div class="university-marquee university-ribbon-reveal">
