@@ -748,6 +748,14 @@ test("polishes the mobile concierge focus treatment and inset geometry", () => {
   assert.match(html, /class="advisor-booking-panel[^\"]*md:flex[^\"]*md:flex-col/);
 });
 
+test("centers the mobile advisor heading independently of its close control", () => {
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-sheet-header\s*\{[\s\S]*padding:\s*0\.5rem 3rem 0\.25rem/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-sheet-header\s*>\s*div\s*\{[\s\S]*width:\s*100%;[\s\S]*text-align:\s*center/);
+  assert.match(html, /\.advisor-sheet-header #floating-cta-close\s*\{[\s\S]*position:\s*absolute;[\s\S]*right:\s*0/);
+  assert.match(html, /id="floating-cta-close"[^>]*class="[^"]*h-11[^"]*w-11/);
+  assert.match(html, /id="floating-cta-close"[\s\S]*?<svg class="lucide w-5 h-5"/);
+});
+
 test("uses restrained focus treatments for the mobile advisor controls", () => {
   assert.match(html, /#floating-cta-close:focus-visible\s*\{[\s\S]*outline:\s*none;[\s\S]*box-shadow:\s*inset 0 0 0 2px rgb\(99 102 241 \/ 0\.5\)/);
   assert.match(html, /#floating-cta-toggle:focus-visible\s*\{[\s\S]*outline:\s*none;[\s\S]*box-shadow:[^;]*0 0 0 2px hsl\(var\(--background\)\)[^;]*0 0 0 4px rgb\(99 102 241 \/ 0\.42\)/);
@@ -788,7 +796,7 @@ test("closes the normal-motion mobile advisor faster than it opens", () => {
 
 test("keeps the compact concierge below the recorded mobile height target without changing the desktop popup", () => {
   assert.match(html, /\.advisor-booking-primary,\s*\.advisor-booking-secondary\s*\{[\s\S]*min-height:\s*2\.75rem/);
-  assert.match(html, /\.advisor-sheet-header\s*\{[\s\S]*padding:\s*0\.5rem 3rem 0\.25rem 0\.25rem/);
+  assert.match(html, /\.advisor-sheet-header\s*\{[\s\S]*padding:\s*0\.5rem 3rem 0\.25rem/);
   assert.match(html, /\.advisor-sheet-header #floating-cta-close\s*\{[\s\S]*position:\s*absolute/);
   assert.match(html, /#floating-cta-title\s*\{[\s\S]*line-height:\s*1\.125rem/);
   assert.match(html, /\.advisor-sheet-subtitle\s*\{[\s\S]*line-height:\s*0\.75rem/);
