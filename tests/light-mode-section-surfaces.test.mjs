@@ -22,6 +22,16 @@ test("uses an accessible three-group university marquee with silent duplicates",
   }
 });
 
+test("reveals the university ribbon once with reduced-motion protection", () => {
+  assert.match(html, /@media \(prefers-reduced-motion:\s*no-preference\)[\s\S]*\.university-ribbon-reveal\s*\{[\s\S]*opacity:\s*0;[\s\S]*transform:\s*translateY\(0\.75rem\);[\s\S]*transition:[^;]*450ms/);
+  assert.match(html, /\.university-ribbon-reveal\s*\{[\s\S]*translate:\s*0 0\.75rem;[\s\S]*transition:[^;]*translate 450ms/);
+  assert.match(html, /\.university-ribbon-reveal\.is-visible\s*\{[\s\S]*opacity:\s*1;[\s\S]*transform:\s*translateY\(0\)/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.university-ribbon-reveal\s*\{[\s\S]*opacity:\s*1;[\s\S]*transform:\s*none;[\s\S]*transition:\s*none/);
+  assert.match(html, /document\.querySelectorAll\('\.scroll-reveal, \.university-ribbon-reveal'\)/);
+  assert.match(html, /entry\.target\.classList\.add\('is-visible'\);[\s\S]*observer\.unobserve\(entry\.target\)/);
+  assert.match(html, /const universityRibbonObserver = new IntersectionObserver\([\s\S]*threshold:\s*0[\s\S]*universityRibbonObserver\.observe\(universityRibbon\)/);
+});
+
 test("defines the approved university marquee density and reduced-motion layout", () => {
   assert.match(html, /@keyframes university-marquee\s*\{[\s\S]*to\s*\{\s*transform:\s*translateX\(calc\(-100% \/ 3\)\)/);
   assert.match(html, /\.university-marquee\s*\{[\s\S]*animation:\s*university-marquee 40s linear infinite;[\s\S]*opacity:\s*0\.7/);
