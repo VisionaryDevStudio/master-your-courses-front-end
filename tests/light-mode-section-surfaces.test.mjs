@@ -849,7 +849,26 @@ test("scopes reduced concierge motion to mobile open and closing states", () => 
 });
 
 test("keeps the closed mobile advisor circular while it transitions into the results-hidden state", () => {
-  const mobileCss = html.match(/@media \(max-width:\s*767px\)\s*\{[\s\S]*?\n\s*\}/)?.[0] ?? "";
+  const triggerStart = html.indexOf('id="floating-cta-toggle"');
+  const triggerEnd = html.indexOf('</button>', triggerStart);
+  const trigger = html.slice(triggerStart, triggerEnd);
+  const mobileStart = html.indexOf('@media (max-width: 767px)');
+  const nextMedia = html.indexOf('@media ', mobileStart + 1);
+  const mobileStyles = html.slice(mobileStart, nextMedia);
+
+  assert.match(trigger, /class="[^"]*advisor-trigger-calendar[^"]*"[^>]*aria-hidden="true"/);
+  assert.match(trigger, /class="[^"]*advisor-trigger-phone[^"]*"[^>]*aria-hidden="true"/);
+  assert.match(trigger, /id="floating-cta-ping"/);
+  assert.match(mobileStyles, /\.advisor-trigger-calendar\s*\{[\s\S]*display:\s*block/);
+  assert.match(mobileStyles, /\.advisor-trigger-phone,[\s\S]*#floating-cta-ping\s*\{[\s\S]*display:\s*none/);
+  assert.match(mobileStyles, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle\s*\{[\s\S]*border:\s*2px solid rgb\(255 255 255 \/ 0\.72\);[\s\S]*box-shadow:\s*0 10px 28px rgb\(67 56 202 \/ 0\.24\)/);
+  assert.match(mobileStyles, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle:focus-visible\s*\{[\s\S]*box-shadow:[^;]*0 0 0 3px rgb\(99 102 241 \/ 0\.5\)/);
+  assert.match(mobileStyles, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle:active\s*\{[\s\S]*transform:\s*scale\(0\.96\)/);
+  const sharedStyles = html.slice(0, mobileStart);
+  assert.match(sharedStyles, /\.advisor-trigger-calendar\s*\{\s*display:\s*none;\s*\}/);
+  assert.doesNotMatch(sharedStyles, /\.advisor-trigger-phone\s*\{[\s\S]*display:\s*none|#floating-cta-ping\s*\{[\s\S]*display:\s*none/);
+
+  const mobileCss = mobileStyles;
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*#floating-cta-container:not\(\.advisor-menu-open\)\s*\{[\s\S]*left:\s*auto;[\s\S]*width:\s*3\.5rem/);
   assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle\s*\{[\s\S]*width:\s*3\.5rem;[\s\S]*height:\s*3\.5rem/);
   assert.match(html, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle-content\s*\{[\s\S]*width:\s*3\.5rem;[\s\S]*height:\s*3\.5rem;[\s\S]*padding:\s*0/);

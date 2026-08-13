@@ -365,6 +365,10 @@
         0 0 0 4px rgb(99 102 241 / 0.42);
     }
 
+    .advisor-trigger-calendar {
+      display: none;
+    }
+
     .advisor-booking-primary:hover {
       background: rgb(55 48 163);
     }
@@ -384,6 +388,27 @@
       #floating-cta-container:not(.advisor-menu-open) #floating-cta-toggle {
         width: 3.5rem;
         height: 3.5rem;
+        border: 2px solid rgb(255 255 255 / 0.72);
+        box-shadow: 0 10px 28px rgb(67 56 202 / 0.24);
+      }
+
+      .advisor-trigger-calendar {
+        display: block;
+      }
+
+      .advisor-trigger-phone,
+      #floating-cta-ping {
+        display: none;
+      }
+
+      #floating-cta-container:not(.advisor-menu-open) #floating-cta-toggle:focus-visible {
+        box-shadow:
+          0 10px 28px rgb(67 56 202 / 0.24),
+          0 0 0 3px rgb(99 102 241 / 0.5);
+      }
+
+      #floating-cta-container:not(.advisor-menu-open) #floating-cta-toggle:active {
+        transform: scale(0.96);
       }
 
       #floating-cta-container:not(.advisor-menu-open) #floating-cta-toggle-content {
@@ -2929,7 +2954,15 @@
       <div id="floating-cta-toggle-content" class="relative px-6 py-4 flex items-center justify-center gap-3">
         <div class="relative">
           <div>
-            <svg class="lucide w-5 h-5 text-white" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <svg class="lucide advisor-trigger-calendar w-5 h-5 text-white" aria-hidden="true" viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <svg class="lucide advisor-trigger-phone w-5 h-5 text-white" aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
           </div>
           
           <!-- Ping animation indicator when closed -->
@@ -3168,7 +3201,7 @@
       floatingCtaBackdrop?.classList.toggle('opacity-0', !isCtaOpen);
       floatingCtaBackdrop?.classList.toggle('invisible', !isCtaOpen);
       floatingCtaChevron?.classList.toggle('rotate-180', isCtaOpen);
-      if (floatingCtaPing) floatingCtaPing.style.display = isCtaOpen ? 'none' : 'flex';
+      if (floatingCtaPing) floatingCtaPing.style.display = isCtaOpen || resultsAdvisorMedia.matches ? 'none' : 'flex';
       syncResultsAdvisorState();
       if (isCtaOpen) {
         getAdvisorFocusableElements()[0]?.focus();
@@ -3201,6 +3234,7 @@
     }
 
     resultsAdvisorMedia.addEventListener('change', () => {
+      if (floatingCtaPing) floatingCtaPing.style.display = isCtaOpen || resultsAdvisorMedia.matches ? 'none' : 'flex';
       if (resultsAdvisorMedia.matches && resultsSectionIntersecting && isCtaOpen) {
         setFloatingCtaOpen(false, { restoreFocus: false });
       }
