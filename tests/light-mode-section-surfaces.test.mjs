@@ -1145,3 +1145,21 @@ test("keeps the advisor ping hidden after mobile close and restores it at deskto
   mobile.mediaChange(false);
   assert.equal(mobile.ping.style.display, "flex");
 });
+
+test("uses the premium methodology card system without saturated utility bars", () => {
+  const section = html.match(/<section[^>]*id="methodology-section"[\s\S]*?<\/section>/)?.[0] ?? "";
+  assert.match(section, /class="[^"]*methodology-grid/);
+  assert.equal((section.match(/class="[^"]*methodology-card\b/g) ?? []).length, 6);
+  assert.equal((section.match(/methodology-card-accent/g) ?? []).length, 6);
+  assert.equal((section.match(/methodology-icon/g) ?? []).length, 6);
+  assert.equal((section.match(/methodology-tier/g) ?? []).length, 6);
+  assert.doesNotMatch(section, /h-2 w-full bg-(?:blue|indigo|red|emerald|pink|purple)-500/);
+  assert.match(section, />Clear Progress Tracking<\/h3>/);
+  assert.doesNotMatch(section, />Clear Progress Tracking Dashboard<\/h3>/);
+});
+
+test("keeps methodology cards balanced across responsive layouts", () => {
+  assert.match(html, /\.methodology-card\s*\{[\s\S]*border-radius:[\s\S]*box-shadow:/);
+  assert.match(html, /\.methodology-card-accent\s*\{[\s\S]*height:\s*(?:3px|0\.25rem)/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.methodology-card-body\s*\{[\s\S]*padding:/);
+});

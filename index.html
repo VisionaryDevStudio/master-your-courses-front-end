@@ -267,6 +267,68 @@
         hsl(var(--surface-indigo));
     }
 
+    .methodology-card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      border: 1px solid rgb(203 213 225 / 0.82);
+      border-radius: 1.5rem;
+      background: rgb(255 255 255 / 0.9);
+      box-shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 14px 34px rgb(79 70 229 / 0.055);
+    }
+
+    .methodology-card-accent {
+      height: 3px;
+      background: linear-gradient(90deg, #4f46e5, #6366f1 62%, #818cf8);
+    }
+
+    .methodology-card-body {
+      display: flex;
+      min-height: 100%;
+      flex: 1;
+      flex-direction: column;
+      padding: 2rem;
+    }
+
+    .methodology-icon {
+      display: flex;
+      width: 3.5rem;
+      height: 3.5rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 1rem;
+    }
+
+    .icon-core-blue { background: rgb(224 231 255 / 0.78); color: #4338ca; }
+    .icon-core-indigo { background: rgb(238 242 255 / 0.88); color: #4f46e5; }
+    .icon-core-sky { background: rgb(224 242 254 / 0.78); color: #2563eb; }
+    .icon-support-cyan { background: rgb(207 250 254 / 0.7); color: #0e7490; }
+    .icon-support-violet { background: rgb(237 233 254 / 0.78); color: #6d28d9; }
+
+    .methodology-tier {
+      margin: 1.25rem 0 .5rem;
+      color: #4f46e5;
+      font-size: .6875rem;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    html.dark .methodology-card {
+      border-color: rgb(51 65 85 / .85);
+      background: rgb(24 24 27 / .92);
+      box-shadow: 0 16px 40px rgb(0 0 0 / .18);
+    }
+
+    html.dark .methodology-tier { color: #a5b4fc; }
+    html.dark .icon-core-blue { background: rgb(49 46 129 / 0.36); color: #a5b4fc; }
+    html.dark .icon-core-indigo { background: rgb(67 56 202 / 0.28); color: #c7d2fe; }
+    html.dark .icon-core-sky { background: rgb(3 105 161 / 0.28); color: #7dd3fc; }
+    html.dark .icon-support-cyan { background: rgb(14 116 144 / 0.3); color: #a5f3fc; }
+    html.dark .icon-support-violet { background: rgb(109 40 217 / 0.28); color: #ddd6fe; }
+
     html:not(.dark) .surface-mentors {
       background:
         radial-gradient(circle at 18% 12%, rgb(168 85 247 / 0.06), transparent 28rem),
@@ -374,6 +436,8 @@
     }
 
     @media (max-width: 767px) {
+      .methodology-card-body { padding: 1.5rem; }
+
       html:not(.dark) .surface-hero,
       html:not(.dark) .surface-methodology,
       html:not(.dark) .surface-mentors {
@@ -1023,7 +1087,7 @@
     </section>
 
     <!-- ----------------- Methodology ----------------- -->
-    <section class="surface-methodology section-space-major relative overflow-hidden bg-slate-50 dark:bg-zinc-950 border-b border-black/5 dark:border-white/5">
+    <section id="methodology-section" class="surface-methodology section-space-major relative overflow-hidden bg-slate-50 dark:bg-zinc-950 border-b border-black/5 dark:border-white/5">
       <div class="max-w-7xl mx-auto px-6 relative z-10">
         <div class="text-center section-intro-gap">
           <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400 text-sm font-bold uppercase tracking-wider mb-6 font-display">Our Methodology</span>
@@ -1031,90 +1095,96 @@
           <p class="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">We replace generic tutoring with targeted, highly efficient strategies that drive real results.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div class="methodology-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
            <!-- Card 1: Elite Tutors -->
-           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
-             <div class="h-2 w-full bg-blue-500"></div>
-             <div class="p-8 flex flex-col flex-1">
-               <div class="w-14 h-14 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+           <article class="methodology-card" data-methodology-index="0">
+             <div class='methodology-card-accent' aria-hidden="true"></div>
+             <div class='methodology-card-body'>
+               <div class='methodology-icon icon-core-blue' aria-hidden="true">
                  <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
                </div>
+               <p class='methodology-tier'>Core Method</p>
                <div class="flex-1">
                  <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Elite Tutors</h3>
-                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">Top 1% mentors from world-renowned universities who understand exactly what it takes to excel.</p>
+                 <p class="methodology-description text-sm md:text-base text-muted-foreground leading-relaxed">Top 1% mentors from world-renowned universities who understand exactly what it takes to excel.</p>
                </div>
              </div>
-           </div>
+           </article>
            
            <!-- Card 2: Personalized Plans -->
-           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
-             <div class="h-2 w-full bg-indigo-500"></div>
-             <div class="p-8 flex flex-col flex-1">
-               <div class="w-14 h-14 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+           <article class="methodology-card" data-methodology-index="1">
+             <div class='methodology-card-accent' aria-hidden="true"></div>
+             <div class='methodology-card-body'>
+               <div class='methodology-icon icon-core-indigo' aria-hidden="true">
                  <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                </div>
+               <p class='methodology-tier'>Core Method</p>
                <div class="flex-1">
                  <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Personalized Plans</h3>
-                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">We identify exactly where a student is struggling and focus entirely on those gaps, eliminating wasted time.</p>
+                 <p class="methodology-description text-sm md:text-base text-muted-foreground leading-relaxed">We identify exactly where a student is struggling and focus entirely on those gaps, eliminating wasted time.</p>
                </div>
              </div>
-           </div>
+           </article>
            
            <!-- Card 3: Weekly Assessments -->
-           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
-             <div class="h-2 w-full bg-red-500"></div>
-             <div class="p-8 flex flex-col flex-1">
-               <div class="w-14 h-14 bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+           <article class="methodology-card" data-methodology-index="2">
+             <div class='methodology-card-accent' aria-hidden="true"></div>
+             <div class='methodology-card-body'>
+               <div class='methodology-icon icon-core-sky' aria-hidden="true">
                  <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
                </div>
+               <p class='methodology-tier'>Core Method</p>
                <div class="flex-1">
                  <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Weekly Assessments</h3>
-                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">Rigorous mock exams and weekly checkpoints that perfectly mirror actual test formats to ensure steady growth.</p>
+                 <p class="methodology-description text-sm md:text-base text-muted-foreground leading-relaxed">Rigorous mock exams and weekly checkpoints that perfectly mirror actual test formats to ensure steady growth.</p>
                </div>
              </div>
-           </div>
+           </article>
            
            <!-- Card 4: Comprehensive Resources -->
-           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
-             <div class="h-2 w-full bg-emerald-500"></div>
-             <div class="p-8 flex flex-col flex-1">
-               <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+           <article class="methodology-card" data-methodology-index="3">
+             <div class='methodology-card-accent' aria-hidden="true"></div>
+             <div class='methodology-card-body'>
+               <div class='methodology-icon icon-support-cyan' aria-hidden="true">
                  <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                </div>
+               <p class='methodology-tier'>Ongoing Support</p>
                <div class="flex-1">
                  <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Comprehensive Resources</h3>
-                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">No fluff or busywork. Access a curated library of high-impact study materials designed to directly increase scores.</p>
+                 <p class="methodology-description text-sm md:text-base text-muted-foreground leading-relaxed">No fluff or busywork. Access a curated library of high-impact study materials designed to directly increase scores.</p>
                </div>
              </div>
-           </div>
+           </article>
 
            <!-- Card 5: Supportive Community -->
-           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
-             <div class="h-2 w-full bg-pink-500"></div>
-             <div class="p-8 flex flex-col flex-1">
-               <div class="w-14 h-14 bg-pink-100 dark:bg-pink-500/20 text-pink-600 dark:text-pink-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+           <article class="methodology-card" data-methodology-index="4">
+             <div class='methodology-card-accent' aria-hidden="true"></div>
+             <div class='methodology-card-body'>
+               <div class='methodology-icon icon-support-violet' aria-hidden="true">
                  <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                </div>
+               <p class='methodology-tier'>Ongoing Support</p>
                <div class="flex-1">
                  <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Supportive Community</h3>
-                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">Join a network of highly motivated peers. Collaborate, ask questions, and grow together in a positive environment.</p>
+                 <p class="methodology-description text-sm md:text-base text-muted-foreground leading-relaxed">Join a network of highly motivated peers. Collaborate, ask questions, and grow together in a positive environment.</p>
                </div>
              </div>
-           </div>
+           </article>
 
            <!-- Card 6: Progress Tracking Dashboard -->
-           <div class="scroll-reveal group flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
-             <div class="h-2 w-full bg-purple-500"></div>
-             <div class="p-8 flex flex-col flex-1">
-               <div class="w-14 h-14 bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center mb-6 shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
+           <article class="methodology-card" data-methodology-index="5">
+             <div class='methodology-card-accent' aria-hidden="true"></div>
+             <div class='methodology-card-body'>
+               <div class='methodology-icon icon-support-cyan' aria-hidden="true">
                  <svg class="lucide w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
                </div>
+               <p class='methodology-tier'>Ongoing Support</p>
                <div class="flex-1">
-                 <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Clear Progress Tracking Dashboard</h3>
-                 <p class="text-sm md:text-base text-muted-foreground leading-relaxed">See exactly how your child is improving with real-time transparent dashboards. Get full visibility into mastery levels.</p>
+                 <h3 class="text-xl font-bold mb-3 text-foreground font-display tracking-tight">Clear Progress Tracking</h3>
+                 <p class="methodology-description text-sm md:text-base text-muted-foreground leading-relaxed">See exactly how your child is improving with real-time transparent dashboards. Get full visibility into mastery levels.</p>
                </div>
              </div>
-           </div>
+           </article>
         </div>
       </div>
     </section>
