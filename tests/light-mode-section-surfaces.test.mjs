@@ -713,13 +713,23 @@ test("uses the compact premium concierge presentation only for the open mobile a
   assert.equal((html.match(/class="advisor-contact-row/g) ?? []).length, 3);
   assert.equal((html.match(/class="advisor-contact-arrow/g) ?? []).length, 3);
   assert.match(html, /class="advisor-contact-list[^"]*divide-y/);
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*border-radius:\s*1\.5rem 1\.5rem 0 0/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*border-radius:\s*1\.5rem/);
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-contact-row\s*\{[\s\S]*min-height:\s*4rem/);
   assert.match(html, /@media \(max-width:\s*767px\) and \(prefers-reduced-motion:\s*reduce\)[\s\S]*#floating-cta-menu[\s\S]*transition-duration:\s*0\.01ms/);
   assert.match(html, /@media \(max-width:\s*767px\) and \(prefers-reduced-motion:\s*reduce\)[\s\S]*#floating-cta-container\.advisor-menu-open #floating-cta-menu,[\s\S]*#floating-cta-container\.advisor-menu-open #floating-cta-backdrop/);
   assert.match(html, /href="tel:\+18001234567"/);
   assert.match(html, /href="https:\/\/wa\.me\/18001234567"/);
   assert.match(html, /href="mailto:admissions@masteryourcourses\.com"/);
+});
+
+test("polishes the mobile concierge focus treatment and inset geometry", () => {
+  assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-menu\s*\{[\s\S]*left:\s*0\.5rem;[\s\S]*right:\s*0\.5rem;[\s\S]*bottom:\s*0\.5rem;[\s\S]*width:\s*auto/);
+  assert.match(html, /#floating-cta-container\.advisor-menu-open #floating-cta-menu\s*\{[\s\S]*border-radius:\s*1\.5rem/);
+  assert.match(html, /\.advisor-contact-row:focus-visible\s*\{[\s\S]*outline:\s*none;[\s\S]*box-shadow:\s*inset 0 0 0 2px/);
+  assert.match(html, /\.advisor-contact-list\s*\{[\s\S]*border:\s*1px solid hsl\(var\(--border\) \/ 0\.6\)/);
+  assert.match(html, /#floating-cta-handle\s*\{[\s\S]*top:\s*0\.375rem/);
+  assert.match(html, /\.advisor-sheet-header #floating-cta-close\s*\{[\s\S]*top:\s*0/);
+  assert.match(html, /class="advisor-contact-list[^\"]*divide-slate-200\/50/);
 });
 
 test("keeps the added concierge hooks constrained at desktop popup widths", () => {
@@ -743,7 +753,7 @@ test("closes the normal-motion mobile advisor faster than it opens", () => {
 
 test("keeps the compact concierge below the recorded mobile height target without changing the desktop popup", () => {
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.advisor-contact-row\s*\{[\s\S]*min-height:\s*4rem/);
-  assert.match(html, /\.advisor-sheet-header\s*\{[\s\S]*padding:\s*0\.375rem 3rem 0\.125rem 0\.125rem/);
+  assert.match(html, /\.advisor-sheet-header\s*\{[\s\S]*padding:\s*0\.5rem 3rem 0\.25rem 0\.25rem/);
   assert.match(html, /\.advisor-sheet-header #floating-cta-close\s*\{[\s\S]*position:\s*absolute/);
   assert.match(html, /#floating-cta-title\s*\{[\s\S]*line-height:\s*1\.125rem/);
   assert.match(html, /\.advisor-sheet-subtitle\s*\{[\s\S]*line-height:\s*0\.75rem/);
