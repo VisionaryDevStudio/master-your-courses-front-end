@@ -743,6 +743,14 @@ test("polishes the mobile concierge focus treatment and inset geometry", () => {
   assert.match(html, /class="advisor-booking-panel[^\"]*md:flex[^\"]*md:flex-col/);
 });
 
+test("uses restrained focus treatments for the mobile advisor controls", () => {
+  assert.match(html, /#floating-cta-close:focus-visible\s*\{[\s\S]*outline:\s*none;[\s\S]*box-shadow:\s*inset 0 0 0 2px rgb\(99 102 241 \/ 0\.5\)/);
+  assert.match(html, /#floating-cta-toggle:focus-visible\s*\{[\s\S]*outline:\s*none;[\s\S]*box-shadow:[^;]*0 0 0 2px hsl\(var\(--background\)\)[^;]*0 0 0 4px rgb\(99 102 241 \/ 0\.42\)/);
+  assert.doesNotMatch(html, /id="floating-cta-close"[^>]*focus-visible:ring-2/);
+  assert.match(html, /id="floating-cta-close"[^>]*class="[^"]*advisor-close-control/);
+  assert.match(html, /id="floating-cta-toggle"[^>]*class="[^"]*advisor-trigger-control/);
+});
+
 test("keeps the added concierge hooks constrained at desktop popup widths", () => {
   const sharedAdvisorStyles = html.slice(0, html.indexOf("@media (max-width: 767px)"));
 
