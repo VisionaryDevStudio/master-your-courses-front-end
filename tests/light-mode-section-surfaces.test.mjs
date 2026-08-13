@@ -727,6 +727,7 @@ test("uses a booking-first advisor conversion panel in the open mobile sheet", (
   const advisorMenuStart = html.indexOf('id="floating-cta-menu"');
   const advisorMenuEnd = html.indexOf('id="floating-cta-toggle"', advisorMenuStart);
   const advisorMenu = html.slice(advisorMenuStart, advisorMenuEnd);
+  const sharedAdvisorStyles = html.slice(0, html.indexOf("@media (max-width: 767px)"));
   const bookingLinkStart = advisorMenu.indexOf('id="advisor-booking-link"');
   const bookingLink = advisorMenu.slice(bookingLinkStart, advisorMenu.indexOf("</a>", bookingLinkStart));
   const whatsappLinkStart = advisorMenu.indexOf('id="advisor-whatsapp-link"');
@@ -744,6 +745,14 @@ test("uses a booking-first advisor conversion panel in the open mobile sheet", (
   );
   assert.doesNotMatch(bookingLink, /<path d="m9 18 6-6-6-6"\/>/);
   assert.match(advisorMenu, /class="advisor-booking-copy[^>]*>Choose a convenient time to discuss your student’s goals\.<\/p>/);
+  assert.match(
+    sharedAdvisorStyles,
+    /\.advisor-booking-copy\s*\{[\s\S]*margin:\s*0\.125rem 0\.25rem;[\s\S]*font-size:\s*0\.75rem;[\s\S]*line-height:\s*1rem;[\s\S]*text-align:\s*center;/
+  );
+  assert.match(
+    advisorMenu,
+    /<p class="advisor-booking-copy text-muted-foreground">Choose a convenient time to discuss your student’s goals\.<\/p>/
+  );
   assert.match(advisorMenu, /BOOKING_URL_PLACEHOLDER: replace this URL with the production scheduling link\./);
   assert.equal((advisorMenu.match(/id="advisor-whatsapp-link"/g) ?? []).length, 1);
   assert.match(advisorMenu, /id="advisor-whatsapp-link"[^>]*href="https:\/\/wa\.me\/18001234567"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/);
