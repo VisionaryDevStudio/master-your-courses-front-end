@@ -11,7 +11,7 @@ test("uses an accessible three-group university marquee with silent duplicates",
   const section = html.slice(start, end);
   const groups = [...section.matchAll(/<div class="university-logo-group"([^>]*)>([\s\S]*?)<\/div>/g)];
 
-  assert.match(section, /class="university-ribbon-viewport[^"]*"[^>]*tabindex="0"[^>]*role="region"[^>]*aria-label="Universities our students have gained admission to"/);
+  assert.match(section, /class="university-ribbon-focus-surface[^"]*"[^>]*tabindex="0"[^>]*role="region"[^>]*aria-label="Universities our students have gained admission to"/);
   assert.match(section, /class="university-marquee university-ribbon-reveal"/);
   assert.equal(groups.length, 3);
   assert.equal((groups[0][2].match(/class="university-logo(?:\s|")/g) ?? []).length, 10);
@@ -32,6 +32,33 @@ test("defines the approved university marquee density and reduced-motion layout"
   assert.match(html, /@media \(hover:\s*hover\) and \(pointer:\s*fine\)[\s\S]*\.university-ribbon-viewport:hover \.university-marquee[\s\S]*animation-play-state:\s*paused[\s\S]*filter:\s*grayscale\(0\)/);
   assert.match(html, /\.university-ribbon-viewport:focus \.university-marquee\s*\{[\s\S]*animation-play-state:\s*paused/);
   assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.university-marquee\s*\{[\s\S]*animation:\s*none;[\s\S]*transform:\s*none[\s\S]*\.university-logo-group\[aria-hidden="true"\]\s*\{\s*display:\s*none/);
+});
+
+test("uses an inset focus-visible ribbon treatment that survives the masked viewport", () => {
+  assert.match(html, /class="university-ribbon-focus-surface[^\"]*"[^>]*tabindex="0"[^>]*role="region"/);
+  assert.match(html, /\.university-ribbon-focus-surface:focus-visible::after\s*\{[\s\S]*inset:\s*0;[\s\S]*box-shadow:\s*inset 0 0 0 3px rgb\(99 102 241 \/ 0\.65\);[\s\S]*pointer-events:\s*none/);
+  assert.match(html, /\.university-ribbon-viewport\s*\{[\s\S]*overflow:\s*hidden[\s\S]*border-radius:\s*inherit/);
+});
+
+test("preserves masked reduced-motion endpoints with inline clearance", () => {
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.university-logo-group:first-child\s*\{\s*padding-left:\s*calc\(10vw \+ 0\.5rem\);\s*padding-right:\s*calc\(10vw \+ 0\.5rem\)/);
+  assert.match(html, /style="mask-image: linear-gradient\(to right, transparent, black 10%, black 90%, transparent\); -webkit-mask-image: linear-gradient\(to right, transparent, black 10%, black 90%, transparent\);"/);
+});
+
+test("keeps every marquee group identical so one-third travel lands on the next group", () => {
+  const start = html.indexOf('class="surface-universities');
+  const end = html.indexOf('<!-- ----------------- Methodology', start);
+  const section = html.slice(start, end);
+  const groups = [...section.matchAll(/<div class="university-logo-group"([^>]*)>([\s\S]*?)<\/div>/g)];
+  const sources = groups.map(([, , contents]) => [...contents.matchAll(/src="([^"]+)"/g)].map(([, source]) => source));
+  const expectedSources = [
+    "universities/harvard.svg", "universities/mit.svg", "universities/duke.svg", "universities/florida.svg", "universities/alabama.svg",
+    "universities/northwestern.svg", "universities/notre-dame.svg", "universities/nyu.svg", "universities/ohio-state.svg", "universities/penn.svg",
+  ];
+
+  assert.deepEqual(sources, [expectedSources, expectedSources, expectedSources]);
+  assert.match(html, /\.university-logo-group\s*\{[\s\S]*padding-right:\s*3\.25rem/);
+  assert.match(html, /@keyframes university-marquee\s*\{[\s\S]*to\s*\{\s*transform:\s*translateX\(calc\(-100% \/ 3\)\)/);
 });
 
 function extractCssBlock(source, marker) {

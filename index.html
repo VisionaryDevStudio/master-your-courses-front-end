@@ -562,13 +562,24 @@
       from { transform: translateX(0); }
       to { transform: translateX(calc(-100% / 3)); }
     }
-    .university-ribbon-viewport {
-      overflow: hidden;
+    .university-ribbon-focus-surface {
       border-radius: 0.25rem;
     }
-    .university-ribbon-viewport:focus-visible {
-      outline: 2px solid rgb(99 102 241 / 0.65);
-      outline-offset: 4px;
+    .university-ribbon-focus-surface:focus-visible {
+      outline: none;
+    }
+    .university-ribbon-focus-surface:focus-visible::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 3px rgb(99 102 241 / 0.65);
+      pointer-events: none;
+    }
+    .university-ribbon-viewport {
+      overflow: hidden;
+      border-radius: inherit;
     }
     .university-marquee {
       display: flex;
@@ -593,6 +604,7 @@
       object-fit: contain;
       flex: 0 0 auto;
     }
+    .university-ribbon-focus-surface:focus .university-marquee,
     .university-ribbon-viewport:focus .university-marquee {
       animation-play-state: paused;
     }
@@ -611,6 +623,7 @@
       .university-ribbon-viewport::-webkit-scrollbar { display: none; }
       .university-marquee { animation: none; transform: none; will-change: auto; }
       .university-logo-group[aria-hidden="true"] { display: none; }
+      .university-logo-group:first-child { padding-left: calc(10vw + 0.5rem); padding-right: calc(10vw + 0.5rem); }
     }
     .hero-copy-enter {
       animation: hero-copy-enter 500ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
@@ -954,14 +967,17 @@
       </p>
       
       <div
-        class="university-ribbon-viewport relative w-full max-w-[1400px] mx-auto"
+        class="university-ribbon-focus-surface relative w-full max-w-[1400px] mx-auto"
         tabindex="0"
         role="region"
         aria-label="Universities our students have gained admission to"
-        style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);"
       >
-        <div class="university-marquee university-ribbon-reveal">
-          <div class="university-logo-group">
+        <div
+          class="university-ribbon-viewport"
+          style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);"
+        >
+          <div class="university-marquee university-ribbon-reveal">
+            <div class="university-logo-group">
             <img src="universities/harvard.svg" alt="Harvard" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/mit.svg" alt="MIT" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/duke.svg" alt="Duke" loading="lazy" decoding="async" class="university-logo dark:invert" />
@@ -972,8 +988,8 @@
             <img src="universities/nyu.svg" alt="NYU" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/ohio-state.svg" alt="Ohio State" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/penn.svg" alt="UPenn" loading="lazy" decoding="async" class="university-logo dark:invert" />
-          </div>
-          <div class="university-logo-group" aria-hidden="true">
+            </div>
+            <div class="university-logo-group" aria-hidden="true">
             <img src="universities/harvard.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/mit.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/duke.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
@@ -984,8 +1000,8 @@
             <img src="universities/nyu.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/ohio-state.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/penn.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
-          </div>
-          <div class="university-logo-group" aria-hidden="true">
+            </div>
+            <div class="university-logo-group" aria-hidden="true">
             <img src="universities/harvard.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/mit.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/duke.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
@@ -996,6 +1012,7 @@
             <img src="universities/nyu.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/ohio-state.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
             <img src="universities/penn.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            </div>
           </div>
         </div>
       </div>
