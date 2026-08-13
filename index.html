@@ -329,6 +329,28 @@
     html.dark .icon-support-cyan { background: rgb(14 116 144 / 0.3); color: #a5f3fc; }
     html.dark .icon-support-violet { background: rgb(109 40 217 / 0.28); color: #ddd6fe; }
 
+    @media (prefers-reduced-motion: no-preference) {
+      .methodology-card { transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease; }
+      .methodology-icon { transition: transform 220ms ease, background-color 220ms ease; }
+      .methodology-motion-ready .methodology-card:not(.methodology-visible) {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      .methodology-motion-ready .methodology-card {
+        transition-property: opacity, transform, border-color, box-shadow;
+        transition-duration: 500ms, 500ms, 220ms, 220ms;
+        transition-timing-function: cubic-bezier(.22, 1, .36, 1), cubic-bezier(.22, 1, .36, 1), ease, ease;
+        transition-delay: var(--methodology-delay, 0ms), var(--methodology-delay, 0ms), 0ms, 0ms;
+      }
+    }
+    @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+      .methodology-card:hover { transform: translateY(-2px); }
+      .methodology-card:hover .methodology-icon { transform: scale(1.035); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .methodology-card, .methodology-icon { opacity: 1; transform: none; transition: none; }
+    }
+
     html:not(.dark) .surface-mentors {
       background:
         radial-gradient(circle at 18% 12%, rgb(168 85 247 / 0.06), transparent 28rem),
@@ -3425,6 +3447,28 @@
         }
       }
     });
+  </script>
+  <script>
+    const methodologySection = document.getElementById('methodology-section');
+    const methodologyCards = [...document.querySelectorAll('.methodology-card')];
+    const methodologyMotion = window.matchMedia('(prefers-reduced-motion: no-preference)');
+
+    if (methodologySection && methodologyCards.length && 'IntersectionObserver' in window && methodologyMotion.matches) {
+      methodologySection.classList.add('methodology-motion-ready');
+      methodologyCards.forEach((card) => {
+        const index = Number(card.dataset.methodologyIndex || 0);
+        const delay = window.matchMedia('(max-width: 767px)').matches ? Math.min(index * 20, 40) : (index % 3) * 70;
+        card.style.setProperty('--methodology-delay', `${delay}ms`);
+      });
+      const methodologyObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('methodology-visible');
+          methodologyObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px 8% 0px' });
+      methodologyCards.forEach((card) => methodologyObserver.observe(card));
+    }
   </script>
   <script>
     // Scroll reveal observer

@@ -1163,3 +1163,19 @@ test("keeps methodology cards balanced across responsive layouts", () => {
   assert.match(html, /\.methodology-card-accent\s*\{[\s\S]*height:\s*(?:3px|0\.25rem)/);
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.methodology-card-body\s*\{[\s\S]*padding:/);
 });
+
+test("reveals methodology cards with deterministic fail-open motion", () => {
+  assert.match(html, /\.methodology-motion-ready \.methodology-card:not\(\.methodology-visible\)/);
+  assert.match(html, /translateY\((?:20px|1\.25rem)\)/);
+  assert.doesNotMatch(html, /\.methodology-motion-ready \.methodology-card:not\(\.methodology-visible\)[^{]*\{[^}]*scale\(/);
+  assert.match(html, /--methodology-delay/);
+  assert.match(html, /dataset\.methodologyIndex/);
+  assert.match(html, /methodologyObserver\.unobserve\(entry\.target\)/);
+});
+
+test("limits methodology hover and neutralizes all reduced motion", () => {
+  assert.match(html, /@media \(hover:\s*hover\) and \(pointer:\s*fine\)[\s\S]*\.methodology-card:hover/);
+  assert.match(html, /translateY\(-2px\)/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.methodology-card[\s\S]*transition:\s*none[\s\S]*transform:\s*none/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.methodology-icon[\s\S]*transform:\s*none/);
+});
