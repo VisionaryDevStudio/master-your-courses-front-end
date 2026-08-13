@@ -721,6 +721,11 @@ test("uses a booking-first advisor conversion panel in the open mobile sheet", (
   assert.equal((advisorMenu.match(/id="advisor-booking-link"/g) ?? []).length, 1);
   assert.match(advisorMenu, /id="advisor-booking-link"[^>]*href="https:\/\/cal\.com\/your-booking-link"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/);
   assert.match(bookingLink, /<span>Book a Consultation<\/span>/);
+  assert.match(
+    bookingLink,
+    /<svg[^>]*class="[^"]*advisor-booking-calendar[^"]*"[^>]*aria-hidden="true"[^>]*>[\s\S]*<rect x="3" y="4" width="18" height="18" rx="2" ry="2"\/>[\s\S]*<line x1="16" y1="2" x2="16" y2="6"\/>[\s\S]*<line x1="8" y1="2" x2="8" y2="6"\/>[\s\S]*<line x1="3" y1="10" x2="21" y2="10"\/>[\s\S]*<\/svg>[\s\S]*<span>Book a Consultation<\/span>/
+  );
+  assert.doesNotMatch(bookingLink, /<path d="m9 18 6-6-6-6"\/>/);
   assert.match(advisorMenu, /class="advisor-booking-copy[^>]*>Choose a convenient time to discuss your student’s goals\.<\/p>/);
   assert.match(advisorMenu, /BOOKING_URL_PLACEHOLDER: replace this URL with the production scheduling link\./);
   assert.equal((advisorMenu.match(/id="advisor-whatsapp-link"/g) ?? []).length, 1);
@@ -758,8 +763,12 @@ test("keeps the added concierge hooks constrained at desktop popup widths", () =
   assert.match(html, /class="advisor-booking-panel[^\"]*md:flex[^\"]*md:flex-col[^\"]*md:gap-3/);
   assert.match(html, /class="advisor-booking-primary[^\"]*md:min-h-\[44px\]/);
   assert.match(html, /class="advisor-booking-secondary[^\"]*md:min-h-\[44px\]/);
-  assert.match(sharedAdvisorStyles, /\.advisor-booking-panel\s*\{[\s\S]*display:\s*flex;[\s\S]*border-radius:\s*1rem;[\s\S]*padding:\s*0\.625rem/);
+  assert.match(sharedAdvisorStyles, /\.advisor-booking-panel\s*\{[\s\S]*display:\s*flex;[\s\S]*border-radius:\s*1rem/);
   assert.match(sharedAdvisorStyles, /\.advisor-booking-primary,\s*\.advisor-booking-secondary\s*\{[\s\S]*display:\s*flex;[\s\S]*min-height:\s*2\.75rem;[\s\S]*border-radius:\s*0\.75rem/);
+  assert.match(sharedAdvisorStyles, /\.advisor-booking-panel\s*\{[\s\S]*gap:\s*0\.375rem;[\s\S]*padding:\s*0\.5rem/);
+  assert.match(sharedAdvisorStyles, /\.advisor-booking-primary\s*\{[\s\S]*justify-content:\s*center;[\s\S]*gap:\s*0\.5rem;[\s\S]*min-height:\s*3\.375rem/);
+  assert.match(sharedAdvisorStyles, /\.advisor-booking-calendar\s*\{[\s\S]*flex:\s*0 0 auto/);
+  assert.match(sharedAdvisorStyles, /\.advisor-booking-secondary\s*\{[\s\S]*min-height:\s*2\.75rem;[\s\S]*padding:\s*0\.25rem 0\.5rem/);
   assert.match(sharedAdvisorStyles, /\.advisor-booking-primary\s*\{[\s\S]*background:\s*rgb\(67 56 202\);[\s\S]*color:\s*white/);
   assert.match(sharedAdvisorStyles, /\.advisor-booking-secondary\s*\{[\s\S]*color:\s*hsl\(var\(--muted-foreground\)\)/);
   assert.match(sharedAdvisorStyles, /\.advisor-booking-primary:focus-visible,\s*\.advisor-booking-secondary:focus-visible\s*\{[\s\S]*outline:\s*none;[\s\S]*box-shadow:\s*0 0 0 3px/);
