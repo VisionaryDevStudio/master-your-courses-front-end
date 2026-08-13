@@ -5,6 +5,35 @@ import { runInNewContext } from "node:vm";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 
+test("uses an accessible three-group university marquee with silent duplicates", () => {
+  const start = html.indexOf('class="surface-universities');
+  const end = html.indexOf('<!-- ----------------- Methodology', start);
+  const section = html.slice(start, end);
+  const groups = [...section.matchAll(/<div class="university-logo-group"([^>]*)>([\s\S]*?)<\/div>/g)];
+
+  assert.match(section, /class="university-ribbon-viewport[^"]*"[^>]*tabindex="0"[^>]*role="region"[^>]*aria-label="Universities our students have gained admission to"/);
+  assert.match(section, /class="university-marquee university-ribbon-reveal"/);
+  assert.equal(groups.length, 3);
+  assert.equal((groups[0][2].match(/class="university-logo(?:\s|")/g) ?? []).length, 10);
+  assert.doesNotMatch(groups[0][1], /aria-hidden="true"/);
+  for (const duplicate of groups.slice(1)) {
+    assert.match(duplicate[1], /aria-hidden="true"/);
+    assert.equal((duplicate[2].match(/alt="" aria-hidden="true"/g) ?? []).length, 10);
+  }
+});
+
+test("defines the approved university marquee density and reduced-motion layout", () => {
+  assert.match(html, /@keyframes university-marquee\s*\{[\s\S]*to\s*\{\s*transform:\s*translateX\(calc\(-100% \/ 3\)\)/);
+  assert.match(html, /\.university-marquee\s*\{[\s\S]*animation:\s*university-marquee 40s linear infinite;[\s\S]*opacity:\s*0\.7/);
+  assert.match(html, /\.dark \.university-marquee\s*\{\s*opacity:\s*0\.55/);
+  assert.match(html, /\.university-logo-group\s*\{[\s\S]*gap:\s*3\.25rem/);
+  assert.match(html, /\.university-logo\s*\{[\s\S]*height:\s*2rem;[\s\S]*max-width:\s*9\.5rem/);
+  assert.match(html, /@media \(min-width:\s*768px\)[\s\S]*\.university-logo-group\s*\{[\s\S]*gap:\s*6rem[\s\S]*\.university-logo\s*\{[\s\S]*height:\s*2\.5rem;[\s\S]*max-width:\s*11rem/);
+  assert.match(html, /@media \(hover:\s*hover\) and \(pointer:\s*fine\)[\s\S]*\.university-ribbon-viewport:hover \.university-marquee[\s\S]*animation-play-state:\s*paused[\s\S]*filter:\s*grayscale\(0\)/);
+  assert.match(html, /\.university-ribbon-viewport:focus \.university-marquee\s*\{[\s\S]*animation-play-state:\s*paused/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.university-marquee\s*\{[\s\S]*animation:\s*none;[\s\S]*transform:\s*none[\s\S]*\.university-logo-group\[aria-hidden="true"\]\s*\{\s*display:\s*none/);
+});
+
 function extractCssBlock(source, marker) {
   const markerIndex = source.indexOf(marker);
   assert.notEqual(markerIndex, -1, `Missing CSS marker: ${marker}`);

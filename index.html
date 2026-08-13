@@ -558,6 +558,60 @@
       animation: marquee 40s linear infinite;
       width: max-content;
     }
+    @keyframes university-marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(-100% / 3)); }
+    }
+    .university-ribbon-viewport {
+      overflow: hidden;
+      border-radius: 0.25rem;
+    }
+    .university-ribbon-viewport:focus-visible {
+      outline: 2px solid rgb(99 102 241 / 0.65);
+      outline-offset: 4px;
+    }
+    .university-marquee {
+      display: flex;
+      width: max-content;
+      animation: university-marquee 40s linear infinite;
+      opacity: 0.7;
+      filter: grayscale(1);
+      transition: filter 500ms ease, opacity 500ms ease;
+      will-change: transform;
+    }
+    .dark .university-marquee { opacity: 0.55; }
+    .university-logo-group {
+      display: flex;
+      align-items: center;
+      gap: 3.25rem;
+      padding-right: 3.25rem;
+    }
+    .university-logo {
+      width: auto;
+      height: 2rem;
+      max-width: 9.5rem;
+      object-fit: contain;
+      flex: 0 0 auto;
+    }
+    .university-ribbon-viewport:focus .university-marquee {
+      animation-play-state: paused;
+    }
+    @media (min-width: 768px) {
+      .university-logo-group { gap: 6rem; padding-right: 6rem; }
+      .university-logo { height: 2.5rem; max-width: 11rem; }
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .university-ribbon-viewport:hover .university-marquee {
+        animation-play-state: paused;
+        filter: grayscale(0);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .university-ribbon-viewport { overflow-x: auto; scrollbar-width: none; }
+      .university-ribbon-viewport::-webkit-scrollbar { display: none; }
+      .university-marquee { animation: none; transform: none; will-change: auto; }
+      .university-logo-group[aria-hidden="true"] { display: none; }
+    }
     .hero-copy-enter {
       animation: hero-copy-enter 500ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
     }
@@ -899,45 +953,50 @@
         Our students gain admission to
       </p>
       
-      <div 
-        class="relative w-full max-w-[1400px] mx-auto flex items-center overflow-hidden"
+      <div
+        class="university-ribbon-viewport relative w-full max-w-[1400px] mx-auto"
+        tabindex="0"
+        role="region"
+        aria-label="Universities our students have gained admission to"
         style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);"
       >
-        <!-- Scrolling Track -->
-        <div class="animate-marquee flex gap-24 pr-24 items-center opacity-60 dark:opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
-          <!-- Group 1 -->
-          <img src="universities/harvard.svg" alt="Harvard" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/mit.svg" alt="MIT" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/duke.svg" alt="Duke" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/florida.svg" alt="Florida" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/alabama.svg" alt="Alabama" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/northwestern.svg" alt="Northwestern" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/notre-dame.svg" alt="Notre Dame" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/nyu.svg" alt="NYU" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/ohio-state.svg" alt="Ohio State" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/penn.svg" alt="UPenn" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <!-- Group 2 -->
-          <img src="universities/harvard.svg" alt="Harvard" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/mit.svg" alt="MIT" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/duke.svg" alt="Duke" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/florida.svg" alt="Florida" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/alabama.svg" alt="Alabama" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/northwestern.svg" alt="Northwestern" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/notre-dame.svg" alt="Notre Dame" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/nyu.svg" alt="NYU" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/ohio-state.svg" alt="Ohio State" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/penn.svg" alt="UPenn" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <!-- Group 3 -->
-          <img src="universities/harvard.svg" alt="Harvard" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/mit.svg" alt="MIT" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/duke.svg" alt="Duke" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/florida.svg" alt="Florida" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/alabama.svg" alt="Alabama" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/northwestern.svg" alt="Northwestern" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/notre-dame.svg" alt="Notre Dame" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/nyu.svg" alt="NYU" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/ohio-state.svg" alt="Ohio State" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
-          <img src="universities/penn.svg" alt="UPenn" loading="lazy" decoding="async" class="h-8 md:h-10 w-auto object-contain shrink-0 dark:invert" />
+        <div class="university-marquee university-ribbon-reveal">
+          <div class="university-logo-group">
+            <img src="universities/harvard.svg" alt="Harvard" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/mit.svg" alt="MIT" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/duke.svg" alt="Duke" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/florida.svg" alt="Florida" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/alabama.svg" alt="Alabama" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/northwestern.svg" alt="Northwestern" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/notre-dame.svg" alt="Notre Dame" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/nyu.svg" alt="NYU" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/ohio-state.svg" alt="Ohio State" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/penn.svg" alt="UPenn" loading="lazy" decoding="async" class="university-logo dark:invert" />
+          </div>
+          <div class="university-logo-group" aria-hidden="true">
+            <img src="universities/harvard.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/mit.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/duke.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/florida.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/alabama.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/northwestern.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/notre-dame.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/nyu.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/ohio-state.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/penn.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+          </div>
+          <div class="university-logo-group" aria-hidden="true">
+            <img src="universities/harvard.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/mit.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/duke.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/florida.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/alabama.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/northwestern.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/notre-dame.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/nyu.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/ohio-state.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+            <img src="universities/penn.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" class="university-logo dark:invert" />
+          </div>
         </div>
       </div>
     </section>
