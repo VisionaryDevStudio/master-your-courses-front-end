@@ -1179,3 +1179,63 @@ test("limits methodology hover and neutralizes all reduced motion", () => {
   assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.methodology-card[\s\S]*transition:\s*none[\s\S]*transform:\s*none/);
   assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.methodology-icon[\s\S]*transform:\s*none/);
 });
+
+const methodologyMotionStart = html.indexOf("const methodologySection = document.getElementById('methodology-section')");
+const methodologyMotionEnd = html.indexOf("  </script>", methodologyMotionStart);
+const methodologyMotionSource = html.slice(methodologyMotionStart, methodologyMotionEnd);
+
+function createMethodologyMotionHarness({ width = 768, constructorThrows = false } = {}) {
+  const sectionClasses = new Set();
+  const cards = Array.from({ length: 6 }, (_, index) => ({
+    dataset: { methodologyIndex: String(index) },
+    classList: { add() {} },
+    style: {
+      values: new Map(),
+      setProperty(name, value) { this.values.set(name, value); },
+    },
+  }));
+  class HarnessIntersectionObserver {
+    constructor() {
+      if (constructorThrows) throw new Error("observer unavailable");
+    }
+    observe() {}
+    unobserve() {}
+  }
+  const window = {
+    IntersectionObserver: HarnessIntersectionObserver,
+    matchMedia(query) {
+      return { matches: query === '(prefers-reduced-motion: no-preference)' || (query === '(max-width: 767px)' ? width <= 767 : query === '(max-width: 1023px)' ? width <= 1023 : false) };
+    },
+  };
+  let error = null;
+  try {
+    runInNewContext(methodologyMotionSource, {
+      document: {
+        getElementById: () => ({ classList: { add: token => sectionClasses.add(token), remove: token => sectionClasses.delete(token) } }),
+        querySelectorAll: () => cards,
+      },
+      IntersectionObserver: HarnessIntersectionObserver,
+      window,
+    });
+  } catch (caught) {
+    error = caught;
+  }
+  return { cards, error, sectionClasses };
+}
+
+test("stages methodology cards by their visual column at mobile tablet and desktop widths", () => {
+  const delays = width => createMethodologyMotionHarness({ width }).cards.map(card => card.style.values.get('--methodology-delay'));
+  assert.deepEqual(delays(390), ['0ms', '20ms', '40ms', '40ms', '40ms', '40ms']);
+  assert.deepEqual(delays(768), ['0ms', '70ms', '0ms', '70ms', '0ms', '70ms']);
+  assert.deepEqual(delays(1440), ['0ms', '70ms', '140ms', '0ms', '70ms', '140ms']);
+});
+
+test("keeps methodology cards fail-open when observer construction fails", () => {
+  const harness = createMethodologyMotionHarness({ constructorThrows: true });
+  assert.equal(harness.error, null);
+  assert.equal(harness.sectionClasses.has('methodology-motion-ready'), false);
+});
+
+test("constructs the methodology observer before enabling the hidden motion state", () => {
+  assert.match(methodologyMotionSource, /const methodologyObserver = new IntersectionObserver[\s\S]*methodologySection\.classList\.add\('methodology-motion-ready'\)/);
+});

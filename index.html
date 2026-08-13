@@ -3454,20 +3454,26 @@
     const methodologyMotion = window.matchMedia('(prefers-reduced-motion: no-preference)');
 
     if (methodologySection && methodologyCards.length && 'IntersectionObserver' in window && methodologyMotion.matches) {
-      methodologySection.classList.add('methodology-motion-ready');
-      methodologyCards.forEach((card) => {
-        const index = Number(card.dataset.methodologyIndex || 0);
-        const delay = window.matchMedia('(max-width: 767px)').matches ? Math.min(index * 20, 40) : (index % 3) * 70;
-        card.style.setProperty('--methodology-delay', `${delay}ms`);
-      });
-      const methodologyObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('methodology-visible');
-          methodologyObserver.unobserve(entry.target);
+      try {
+        const methodologyObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('methodology-visible');
+            methodologyObserver.unobserve(entry.target);
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px 8% 0px' });
+        const methodologyMobile = window.matchMedia('(max-width: 767px)').matches;
+        const methodologyTablet = window.matchMedia('(max-width: 1023px)').matches;
+        methodologyCards.forEach((card) => {
+          const index = Number(card.dataset.methodologyIndex || 0);
+          const delay = methodologyMobile ? Math.min(index * 20, 40) : (index % (methodologyTablet ? 2 : 3)) * 70;
+          card.style.setProperty('--methodology-delay', `${delay}ms`);
         });
-      }, { threshold: 0.08, rootMargin: '0px 0px 8% 0px' });
-      methodologyCards.forEach((card) => methodologyObserver.observe(card));
+        methodologySection.classList.add('methodology-motion-ready');
+        methodologyCards.forEach((card) => methodologyObserver.observe(card));
+      } catch {
+        methodologySection.classList.remove('methodology-motion-ready');
+      }
     }
   </script>
   <script>
