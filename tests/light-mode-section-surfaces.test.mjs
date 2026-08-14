@@ -694,6 +694,126 @@ test("retains dark-mode backgrounds and accessible canonical mentor profiles", (
   assert.match(html, /event\.key === ['"]Enter['"] \|\| event\.key === ['"] ['"]/);
 });
 
+test("uses an editorial mentor desktop grid and manual mobile snap carousel", () => {
+  const mentorsStart = html.indexOf("Meet The Mentors");
+  const mentorsEnd = html.indexOf("Results & Quotes Ticker", mentorsStart);
+  const mentors = html.slice(mentorsStart, mentorsEnd);
+
+  assert.match(mentors, /class="mentor-carousel"/);
+  assert.match(mentors, /class="mentor-track"/);
+  assert.equal((mentors.match(/class="mentor-card(?:\s|")/g) ?? []).length, 3);
+  assert.equal((mentors.match(/<button[^>]*data-mentor-dot/g) ?? []).length, 3);
+  assert.match(mentors, /data-mentor-prev[^>]*aria-label="Previous mentor"/);
+  assert.match(mentors, /data-mentor-next[^>]*aria-label="Next mentor"/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.mentor-track\s*\{[^}]*display:\s*flex;[^}]*overflow-x:\s*auto;[^}]*scroll-snap-type:\s*x mandatory/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.mentor-card\s*\{[^}]*flex:\s*0 0 calc\(100% - 2\.75rem\);[^}]*scroll-snap-align:\s*center/);
+  assert.match(html, /@media \(min-width:\s*768px\)[\s\S]*\.mentor-track\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.match(html, /@media \(min-width:\s*768px\)[\s\S]*\.mentor-carousel-controls\s*\{\s*display:\s*none/);
+  assert.match(html, /\.mentor-portrait\s*\{[^}]*aspect-ratio:\s*4 \/ 5;[^}]*object-fit:\s*cover/);
+  assert.doesNotMatch(mentors, /class="mentor-portrait[^\"]*rotate/);
+});
+
+test("uses reduced-motion-safe editorial mentor reveal and fine-pointer hover only", () => {
+  assert.match(html, /@media \(prefers-reduced-motion:\s*no-preference\)[\s\S]*\.mentor-motion-ready \.mentor-card:not\(\.mentor-visible\)[\s\S]*opacity:\s*0[\s\S]*transform:\s*translateY\(16px\)/);
+  assert.match(html, /@media \(hover:\s*hover\) and \(pointer:\s*fine\) and \(prefers-reduced-motion:\s*no-preference\)[\s\S]*\.mentor-card:hover\s*\{\s*transform:\s*translateY\(-2px\)/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mentor-card[\s\S]*opacity:\s*1;[\s\S]*transform:\s*none;[\s\S]*transition:\s*none/);
+});
+
+const mentorCarouselStart = html.indexOf("function initMentorCarousel()");
+const mentorCarouselEnd = html.indexOf("\n          initMentorCarousel();", mentorCarouselStart);
+const mentorCarouselSource = html.slice(mentorCarouselStart, mentorCarouselEnd);
+
+function createMentorCarouselHarness({ reducedMotion = false } = {}) {
+  const trackListeners = new Map();
+  const observerInstances = [];
+  const controls = new Map();
+  const advancementTimers = [];
+  const cards = Array.from({ length: 3 }, (_, index) => ({
+    dataset: { mentorIndex: String(index) },
+    offsetLeft: index * 320,
+    offsetWidth: 292,
+    scrollIntoViewOptions: null,
+    classList: { add() {} },
+    style: { setProperty() {} },
+  }));
+  const track = {
+    scrollLeft: 0,
+    clientWidth: 292,
+    addEventListener(type, listener) { trackListeners.set(type, listener); },
+  };
+  function createControl() {
+    const attributes = new Map();
+    const listeners = new Map();
+    return {
+      disabled: false,
+      setAttribute(name, value) { attributes.set(name, String(value)); },
+      getAttribute(name) { return attributes.get(name) ?? null; },
+      addEventListener(type, listener) { listeners.set(type, listener); },
+      click() { listeners.get("click")?.({ preventDefault() {} }); },
+    };
+  }
+  const previous = createControl();
+  const next = createControl();
+  const dots = [createControl(), createControl(), createControl()];
+  controls.set("[data-mentor-prev]", previous);
+  controls.set("[data-mentor-next]", next);
+  cards.forEach(card => {
+    card.scrollIntoView = options => { card.scrollIntoViewOptions = options; };
+  });
+  class HarnessIntersectionObserver {
+    constructor(callback) { this.callback = callback; observerInstances.push(this); }
+    observe() {}
+    unobserve() {}
+  }
+  const mediaQuery = { matches: reducedMotion };
+  const section = { classList: { add() {} } };
+  const init = runInNewContext(`${mentorCarouselSource}\ninitMentorCarousel`, {
+    IntersectionObserver: HarnessIntersectionObserver,
+    document: {
+      getElementById: id => id === "mentor-section" ? section : null,
+      querySelector: selector => selector === ".mentor-carousel" ? section : selector === ".mentor-track" ? track : controls.get(selector) ?? null,
+      querySelectorAll: selector => selector === ".mentor-card" ? cards : selector === "[data-mentor-dot]" ? dots : [],
+    },
+    setInterval: () => advancementTimers.push("interval"),
+    setTimeout: () => advancementTimers.push("timeout"),
+    window: { matchMedia: () => mediaQuery },
+  });
+  init();
+  return {
+    cards,
+    dots,
+    previous,
+    next,
+    activeIndex() { return dots.findIndex(dot => dot.getAttribute("aria-current") === "true"); },
+    clickNext() { next.click(); },
+    clickPrevious() { previous.click(); },
+    scrollTo(index) { track.scrollLeft = cards[index].offsetLeft; trackListeners.get("scroll")?.(); },
+    autoAdvanceTimers() { return advancementTimers.length; },
+  };
+}
+
+test("keeps mentor carousel progression manual, synchronized, and bounded", () => {
+  const harness = createMentorCarouselHarness();
+
+  assert.equal(harness.activeIndex(), 0);
+  assert.equal(harness.previous.disabled, true);
+  harness.clickNext();
+  assert.equal(harness.activeIndex(), 1);
+  harness.clickPrevious();
+  assert.equal(harness.activeIndex(), 0);
+  harness.scrollTo(2);
+  assert.equal(harness.activeIndex(), 2);
+  assert.equal(harness.next.disabled, true);
+  assert.equal(harness.autoAdvanceTimers(), 0);
+});
+
+test("uses editorial mentor automatic scrolling for reduced-motion preferences", () => {
+  const harness = createMentorCarouselHarness({ reducedMotion: true });
+  harness.clickNext();
+
+  assert.equal(harness.cards[1].scrollIntoViewOptions.behavior, "auto");
+});
+
 test("keeps the Olympiad preview free of graph-paper squares", () => {
   const programsStart = html.indexOf("Elite Programs");
   const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
