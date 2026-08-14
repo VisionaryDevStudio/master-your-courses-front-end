@@ -733,6 +733,105 @@ test("keeps mentor dialog keyboard focus inside the open profile", () => {
   assert.match(mentorModalScript, /first\.focus\(\)/);
 });
 
+const mentorModalLogicStart = html.indexOf("// Mentor Modal Logic");
+const mentorModalLogicEnd = html.indexOf("  </script>", mentorModalLogicStart);
+const mentorModalLogicSource = html.slice(mentorModalLogicStart, mentorModalLogicEnd);
+
+function createMentorModalHarness() {
+  const documentListeners = new Map();
+  const classList = (...initial) => {
+    const values = new Set(initial);
+    return {
+      add: (...tokens) => tokens.forEach(token => values.add(token)),
+      remove: (...tokens) => tokens.forEach(token => values.delete(token)),
+      contains: token => values.has(token),
+    };
+  };
+  const documentState = { activeElement: null };
+  const focusable = name => ({
+    name,
+    disabled: false,
+    hasAttribute(attribute) { return attribute === "disabled" && this.disabled; },
+    focus() { documentState.activeElement = this; },
+  });
+  const trigger = focusable("trigger");
+  const close = focusable("close");
+  const apply = focusable("apply");
+  const modal = {
+    classList: classList("hidden", "opacity-0"),
+    attributes: new Map([["aria-hidden", "true"]]),
+    offsetWidth: 0,
+    setAttribute(name, value) { this.attributes.set(name, value); },
+    getAttribute(name) { return this.attributes.get(name) ?? null; },
+    querySelectorAll() { return [close, apply]; },
+    contains(node) { return node === close || node === apply; },
+  };
+  const content = { classList: classList("scale-95") };
+  const elements = {
+    "mentor-modal": modal,
+    "mentor-modal-content": content,
+    "mentor-modal-close": close,
+    "mentor-modal-avatar": {},
+    "mentor-modal-name": {},
+    "mentor-modal-role": {},
+    "mentor-modal-bio": {},
+    "mentor-modal-accolades": { innerHTML: "" },
+  };
+  const document = {
+    body: { style: {} },
+    get activeElement() { return documentState.activeElement; },
+    getElementById(id) { return elements[id] ?? null; },
+    addEventListener(type, listener) { documentListeners.set(type, listener); },
+  };
+  const api = runInNewContext(`${mentorModalLogicSource}; ({ openMentorModal, closeMentorModal })`, {
+    clearTimeout() {},
+    document,
+    requestAnimationFrame(callback) { callback(); },
+    setTimeout() { return 1; },
+  });
+  return {
+    apply,
+    close,
+    modal,
+    open() { api.openMentorModal(0, trigger); },
+    closeModal() { api.closeMentorModal(); },
+    trigger,
+    keydown(key, { shiftKey = false } = {}) {
+      const event = { key, shiftKey, prevented: false, preventDefault() { this.prevented = true; } };
+      documentListeners.get("keydown")?.(event);
+      return event;
+    },
+    activeElement() { return documentState.activeElement; },
+  };
+}
+
+test("restores mentor trigger focus before the close transition completes", () => {
+  const harness = createMentorModalHarness();
+  harness.open();
+  harness.closeModal();
+
+  assert.equal(harness.modal.getAttribute("aria-hidden"), "true");
+  assert.equal(harness.activeElement(), harness.trigger);
+});
+
+test("does not trap an immediate Tab after a mentor modal starts closing", () => {
+  const harness = createMentorModalHarness();
+  harness.open();
+  harness.closeModal();
+
+  const tab = harness.keydown("Tab");
+  assert.equal(tab.prevented, false);
+  assert.equal(harness.activeElement(), harness.trigger);
+});
+
+test("uses a flex centering contract whenever the mentor modal becomes visible", () => {
+  const modalMarkup = html.match(/<div id="mentor-modal"[^>]*>/)?.[0] ?? "";
+
+  assert.match(modalMarkup, /\bflex\b/);
+  assert.match(modalMarkup, /\bitems-center\b/);
+  assert.match(modalMarkup, /\bjustify-center\b/);
+});
+
 test("hides the advisor trigger while mentor cards are in view to prevent overlap", () => {
   const floatingStart = html.indexOf('// Floating CTA Logic');
   const floatingEnd = html.indexOf('// Scroll reveal observer', floatingStart);
