@@ -465,6 +465,58 @@ test("drives Elite Programs from one guarded four-category data model", () => {
 
 });
 
+test("renders desktop Elite Program choices as named pressed buttons", () => {
+  const programsStart = html.indexOf("Elite Programs");
+  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programs = html.slice(programsStart, mentorsStart);
+  const desktopSelector = programs.match(/<div class="hidden lg:grid[\s\S]*?<div class="lg:col-span-7/)?.[0] ?? "";
+  const approvedTitles = ["AP Prep", "1-on-1 Tutoring", "SAT Prep", "Competition Prep"];
+
+  assert.match(desktopSelector, /id="programs-list"[^>]*role="group"[^>]*aria-label="Choose a program"/);
+  assert.equal((desktopSelector.match(/<button\b[^>]*class="program-list-item\b/g) ?? []).length, 4);
+  assert.doesNotMatch(desktopSelector, /<div\b[^>]*class="program-list-item\b/);
+
+  for (const [index, title] of approvedTitles.entries()) {
+    const control = desktopSelector.match(new RegExp(`<button[^>]*class="program-list-item[^>]*data-index="${index}"[^>]*>[\\s\\S]*?<h3[^>]*>${title}</h3>`))?.[0] ?? "";
+    assert.match(control, /type="button"/);
+    assert.match(control, new RegExp(`aria-label="Select ${title}"`));
+    assert.match(control, /aria-pressed="(?:true|false)"/);
+    assert.match(control, /tabindex="(?:0|-1)"/);
+    assert.match(control, new RegExp(`onkeydown="handleProgramListKeydown\\(event, ${index}, this\\)"`));
+  }
+
+  assert.match(programs, /item\.setAttribute\('aria-pressed', String\(isActive\)\);/);
+  assert.match(programs, /item\.tabIndex = isActive \? 0 : -1;/);
+});
+
+test("moves desktop Elite Program selection and focus with arrow keys", () => {
+  const handlerSource = html.match(/function handleProgramListKeydown\(event, idx, source\) \{[\s\S]*?\n      \}/)?.[0];
+  assert.ok(handlerSource, "desktop keyboard handler is missing");
+
+  const focused = [];
+  const selected = [];
+  const controls = Array.from({ length: 4 }, (_, index) => ({
+    focus() { focused.push(index); },
+  }));
+  const handler = new Function("document", "setActiveProgram", "PROGRAMS_DATA", `${handlerSource}; return handleProgramListKeydown;`)(
+    { querySelectorAll(selector) { return selector === ".program-list-item" ? controls : []; } },
+    (index, source) => selected.push([index, source]),
+    Array.from({ length: 4 }),
+  );
+
+  const rightEvent = { key: "ArrowRight", prevented: false, preventDefault() { this.prevented = true; } };
+  handler(rightEvent, 3, controls[3]);
+  assert.equal(rightEvent.prevented, true);
+  assert.deepEqual(focused, [0]);
+  assert.deepEqual(selected, [[0, controls[0]]]);
+
+  const endEvent = { key: "End", prevented: false, preventDefault() { this.prevented = true; } };
+  handler(endEvent, 1, controls[1]);
+  assert.equal(endEvent.prevented, true);
+  assert.deepEqual(focused, [0, 3]);
+  assert.deepEqual(selected, [[0, controls[0]], [3, controls[3]]]);
+});
+
 test("keeps the floating advisor from blocking content outside its visible controls", () => {
   const floatingStart = html.indexOf('id="floating-cta-container"');
   const floatingEnd = html.indexOf("// Scroll reveal observer", floatingStart);
