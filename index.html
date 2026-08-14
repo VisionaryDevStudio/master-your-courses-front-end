@@ -80,6 +80,32 @@
     let mentorModalTrigger = null;
     let mentorModalCloseTimer = null;
 
+    function getMentorModalFocusableElements() {
+      const modal = document.getElementById('mentor-modal');
+      if (!modal || modal.classList.contains('hidden')) return [];
+      return [...modal.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])')]
+        .filter(element => !element.hasAttribute('disabled'));
+    }
+
+    function trapMentorModalFocus(event) {
+      if (event.key !== 'Tab') return;
+      const modal = document.getElementById('mentor-modal');
+      if (!modal || modal.classList.contains('hidden')) return;
+
+      const mentorModalFocusableElements = getMentorModalFocusableElements();
+      const first = mentorModalFocusableElements[0];
+      const last = mentorModalFocusableElements.at(-1);
+      if (!first || !last) return;
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || !modal.contains(document.activeElement))) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
     function handleMentorCardKeydown(event, index, trigger) {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -146,6 +172,10 @@
     }
 
     document.addEventListener('keydown', (event) => {
+      if (event.key === 'Tab') {
+        trapMentorModalFocus(event);
+        return;
+      }
       const modal = document.getElementById('mentor-modal');
       if (event.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
         event.preventDefault();
@@ -554,6 +584,13 @@
     }
 
     #floating-cta-container.programs-advisor-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(1rem);
+    }
+
+    #floating-cta-container.mentor-advisor-hidden {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -2963,6 +3000,7 @@
     const resultsAdvisorMedia = window.matchMedia('(max-width: 767px)');
     let resultsSectionIntersecting = false;
     let programsAdvisorIntersecting = false;
+    let mentorAdvisorIntersecting = false;
     let hasPassedResultsSection = false;
 
     function getAdvisorFocusableElements() {
@@ -2976,6 +3014,7 @@
       const shouldHideResults = resultsAdvisorMedia.matches && resultsSectionIntersecting;
       floatingCtaContainer.classList.toggle('results-advisor-hidden', shouldHideResults);
       floatingCtaContainer.classList.toggle('programs-advisor-hidden', programsAdvisorIntersecting);
+      floatingCtaContainer.classList.toggle('mentor-advisor-hidden', mentorAdvisorIntersecting);
     }
 
     function hideFloatingCTA() {
@@ -3046,9 +3085,21 @@
       programsAdvisorObserver.observe(programsAdvisorSection);
     }
 
+    const mentorAdvisorSection = document.getElementById('mentor-section');
+    if (mentorAdvisorSection) {
+      const mentorAdvisorObserver = new IntersectionObserver(entries => {
+        mentorAdvisorIntersecting = entries[0].isIntersecting;
+        if (mentorAdvisorIntersecting && isCtaOpen) {
+          setFloatingCtaOpen(false, { restoreFocus: false });
+        }
+        syncResultsAdvisorState();
+      }, { threshold: 0.1 });
+      mentorAdvisorObserver.observe(mentorAdvisorSection);
+    }
+
     resultsAdvisorMedia.addEventListener('change', () => {
       if (floatingCtaPing) floatingCtaPing.style.display = isCtaOpen || resultsAdvisorMedia.matches ? 'none' : 'flex';
-      if (resultsAdvisorMedia.matches && (resultsSectionIntersecting || programsAdvisorIntersecting) && isCtaOpen) {
+      if (resultsAdvisorMedia.matches && (resultsSectionIntersecting || programsAdvisorIntersecting || mentorAdvisorIntersecting) && isCtaOpen) {
         setFloatingCtaOpen(false, { restoreFocus: false });
       }
       if (resultsAdvisorMedia.matches && !hasPassedResultsSection) {

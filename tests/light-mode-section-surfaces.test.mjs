@@ -723,6 +723,29 @@ test("neutralizes editorial mentor profile arrow motion under reduced motion", (
   assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mentor-card-action svg\s*\{[^}]*transform:\s*none(?:\s*!important)?;[^}]*transition:\s*none(?:\s*!important)?/);
 });
 
+test("keeps mentor dialog keyboard focus inside the open profile", () => {
+  const mentorModalScript = html.slice(html.indexOf("let mentorModalTrigger"), html.indexOf("<!-- Premium Fonts"));
+
+  assert.match(mentorModalScript, /function getMentorModalFocusableElements\(\)/);
+  assert.match(mentorModalScript, /function trapMentorModalFocus\(event\)/);
+  assert.match(mentorModalScript, /event\.key !== 'Tab'/);
+  assert.match(mentorModalScript, /mentorModalFocusableElements\.at\(-1\)/);
+  assert.match(mentorModalScript, /first\.focus\(\)/);
+});
+
+test("hides the advisor trigger while mentor cards are in view to prevent overlap", () => {
+  const floatingStart = html.indexOf('// Floating CTA Logic');
+  const floatingEnd = html.indexOf('// Scroll reveal observer', floatingStart);
+  const floating = html.slice(floatingStart, floatingEnd);
+
+  assert.match(html, /#floating-cta-container\.mentor-advisor-hidden\s*\{[\s\S]*opacity:\s*0;[\s\S]*visibility:\s*hidden;[\s\S]*pointer-events:\s*none;/);
+  assert.match(floating, /let mentorAdvisorIntersecting = false;/);
+  assert.match(floating, /floatingCtaContainer\.classList\.toggle\('mentor-advisor-hidden', mentorAdvisorIntersecting\);/);
+  assert.match(floating, /const mentorAdvisorSection = document\.getElementById\('mentor-section'\);/);
+  assert.match(floating, /mentorAdvisorIntersecting = entries\[0\]\.isIntersecting;/);
+  assert.match(floating, /mentorAdvisorObserver\.observe\(mentorAdvisorSection\);/);
+});
+
 const mentorCarouselStart = html.indexOf("function initMentorCarousel()");
 const mentorCarouselEnd = html.indexOf("\n          initMentorCarousel();", mentorCarouselStart);
 const mentorCarouselSource = html.slice(mentorCarouselStart, mentorCarouselEnd);
