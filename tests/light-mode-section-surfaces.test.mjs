@@ -230,17 +230,6 @@ const expectedMentors = [
     ],
   },
   {
-    name: "Dr. Sherri Sadr",
-    role: "Dental Graduate, UBC",
-    avatar: "mentors/sadr.jpeg",
-    bio: "Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.",
-    accolades: [
-      "Biological Safety Certificate",
-      "Laser & Chemical Safety",
-      "Animal Care Training",
-    ],
-  },
-  {
     name: "Dr. Hossein Piri",
     role: "Healthcare Operations & AI Expert",
     avatar: "mentors/Dr.piri.jpg",
@@ -249,6 +238,17 @@ const expectedMentors = [
       "40 Under 40 (2026)",
       "Dean's Research Scholar, UCalgary",
       "Killam Teaching Award, UBC",
+    ],
+  },
+  {
+    name: "Dr. Sherri Sadr",
+    role: "Dental Graduate, UBC",
+    avatar: "mentors/sherri.png",
+    bio: "Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.",
+    accolades: [
+      "Biological Safety Certificate",
+      "Laser & Chemical Safety",
+      "Animal Care Training",
     ],
   },
 ];
@@ -262,12 +262,12 @@ const expectedVisibleMentorContent = [
     ],
   },
   {
-    summary: "Sherri is a dental graduate from UBC with a strong science and research foundation.",
-    credentials: ["Biological Safety Certificate", "Laser & Chemical Safety"],
-  },
-  {
     summary: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations.",
     credentials: ["40 Under 40 (2026)", "Dean's Research Scholar, UCalgary"],
+  },
+  {
+    summary: "Sherri is a dental graduate from UBC with a strong science and research foundation.",
+    credentials: ["Biological Safety Certificate", "Laser & Chemical Safety"],
   },
 ];
 
@@ -709,7 +709,7 @@ test("uses an editorial mentor desktop grid and manual mobile snap carousel", ()
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.mentor-card\s*\{[^}]*flex:\s*0 0 calc\(100% - 2\.75rem\);[^}]*scroll-snap-align:\s*center/);
   assert.match(html, /@media \(min-width:\s*768px\)[\s\S]*\.mentor-track\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
   assert.match(html, /@media \(min-width:\s*768px\)[\s\S]*\.mentor-carousel-controls\s*\{\s*display:\s*none/);
-  assert.match(html, /\.mentor-portrait\s*\{[^}]*aspect-ratio:\s*4 \/ 5;[^}]*object-fit:\s*cover/);
+  assert.match(html, /\.mentor-portrait\s*\{[^}]*aspect-ratio:\s*4 \/ 3;[^}]*object-fit:\s*cover/);
   assert.doesNotMatch(mentors, /class="mentor-portrait[^\"]*rotate/);
 });
 

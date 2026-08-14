@@ -7,15 +7,15 @@ Redesign only the **Meet The Mentors** section into the approved premium editori
 The final mentor roster, in display order, is:
 
 1. Zoey
-2. Dr. Sherri Sadr
-3. Dr. Hossein Piri
+2. Dr. Hossein Piri
+3. Dr. Sherri Sadr
 
 Elena is removed from the visible cards, mentor data, accessibility labels, modal content, and tests.
 
 ## Desktop and Tablet
 
 - Keep all three mentors visible in one row at desktop widths.
-- Use larger editorial portraits instead of small circular avatars.
+- Use compact `4:3` editorial portraits instead of small circular avatars or tall portrait panels.
 - Preserve the warm mentor-section canvas so the section remains integrated with the existing page.
 - Each card shows the portrait, name, role, a concise two-to-three-line summary, and two selected credentials.
 - Cards use restrained borders, soft elevation, and subtle accent color; avoid decorative glow, oversized empty areas, or excessive badges.
@@ -69,7 +69,7 @@ Accolades:
 
 ## Existing Mentor Content
 
-Dr. Sherri Sadr and Dr. Hossein Piri retain their existing names, portraits, roles, biographies, and detailed-profile accolades. Their visible cards are edited only for presentation length and hierarchy; factual meaning is not changed.
+Dr. Sherri Sadr uses `mentors/sherri.png`; Dr. Hossein Piri retains `mentors/Dr.piri.jpg`. Their names, roles, biographies, and detailed-profile accolades remain unchanged. Their visible cards are edited only for presentation length and hierarchy; factual meaning is not changed.
 
 ## Responsive and Theme Requirements
 

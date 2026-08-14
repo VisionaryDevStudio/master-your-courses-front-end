@@ -10,9 +10,9 @@
 
 ## Global Constraints
 
-- Final display order is Zoey, Dr. Sherri Sadr, Dr. Hossein Piri.
+- Final display order is Zoey, Dr. Hossein Piri, Dr. Sherri Sadr.
 - Remove Elena from cards, canonical data, accessibility labels, modal content, and tests.
-- Use `mentors/zoey.png`, `mentors/sadr.jpeg`, and `mentors/Dr.piri.jpg`; do not modify or delete user-owned image files.
+- Use `mentors/zoey.png`, `mentors/Dr.piri.jpg`, and `mentors/sherri.png`; do not modify or delete user-owned image files.
 - Desktop shows three editorial cards; mobile uses a manual snap carousel with controls, pagination, and no auto-advance.
 - Preserve the warm mentor surface, dark mode, modal focus behavior, section spacing, and neighboring sections.
 - Reduced motion removes reveal displacement, stagger, smooth scrolling, and hover translation.
@@ -50,7 +50,7 @@ Expected: FAIL because Elena remains in `MENTORS_DATA` and the second card.
 
 - [ ] **Step 3: Replace the canonical data and visible card content**
 
-Set the data order to Zoey, Sherri, Piri. Use the exact approved Zoey biography and six accolades from the specification. Reorder the existing Sherri and Piri data without changing their factual content. Update each card’s index, accessible name, portrait, name, role, concise summary, and two visible credentials. Zoey’s visible credentials are:
+Set the data order to Zoey, Piri, Sherri. Use the exact approved Zoey biography and six accolades from the specification. Reorder the existing Sherri and Piri data without changing their factual content. Update each card’s index, accessible name, portrait, name, role, concise summary, and two visible credentials. Zoey’s visible credentials are:
 
 ```html
 <span>2025–26 National Virtual Teacher of the Year</span>
@@ -110,7 +110,7 @@ Expected: FAIL because the current section is a vertical mobile grid and has no 
 
 - [ ] **Step 3: Implement the responsive editorial structure**
 
-Add scoped classes to the existing section. At `max-width: 767px`, make the track horizontally scrollable with `scroll-snap-type: x mandatory`, cards approximately `calc(100% - 2.75rem)` wide, and a gap that leaves the next card edge visible. At `min-width: 768px`, restore a three-column grid and hide mobile controls. Use a fixed portrait aspect ratio, `object-fit: cover`, concise body copy, two credential rows, restrained border/elevation, and no portrait rotation.
+Add scoped classes to the existing section. At `max-width: 767px`, make the track horizontally scrollable with `scroll-snap-type: x mandatory`, cards approximately `calc(100% - 2.75rem)` wide, and a gap that leaves the next card edge visible. At `min-width: 768px`, restore a three-column grid and hide mobile controls. Use a compact `4:3` portrait aspect ratio, `object-fit: cover`, concise body copy, two credential rows, restrained border/elevation, and no portrait rotation.
 
 ```css
 .mentor-card { scroll-snap-align: center; }

@@ -54,17 +54,6 @@
         ]
       },
       {
-          name: "Dr. Sherri Sadr",
-          role: "Dental Graduate, UBC",
-          avatar: "mentors/sadr.jpeg",
-          bio: "Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.",
-          accolades: [
-            "Biological Safety Certificate",
-            "Laser & Chemical Safety",
-            "Animal Care Training"
-          ]
-      },
-      {
         name: "Dr. Hossein Piri",
         role: "Healthcare Operations & AI Expert",
         avatar: "mentors/Dr.piri.jpg",
@@ -74,6 +63,17 @@
           "Dean's Research Scholar, UCalgary",
           "Killam Teaching Award, UBC"
         ]
+      },
+      {
+          name: "Dr. Sherri Sadr",
+          role: "Dental Graduate, UBC",
+          avatar: "mentors/sherri.png",
+          bio: "Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.",
+          accolades: [
+            "Biological Safety Certificate",
+            "Laser & Chemical Safety",
+            "Animal Care Training"
+          ]
       }
     ];
 
@@ -425,7 +425,7 @@
     .mentor-portrait {
       display: block;
       width: 100%;
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 4 / 3;
       border: 0;
       border-radius: 0;
       object-fit: cover;
@@ -948,7 +948,7 @@
         scroll-snap-align: center;
       }
       .mentor-card-surface { border-radius: 1.25rem; }
-      .mentor-portrait { aspect-ratio: 4 / 5; }
+      .mentor-portrait { aspect-ratio: 4 / 3; }
     }
     @media (min-width: 768px) {
       .mentor-track {
@@ -1685,41 +1685,7 @@
                      </div>
                   </div>
     
-                  <div class="mentor-card relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="1" role="button" tabindex="0" aria-label="View profile for Dr. Sherri Sadr" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(1, this)" onkeydown="handleMentorCardKeydown(event, 1, this)">
-                     <div class="mentor-card-surface relative z-10 bg-background border border-border text-left shadow-sm flex flex-col h-full">
-
-                         <div class="mentor-card-header">
-                           <div class="mentor-portrait-wrap relative shrink-0">
-                             <img src="mentors/sadr.jpeg" alt="Portrait of Dr. Sherri Sadr" loading="lazy" decoding="async" class="mentor-portrait">
-                           </div>
-                           <div>
-                             <h3 class="text-lg md:text-xl font-black font-display tracking-tight">Dr. Sherri Sadr</h3>
-                             <p class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-indigo-500 mt-1 font-display">Dental Graduate, UBC</p>
-                           </div>
-                         </div>
-                         <p class="text-muted-foreground text-sm leading-relaxed flex-grow">Sherri is a dental graduate from UBC with a strong science and research foundation.</p>
-                         
-                         <!-- Floating Accolade Badges -->
-                         <div class="mentor-card-credentials mt-6 md:mt-8 pt-5 md:pt-6 border-t border-border/50">
-                            <div class="flex flex-wrap gap-2">
-                               <div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
-         <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-         Biological Safety Certificate
-       </div><div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
-         <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-         Laser &amp; Chemical Safety
-       </div>
-                            </div>
-                         </div>
-                         
-                         <!-- View Profile Action -->
-                         <div class="mentor-card-action mt-6 flex items-center justify-between text-xs font-bold text-indigo-500">
-                            View Full Profile <svg class="lucide w-4 h-4 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                         </div>
-                     </div>
-                  </div>
-    
-                  <div class="mentor-card relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="2" role="button" tabindex="0" aria-label="View profile for Dr. Hossein Piri" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(2, this)" onkeydown="handleMentorCardKeydown(event, 2, this)">
+                  <div class="mentor-card relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="1" role="button" tabindex="0" aria-label="View profile for Dr. Hossein Piri" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(1, this)" onkeydown="handleMentorCardKeydown(event, 1, this)">
                      <div class="mentor-card-surface relative z-10 bg-background border border-border text-left shadow-sm flex flex-col h-full">
 
                          <div class="mentor-card-header">
@@ -1742,6 +1708,40 @@
        </div><div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
          <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
          Dean's Research Scholar, UCalgary
+       </div>
+                            </div>
+                         </div>
+                         
+                         <!-- View Profile Action -->
+                         <div class="mentor-card-action mt-6 flex items-center justify-between text-xs font-bold text-indigo-500">
+                            View Full Profile <svg class="lucide w-4 h-4 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                         </div>
+                     </div>
+                  </div>
+    
+                  <div class="mentor-card relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="2" role="button" tabindex="0" aria-label="View profile for Dr. Sherri Sadr" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(2, this)" onkeydown="handleMentorCardKeydown(event, 2, this)">
+                     <div class="mentor-card-surface relative z-10 bg-background border border-border text-left shadow-sm flex flex-col h-full">
+
+                         <div class="mentor-card-header">
+                           <div class="mentor-portrait-wrap relative shrink-0">
+                             <img src="mentors/sherri.png" alt="Portrait of Dr. Sherri Sadr" loading="lazy" decoding="async" class="mentor-portrait">
+                           </div>
+                           <div>
+                             <h3 class="text-lg md:text-xl font-black font-display tracking-tight">Dr. Sherri Sadr</h3>
+                             <p class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-indigo-500 mt-1 font-display">Dental Graduate, UBC</p>
+                           </div>
+                         </div>
+                         <p class="text-muted-foreground text-sm leading-relaxed flex-grow">Sherri is a dental graduate from UBC with a strong science and research foundation.</p>
+                         
+                         <!-- Floating Accolade Badges -->
+                         <div class="mentor-card-credentials mt-6 md:mt-8 pt-5 md:pt-6 border-t border-border/50">
+                            <div class="flex flex-wrap gap-2">
+                               <div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
+         <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+         Biological Safety Certificate
+       </div><div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
+         <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+         Laser &amp; Chemical Safety
        </div>
                             </div>
                          </div>
