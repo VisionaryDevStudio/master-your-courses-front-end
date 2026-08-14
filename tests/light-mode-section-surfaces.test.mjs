@@ -416,12 +416,33 @@ test("uses a compact accessible Elite Programs mobile selector", () => {
   const programs = html.slice(programsStart, mentorsStart);
 
   assert.match(programs, /role="tablist"[^>]*aria-label="Choose a program"/);
-  assert.equal((programs.match(/class="program-mobile-tab\b/g) ?? []).length, 6);
-  assert.equal((programs.match(/role="tab"/g) ?? []).length, 6);
-  assert.equal((programs.match(/aria-controls="program-mobile-panel"/g) ?? []).length, 6);
+  assert.equal((programs.match(/class="program-mobile-tab\b/g) ?? []).length, 4);
+  assert.equal((programs.match(/role="tab"/g) ?? []).length, 4);
+  assert.equal((programs.match(/aria-controls="program-mobile-panel"/g) ?? []).length, 4);
   assert.match(programs, /id="program-mobile-panel"[^>]*role="tabpanel"/);
   assert.doesNotMatch(programs, /Abstract geometric grid background/);
   assert.doesNotMatch(programs, /bg-\[size:24px_24px\]/);
+});
+
+test("uses the approved four Elite Programs categories across mobile and desktop", () => {
+  const programsStart = html.indexOf("Elite Programs");
+  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programs = html.slice(programsStart, mentorsStart);
+  const approvedTitles = ["AP Prep", "1-on-1 Tutoring", "SAT Prep", "Competition Prep"];
+
+  assert.equal((programs.match(/class="program-mobile-tab\b/g) ?? []).length, 4);
+  assert.equal((programs.match(/class="program-list-item\b/g) ?? []).length, 4);
+  assert.equal((programs.match(/role="tab"/g) ?? []).length, 4);
+  assert.equal((programs.match(/aria-controls="program-mobile-panel"/g) ?? []).length, 4);
+
+  for (const title of approvedTitles) {
+    assert.ok(programs.includes(`>${title}<`), `missing selector title ${title}`);
+  }
+
+  assert.match(programs, /id="mobile-program-coverage"/);
+  assert.match(programs, /id="stage-coverage"/);
+  assert.doesNotMatch(programs, /class="program-acc-item\b/);
+  assert.doesNotMatch(programs, />AP STEM<|>SAT Math<|>Mastery Engines<|>1-on-1 AP<|>University<|>Olympiad</);
 });
 
 test("keeps the floating advisor from blocking content outside its visible controls", () => {
@@ -490,10 +511,10 @@ test("keeps the Olympiad preview free of graph-paper squares", () => {
   const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
   const programs = html.slice(programsStart, mentorsStart);
 
-  assert.equal((programs.match(/USAPhO Simulator/g) ?? []).length, 2);
+  assert.equal((programs.match(/USAPhO Simulator/g) ?? []).length, 1);
   assert.doesNotMatch(programs, /background-size:\s*12px 12px/);
   assert.doesNotMatch(programs, /linear-gradient\(white 1px, transparent 1px\)/);
-  assert.equal((programs.match(/bg-gradient-to-br from-slate-700 via-slate-700 to-slate-800/g) ?? []).length, 2);
+  assert.equal((programs.match(/bg-gradient-to-br from-slate-700 via-slate-700 to-slate-800/g) ?? []).length, 1);
 });
 
 test("uses the approved calm hero motion classes", () => {
