@@ -719,6 +719,10 @@ test("uses reduced-motion-safe editorial mentor reveal and fine-pointer hover on
   assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mentor-card[\s\S]*opacity:\s*1;[\s\S]*transform:\s*none;[\s\S]*transition:\s*none/);
 });
 
+test("neutralizes editorial mentor profile arrow motion under reduced motion", () => {
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mentor-card-action svg\s*\{[^}]*transform:\s*none(?:\s*!important)?;[^}]*transition:\s*none(?:\s*!important)?/);
+});
+
 const mentorCarouselStart = html.indexOf("function initMentorCarousel()");
 const mentorCarouselEnd = html.indexOf("\n          initMentorCarousel();", mentorCarouselStart);
 const mentorCarouselSource = html.slice(mentorCarouselStart, mentorCarouselEnd);
