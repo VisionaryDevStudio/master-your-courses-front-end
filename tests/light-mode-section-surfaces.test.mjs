@@ -517,6 +517,30 @@ test("keeps the Olympiad preview free of graph-paper squares", () => {
   assert.equal((programs.match(/bg-gradient-to-br from-slate-700 via-slate-700 to-slate-800/g) ?? []).length, 1);
 });
 
+test("retains the approved Elite Program previews and AP pathway chips", () => {
+  const programsStart = html.indexOf("Elite Programs");
+  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programs = html.slice(programsStart, mentorsStart);
+
+  for (const course of ["Biology", "Chemistry", "Physics", "Calculus", "Statistics", "Computer Science"]) {
+    assert.match(programs, new RegExp(`<span[^>]*rounded-full[^>]*>${course}</span>`));
+  }
+  for (const delivery of ["Mastery Engine", "Live Programs", "Private Tutoring"]) {
+    assert.match(programs, new RegExp(`>${delivery}<`));
+  }
+
+  for (const retainedMarker of [
+    'object-[center_10%]',
+    'Diagnostic to Current',
+    'Goal: 800',
+    'fR = Iα = (1/2 MR²) (a/R)',
+  ]) {
+    assert.ok(programs.includes(retainedMarker), `missing retained preview detail: ${retainedMarker}`);
+  }
+  assert.match(programs, /Find Your Tutor/);
+  assert.doesNotMatch(programs, />Book Session</);
+});
+
 test("uses the approved calm hero motion classes", () => {
   const heroStart = html.indexOf("Cinematic Hero Section");
   const resultsStart = html.indexOf("By The Numbers", heroStart);
