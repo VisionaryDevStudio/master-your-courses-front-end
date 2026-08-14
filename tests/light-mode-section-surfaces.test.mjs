@@ -517,6 +517,52 @@ test("moves desktop Elite Program selection and focus with arrow keys", () => {
   assert.deepEqual(selected, [[0, controls[0]], [3, controls[3]]]);
 });
 
+test("pauses desktop Elite Program auto-advance while selector focus is retained", () => {
+  const programsStart = html.indexOf("Elite Programs");
+  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programs = html.slice(programsStart, mentorsStart);
+  const intervalBody = programs.match(/setInterval\(\(\) => \{([\s\S]*?)\n\s*\}, 50\);/)?.[1];
+  assert.ok(intervalBody, "Elite Programs auto-advance interval is missing");
+
+  const list = {
+    focusWithin: true,
+    matches(selector) {
+      return selector === ':focus-within' && this.focusWithin;
+    },
+  };
+  const controls = Array.from({ length: 4 }, () => ({
+    querySelector(selector) {
+      return selector === '.program-progress' ? { style: {} } : null;
+    },
+  }));
+  let updates = 0;
+  const runTick = new Function("document", "window", "PROGRAMS_DATA", "updateUI", `
+    let isPaused = false;
+    let isProgramsVisible = true;
+    let progressVal = 99;
+    let activeProgram = 1;
+    return () => {
+      ${intervalBody}
+      return { activeProgram, progressVal };
+    };
+  `)(
+    {
+      getElementById(id) { return id === 'programs-list' ? list : null; },
+      querySelectorAll(selector) { return selector === '.program-list-item' ? controls : []; },
+    },
+    { innerWidth: 1440 },
+    Array.from({ length: 4 }),
+    () => { updates += 1; },
+  );
+
+  assert.deepEqual(runTick(), { activeProgram: 1, progressVal: 99 });
+  assert.equal(updates, 0);
+
+  list.focusWithin = false;
+  assert.deepEqual(runTick(), { activeProgram: 2, progressVal: 0 });
+  assert.equal(updates, 1);
+});
+
 test("keeps the floating advisor from blocking content outside its visible controls", () => {
   const floatingStart = html.indexOf('id="floating-cta-container"');
   const floatingEnd = html.indexOf("// Scroll reveal observer", floatingStart);

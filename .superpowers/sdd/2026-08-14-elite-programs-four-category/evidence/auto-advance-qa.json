@@ -1,0 +1,111 @@
+{
+  "method": "local Chrome DevTools Protocol fallback after Browser node_repl discovery found no js tool",
+  "url": "http://127.0.0.1:4174/index.html",
+  "results": [
+    {
+      "pass": true,
+      "label": "1440 desktop: selector focus holds active, pressed, and roving tab-stop state through an auto-advance boundary",
+      "detail": {
+        "active": 1,
+        "progress": 99,
+        "focus": "1",
+        "pressed": [
+          "false",
+          "true",
+          "false",
+          "false"
+        ],
+        "tabIndices": [
+          -1,
+          0,
+          -1,
+          -1
+        ],
+        "focusWithin": true,
+        "focusVisible": true,
+        "boxShadow": "rgb(249, 250, 251) 0px 0px 0px 4px, rgb(99, 102, 241) 0px 0px 0px 6px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+      }
+    },
+    {
+      "pass": true,
+      "label": "1440 desktop: auto-advance resumes after focus leaves the selector without moving external focus",
+      "detail": {
+        "active": 2,
+        "progress": 2,
+        "focus": "stage-cta",
+        "pressed": [
+          "false",
+          "false",
+          "true",
+          "false"
+        ],
+        "tabIndices": [
+          -1,
+          -1,
+          0,
+          -1
+        ],
+        "focusWithin": false
+      }
+    },
+    {
+      "pass": true,
+      "label": "1440 desktop: pointer hover pause remains intact while focus is outside the selector",
+      "detail": {
+        "active": 1,
+        "progress": 99,
+        "paused": true,
+        "focus": "stage-cta"
+      }
+    },
+    {
+      "pass": true,
+      "label": "1440 desktop: pointer hover release still resumes auto-advance",
+      "detail": {
+        "active": 2,
+        "progress": 4,
+        "paused": false,
+        "focus": "stage-cta"
+      }
+    },
+    {
+      "pass": true,
+      "label": "390 mobile regression: AP default panel remains intact without overflow",
+      "detail": {
+        "title": "AP Prep",
+        "selected": [
+          "true",
+          "false",
+          "false",
+          "false"
+        ],
+        "desktop": "none",
+        "overflow": false
+      }
+    },
+    {
+      "pass": true,
+      "label": "390 mobile regression: selector keyboard wrapping and synchronized state are unchanged",
+      "detail": {
+        "focus": "program-mobile-tab-3",
+        "selected": [
+          "false",
+          "false",
+          "false",
+          "true"
+        ],
+        "title": "Competition Prep"
+      }
+    },
+    {
+      "pass": true,
+      "label": "console: no selector-related runtime errors",
+      "detail": [
+        "cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation",
+        "cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation",
+        "cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation"
+      ]
+    }
+  ],
+  "timestamp": "2026-08-14T21:12:57.601Z"
+}

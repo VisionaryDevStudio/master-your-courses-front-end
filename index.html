@@ -1432,7 +1432,8 @@
       updateUI();
 
       setInterval(() => {
-        if (!isPaused && isProgramsVisible && window.innerWidth >= 1024) { // Only run progress on desktop
+        const isProgramListFocused = document.getElementById('programs-list')?.matches(':focus-within');
+        if (!isPaused && !isProgramListFocused && isProgramsVisible && window.innerWidth >= 1024) { // Only run progress on desktop
           progressVal += 1; // 1% every 50ms = 5s total
           
           const activeItem = document.querySelectorAll('.program-list-item')[activeProgram];
