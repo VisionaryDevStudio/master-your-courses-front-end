@@ -1214,6 +1214,7 @@ test("keeps premium card spacing after removing repeated tiers", () => {
 test("keeps methodology cards balanced across responsive layouts", () => {
   assert.match(html, /\.methodology-card\s*\{[\s\S]*border-radius:[\s\S]*box-shadow:/);
   assert.match(html, /\.methodology-card-accent\s*\{[\s\S]*height:\s*(?:3px|0\.25rem)/);
+  assert.match(html, /\.methodology-card-accent\s*\{[^}]*flex:\s*0 0 3px/);
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.methodology-card-body\s*\{[\s\S]*padding:/);
 });
 
