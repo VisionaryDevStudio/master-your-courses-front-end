@@ -2735,6 +2735,7 @@
     let isCtaOpen = false;
     const resultsAdvisorMedia = window.matchMedia('(max-width: 767px)');
     let resultsSectionIntersecting = false;
+    let programsAdvisorIntersecting = false;
     let hasPassedResultsSection = false;
 
     function getAdvisorFocusableElements() {
@@ -2745,7 +2746,7 @@
 
     function syncResultsAdvisorState() {
       if (!floatingCtaContainer) return;
-      const shouldHide = resultsAdvisorMedia.matches && resultsSectionIntersecting;
+      const shouldHide = resultsAdvisorMedia.matches && (resultsSectionIntersecting || programsAdvisorIntersecting);
       floatingCtaContainer.classList.toggle('results-advisor-hidden', shouldHide);
     }
 
@@ -2803,6 +2804,18 @@
         });
       }, { threshold: 0 });
       resultsAdvisorObserver.observe(resultsSection);
+    }
+
+    const programsAdvisorSection = document.getElementById('programs-container');
+    if (programsAdvisorSection) {
+      const programsAdvisorObserver = new IntersectionObserver(entries => {
+        programsAdvisorIntersecting = entries[0].isIntersecting;
+        if (resultsAdvisorMedia.matches && programsAdvisorIntersecting && isCtaOpen) {
+          setFloatingCtaOpen(false, { restoreFocus: false });
+        }
+        syncResultsAdvisorState();
+      }, { threshold: 0.1 });
+      programsAdvisorObserver.observe(programsAdvisorSection);
     }
 
     resultsAdvisorMedia.addEventListener('change', () => {

@@ -476,6 +476,18 @@ test("keeps the floating advisor from blocking content outside its visible contr
   assert.doesNotMatch(floating, /classList\.remove\([^)]*['"]pointer-events-none['"]/);
 });
 
+test("hides the mobile advisor while Elite Programs is in view so it cannot cover the selector CTA", () => {
+  const floatingStart = html.indexOf('// Floating CTA Logic');
+  const floatingEnd = html.indexOf('// Scroll reveal observer', floatingStart);
+  const floating = html.slice(floatingStart, floatingEnd);
+
+  assert.match(floating, /let programsAdvisorIntersecting = false;/);
+  assert.match(floating, /const shouldHide = resultsAdvisorMedia\.matches && \(resultsSectionIntersecting \|\| programsAdvisorIntersecting\);/);
+  assert.match(floating, /const programsAdvisorSection = document\.getElementById\('programs-container'\);/);
+  assert.match(floating, /programsAdvisorIntersecting = entries\[0\]\.isIntersecting;/);
+  assert.match(floating, /syncResultsAdvisorState\(\);/);
+});
+
 test("retains dark-mode backgrounds and accessible canonical mentor profiles", () => {
   for (const className of ["surface-results", "surface-methodology"]) {
     const section = html.match(new RegExp(`<section[^>]*${className}[^>]*>`))?.[0] ?? "";
