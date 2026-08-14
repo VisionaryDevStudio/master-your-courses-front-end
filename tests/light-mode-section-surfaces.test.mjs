@@ -1152,10 +1152,33 @@ test("uses the premium methodology card system without saturated utility bars", 
   assert.equal((section.match(/class="[^"]*methodology-card\b/g) ?? []).length, 6);
   assert.equal((section.match(/methodology-card-accent/g) ?? []).length, 6);
   assert.equal((section.match(/methodology-icon/g) ?? []).length, 6);
-  assert.equal((section.match(/methodology-tier/g) ?? []).length, 6);
+  assert.equal((section.match(/methodology-tier/g) ?? []).length, 0);
   assert.doesNotMatch(section, /h-2 w-full bg-(?:blue|indigo|red|emerald|pink|purple)-500/);
   assert.match(section, />Clear Progress Tracking<\/h3>/);
   assert.doesNotMatch(section, />Clear Progress Tracking Dashboard<\/h3>/);
+});
+
+test("restores six restrained methodology identities without repeated card tiers", () => {
+  const section = html.match(/<section[^>]*id="methodology-section"[\s\S]*?<\/section>/)?.[0] ?? "";
+  const accents = ["blue", "indigo", "rose", "emerald", "fuchsia", "violet"];
+
+  assert.equal((section.match(/methodology-tier/g) ?? []).length, 0);
+  for (const accent of accents) {
+    assert.equal((section.match(new RegExp(`methodology-card-accent accent-${accent}`, "g")) ?? []).length, 1);
+    assert.equal((section.match(new RegExp(`methodology-icon icon-${accent}`, "g")) ?? []).length, 1);
+    assert.match(html, new RegExp(`\\.accent-${accent}\\s*\\{`));
+    assert.match(html, new RegExp(`\\.icon-${accent}\\s*\\{`));
+    assert.match(html, new RegExp(`html\\.dark \\.icon-${accent}\\s*\\{`));
+  }
+  assert.doesNotMatch(html, /\.methodology-card-accent\s*\{[^}]*background:/);
+  assert.doesNotMatch(section, /h-2 w-full bg-(?:blue|indigo|red|emerald|pink|purple)-500/);
+});
+
+test("keeps premium card spacing after removing repeated tiers", () => {
+  assert.match(html, /\.methodology-card-body\s*>\s*\.flex-1\s*\{\s*margin-top:\s*1\.25rem;/);
+  const mobile = extractCssBlock(html, "@media (max-width: 767px)");
+  assert.match(mobile, /\.methodology-card-body\s*>\s*\.flex-1\s*\{\s*display:\s*contents;/);
+  assert.doesNotMatch(html, /\.methodology-tier\s*\{/);
 });
 
 test("keeps methodology cards balanced across responsive layouts", () => {
@@ -1255,7 +1278,6 @@ test("compacts methodology cards only below the tablet breakpoint", () => {
   assert.match(mobile, /\.methodology-mobile-group\s*\{[\s\S]*display:\s*block/);
   assert.match(mobile, /\.methodology-card-body\s*\{[\s\S]*display:\s*grid[\s\S]*grid-template-columns:\s*2\.75rem\s+minmax\(0,\s*1fr\)[\s\S]*padding:\s*1\.25rem/);
   assert.match(mobile, /\.methodology-icon\s*\{[\s\S]*width:\s*2\.75rem[\s\S]*height:\s*2\.75rem/);
-  assert.match(mobile, /\.methodology-tier\s*\{\s*display:\s*none/);
   assert.match(mobile, /\.methodology-card-body\s*>\s*\.flex-1\s*\{\s*display:\s*contents/);
   assert.match(mobile, /\.methodology-description\s*\{[\s\S]*grid-column:\s*1\s*\/\s*-1/);
 });
