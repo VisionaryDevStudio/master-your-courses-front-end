@@ -302,6 +302,23 @@ test("scopes custom section surfaces to light mode", () => {
   }
 });
 
+test("keeps the mobile hero atmosphere continuous without changing adjacent surfaces", () => {
+  const mobile = extractCssBlock(html, "@media (max-width: 767px)");
+
+  assert.match(
+    mobile,
+    /html:not\(\.dark\) \.surface-hero\s*\{[^}]*background-size:\s*125vw 48rem,\s*120vw 42rem,\s*auto;[^}]*background-position:\s*50% -6rem,\s*50% 20rem,\s*0 0;[^}]*background-repeat:\s*no-repeat;/
+  );
+  assert.match(
+    mobile,
+    /html:not\(\.dark\) \.surface-methodology,\s*html:not\(\.dark\) \.surface-mentors\s*\{[^}]*background-size:\s*38rem 38rem,\s*auto;/
+  );
+  assert.doesNotMatch(
+    mobile,
+    /html:not\(\.dark\) \.surface-hero,\s*html:not\(\.dark\) \.surface-methodology/
+  );
+});
+
 test("provides a full-bleed canvas for constrained sections", () => {
   assert.match(html, /\.surface-full-bleed\s*\{/);
   assert.match(html, /\.surface-full-bleed::before\s*\{/);
