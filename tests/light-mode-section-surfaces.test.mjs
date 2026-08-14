@@ -944,10 +944,23 @@ test("keeps the closed mobile advisor circular while it transitions into the res
   assert.match(trigger, /class="[^"]*advisor-trigger-calendar[^"]*"[^>]*aria-hidden="true"/);
   assert.match(trigger, /class="[^"]*advisor-trigger-phone[^"]*"[^>]*aria-hidden="true"/);
   assert.match(trigger, /id="floating-cta-ping"/);
-  assert.match(mobileStyles, /\.advisor-trigger-calendar\s*\{[\s\S]*display:\s*block/);
+  assert.match(
+    mobileStyles,
+    /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle\s*\{[^}]*width:\s*3\.5rem;[^}]*height:\s*3\.5rem;[^}]*border:\s*1px solid rgb\(255 255 255 \/ 0\.76\);[^}]*box-shadow:\s*0 8px 22px rgb\(67 56 202 \/ 0\.2\);/
+  );
+  assert.match(
+    mobileStyles,
+    /\.advisor-trigger-calendar\s*\{[^}]*display:\s*block;[^}]*margin:\s*0 auto;[^}]*flex:\s*0 0 auto;/
+  );
+  assert.doesNotMatch(
+    mobileStyles,
+    /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle\s*\{[^}]*border:\s*2px/
+  );
   assert.match(mobileStyles, /\.advisor-trigger-phone,[\s\S]*#floating-cta-ping\s*\{[\s\S]*display:\s*none/);
-  assert.match(mobileStyles, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle\s*\{[\s\S]*border:\s*2px solid rgb\(255 255 255 \/ 0\.72\);[\s\S]*box-shadow:\s*0 10px 28px rgb\(67 56 202 \/ 0\.24\)/);
-  assert.match(mobileStyles, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle:focus-visible\s*\{[\s\S]*box-shadow:[^;]*0 0 0 3px rgb\(99 102 241 \/ 0\.5\)/);
+  assert.match(
+    mobileStyles,
+    /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle:focus-visible\s*\{[^}]*box-shadow:\s*0 8px 22px rgb\(67 56 202 \/ 0\.2\),\s*0 0 0 3px rgb\(99 102 241 \/ 0\.5\);/
+  );
   assert.match(mobileStyles, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle:active\s*\{[\s\S]*transform:\s*scale\(0\.96\)/);
   const sharedStyles = html.slice(0, mobileStart);
   assert.match(sharedStyles, /\.advisor-trigger-calendar\s*\{\s*display:\s*none;\s*\}/);
