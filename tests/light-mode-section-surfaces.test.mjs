@@ -216,24 +216,17 @@ function createHeroMotionHarness({
 
 const expectedMentors = [
   {
-    name: "Dr. Hossein Piri",
-    role: "Healthcare Operations & AI Expert",
-    avatar: "mentors/Dr.piri.jpg",
-    bio: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations. He focuses on practical systems that improve care delivery, including patient-centered warning systems and AI-driven approaches for addressing healthcare disparities.",
+    name: "Zoey",
+    role: "Certified Biology & Science Teacher",
+    avatar: "mentors/zoey.png",
+    bio: "Zoey is one of the most decorated AP Biology teachers in the country. She has a rare gift for making difficult biology concepts feel manageable—breaking them down step-by-step and adapting her instruction to how each individual student learns best. Parents choose her because she doesn't just teach content; she builds the confidence and skills students need to earn top grades and score a 5.",
     accolades: [
-      "40 Under 40 (2026)",
-      "Dean's Research Scholar, UCalgary",
-      "Killam Teaching Award, UBC",
-    ],
-  },
-  {
-    name: "Elena Z.",
-    role: "Honors Biology, UWaterloo",
-    avatar: "mentors/elena zhou.jpg",
-    bio: "Elena is an Honors Biology powerhouse who has successfully cracked the code to top-percentile academic performance with a 4.0 GPA. As a Research Assistant at Sunnybrook Hospital, she loves breaking down complex sciences into highly digestible, university-level concepts.",
-    accolades: [
-      "Bruce Weyler Kelley Memorial Prize",
-      "President's Scholarship of Distinction (>95%)",
+      "AP Biology Teacher Since 2017",
+      "2025–26 National Virtual Teacher of the Year",
+      "Teacher of the Year, 2020–21 — U.S. Grant High School",
+      "Master's Degree, Johns Hopkins University — 4.0 GPA",
+      "Scored a 5 on the AP Biology Exam — then built a career teaching others to do the same",
+      "Teacher Mentor — Coached 39+ educators in mastery-based learning",
     ],
   },
   {
@@ -246,6 +239,35 @@ const expectedMentors = [
       "Laser & Chemical Safety",
       "Animal Care Training",
     ],
+  },
+  {
+    name: "Dr. Hossein Piri",
+    role: "Healthcare Operations & AI Expert",
+    avatar: "mentors/Dr.piri.jpg",
+    bio: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations. He focuses on practical systems that improve care delivery, including patient-centered warning systems and AI-driven approaches for addressing healthcare disparities.",
+    accolades: [
+      "40 Under 40 (2026)",
+      "Dean's Research Scholar, UCalgary",
+      "Killam Teaching Award, UBC",
+    ],
+  },
+];
+
+const expectedVisibleMentorContent = [
+  {
+    summary: "Zoey makes difficult biology concepts manageable through step-by-step, adaptive instruction that builds confidence and AP-level mastery.",
+    credentials: [
+      "2025–26 National Virtual Teacher of the Year",
+      "Master’s, Johns Hopkins University — 4.0 GPA",
+    ],
+  },
+  {
+    summary: "Sherri is a dental graduate from UBC with a strong science and research foundation.",
+    credentials: ["Biological Safety Certificate", "Laser & Chemical Safety"],
+  },
+  {
+    summary: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations.",
+    credentials: ["40 Under 40 (2026)", "Dean's Research Scholar, UCalgary"],
   },
 ];
 
@@ -610,11 +632,17 @@ test("retains dark-mode backgrounds and accessible canonical mentor profiles", (
   const mentorsSectionStart = html.indexOf("Meet The Mentors");
   const mentorsSectionEnd = html.indexOf("Results & Quotes Ticker", mentorsSectionStart);
   const mentorsSection = html.slice(mentorsSectionStart, mentorsSectionEnd);
+  assert.doesNotMatch(mentorsSection, /Elena|elena zhou/i);
+  assert.doesNotMatch(JSON.stringify(extractMentorData()), /Elena|elena zhou/i);
+  assert.equal(expectedMentors[0].name, "Zoey");
+  assert.equal(expectedMentors[0].avatar, "mentors/zoey.png");
+  assert.equal(expectedMentors[0].accolades.length, 6);
   for (const [index, mentor] of expectedMentors.entries()) {
     const cardStart = mentorsSection.indexOf(`data-mentor-index="${index}"`);
     const nextCardStart = mentorsSection.indexOf(`data-mentor-index="${index + 1}"`);
     assert.notEqual(cardStart, -1, `mentor card ${index} is missing its scoped mapping`);
     const card = mentorsSection.slice(cardStart, nextCardStart === -1 ? undefined : nextCardStart);
+    const cardText = card.replaceAll("&amp;", "&");
 
     assert.ok(card.includes('role="button"'), `${mentor.name} card is missing button semantics`);
     assert.ok(card.includes('tabindex="0"'), `${mentor.name} card is not keyboard focusable`);
@@ -626,8 +654,13 @@ test("retains dark-mode backgrounds and accessible canonical mentor profiles", (
       card.includes(`onkeydown="handleMentorCardKeydown(event, ${index}, this)"`),
       `${mentor.name} card is missing Enter/Space activation`,
     );
-    for (const value of [mentor.name, mentor.role, mentor.bio, ...mentor.accolades]) {
-      assert.ok(card.includes(value), `${mentor.name} card is missing canonical content: ${value}`);
+    for (const value of [
+      mentor.name,
+      mentor.role,
+      expectedVisibleMentorContent[index].summary,
+      ...expectedVisibleMentorContent[index].credentials,
+    ]) {
+      assert.ok(cardText.includes(value), `${mentor.name} card is missing canonical content: ${value}`);
     }
   }
 

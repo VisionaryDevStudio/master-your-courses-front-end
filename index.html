@@ -39,28 +39,21 @@
   <script>
     // Mentor Modal Logic
     const MENTORS_DATA = [
-        {
-          name: "Dr. Hossein Piri",
-          role: "Healthcare Operations & AI Expert",
-          avatar: "mentors/Dr.piri.jpg",
-          bio: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations. He focuses on practical systems that improve care delivery, including patient-centered warning systems and AI-driven approaches for addressing healthcare disparities.",
-          accolades: [
-            "40 Under 40 (2026)",
-            "Dean's Research Scholar, UCalgary",
-            "Killam Teaching Award, UBC"
-          ]
-        },
-        {
-          name: "Elena Z.",
-          role: "Honors Biology, UWaterloo",
-          avatar: "mentors/elena zhou.jpg",
-          bio: "Elena is an Honors Biology powerhouse who has successfully cracked the code to top-percentile academic performance with a 4.0 GPA. As a Research Assistant at Sunnybrook Hospital, she loves breaking down complex sciences into highly digestible, university-level concepts.",
-          accolades: [
-            "Bruce Weyler Kelley Memorial Prize",
-            "President's Scholarship of Distinction (>95%)"
-          ]
-        },
-        {
+      {
+        name: "Zoey",
+        role: "Certified Biology & Science Teacher",
+        avatar: "mentors/zoey.png",
+        bio: "Zoey is one of the most decorated AP Biology teachers in the country. She has a rare gift for making difficult biology concepts feel manageable—breaking them down step-by-step and adapting her instruction to how each individual student learns best. Parents choose her because she doesn't just teach content; she builds the confidence and skills students need to earn top grades and score a 5.",
+        accolades: [
+          "AP Biology Teacher Since 2017",
+          "2025–26 National Virtual Teacher of the Year",
+          "Teacher of the Year, 2020–21 — U.S. Grant High School",
+          "Master's Degree, Johns Hopkins University — 4.0 GPA",
+          "Scored a 5 on the AP Biology Exam — then built a career teaching others to do the same",
+          "Teacher Mentor — Coached 39+ educators in mastery-based learning"
+        ]
+      },
+      {
           name: "Dr. Sherri Sadr",
           role: "Dental Graduate, UBC",
           avatar: "mentors/sadr.jpeg",
@@ -70,7 +63,18 @@
             "Laser & Chemical Safety",
             "Animal Care Training"
           ]
-        }
+      },
+      {
+        name: "Dr. Hossein Piri",
+        role: "Healthcare Operations & AI Expert",
+        avatar: "mentors/Dr.piri.jpg",
+        bio: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations. He focuses on practical systems that improve care delivery, including patient-centered warning systems and AI-driven approaches for addressing healthcare disparities.",
+        accolades: [
+          "40 Under 40 (2026)",
+          "Dean's Research Scholar, UCalgary",
+          "Killam Teaching Award, UBC"
+        ]
+      }
     ];
 
     let mentorModalTrigger = null;
@@ -1476,7 +1480,7 @@
 
              <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
   
-                  <div class="relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="0" role="button" tabindex="0" aria-label="View profile for Dr. Hossein Piri" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(0, this)" onkeydown="handleMentorCardKeydown(event, 0, this)">
+                  <div class="relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="0" role="button" tabindex="0" aria-label="View profile for Zoey" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(0, this)" onkeydown="handleMentorCardKeydown(event, 0, this)">
                      <!-- Blooming shadow effect -->
                      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-indigo-500/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none z-0"></div>
                      
@@ -1485,27 +1489,24 @@
                          <div class="flex flex-row items-center gap-4 mb-5 md:mb-6 mt-4">
                            <div class="relative shrink-0">
                              <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                             <img src="mentors/Dr.piri.jpg" alt="Portrait of Dr. Hossein Piri" loading="lazy" decoding="async" class="relative w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-background shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 object-[center_10%]">
+                             <img src="mentors/zoey.png" alt="Portrait of Zoey" loading="lazy" decoding="async" class="relative w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-background shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 object-[center_10%]">
                            </div>
                            <div>
-                             <h3 class="text-lg md:text-xl font-black font-display tracking-tight">Dr. Hossein Piri</h3>
-                             <p class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-indigo-500 mt-1 font-display">Healthcare Operations & AI Expert</p>
+                             <h3 class="text-lg md:text-xl font-black font-display tracking-tight">Zoey</h3>
+                             <p class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-indigo-500 mt-1 font-display">Certified Biology &amp; Science Teacher</p>
                            </div>
                          </div>
-                         <p class="text-muted-foreground text-sm leading-relaxed flex-grow">Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations. He focuses on practical systems that improve care delivery, including patient-centered warning systems and AI-driven approaches for addressing healthcare disparities.</p>
+                         <p class="text-muted-foreground text-sm leading-relaxed flex-grow">Zoey makes difficult biology concepts manageable through step-by-step, adaptive instruction that builds confidence and AP-level mastery.</p>
                          
                          <!-- Floating Accolade Badges -->
                          <div class="mt-6 md:mt-8 pt-5 md:pt-6 border-t border-border/50">
                             <div class="flex flex-wrap gap-2">
                                <div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
          <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-         40 Under 40 (2026)
+         2025–26 National Virtual Teacher of the Year
        </div><div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
          <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-         Dean's Research Scholar, UCalgary
-       </div><div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
-         <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-         Killam Teaching Award, UBC
+         Master’s, Johns Hopkins University — 4.0 GPA
        </div>
                             </div>
                          </div>
@@ -1517,45 +1518,7 @@
                      </div>
                   </div>
     
-                  <div class="relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="1" role="button" tabindex="0" aria-label="View profile for Elena Z." aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(1, this)" onkeydown="handleMentorCardKeydown(event, 1, this)">
-                     <!-- Blooming shadow effect -->
-                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-indigo-500/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none z-0"></div>
-                     
-                     <div class="relative z-10 bg-background border border-border p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] text-left shadow-sm flex flex-col h-full transition-all duration-500 group-hover:border-indigo-500/30 group-hover:shadow-2xl group-hover:-translate-y-1">
-
-                         <div class="flex flex-row items-center gap-4 mb-5 md:mb-6 mt-4">
-                           <div class="relative shrink-0">
-                             <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                             <img src="mentors/elena zhou.jpg" alt="Portrait of Elena Z." loading="lazy" decoding="async" class="relative w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-background shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 object-[center_10%]">
-                           </div>
-                           <div>
-                             <h3 class="text-lg md:text-xl font-black font-display tracking-tight">Elena Z.</h3>
-                             <p class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-indigo-500 mt-1 font-display">Honors Biology, UWaterloo</p>
-                           </div>
-                         </div>
-                         <p class="text-muted-foreground text-sm leading-relaxed flex-grow">Elena is an Honors Biology powerhouse who has successfully cracked the code to top-percentile academic performance with a 4.0 GPA. As a Research Assistant at Sunnybrook Hospital, she loves breaking down complex sciences into highly digestible, university-level concepts.</p>
-                         
-                         <!-- Floating Accolade Badges -->
-                         <div class="mt-6 md:mt-8 pt-5 md:pt-6 border-t border-border/50">
-                            <div class="flex flex-wrap gap-2">
-                               <div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
-         <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-         Bruce Weyler Kelley Memorial Prize
-       </div><div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
-         <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-         President's Scholarship of Distinction (>95%)
-       </div>
-                            </div>
-                         </div>
-                         
-                         <!-- View Profile Action -->
-                         <div class="mt-6 flex items-center justify-between text-xs font-bold text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            View Full Profile <svg class="lucide w-4 h-4 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                         </div>
-                     </div>
-                  </div>
-    
-                  <div class="relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="2" role="button" tabindex="0" aria-label="View profile for Dr. Sherri Sadr" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(2, this)" onkeydown="handleMentorCardKeydown(event, 2, this)">
+                  <div class="relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="1" role="button" tabindex="0" aria-label="View profile for Dr. Sherri Sadr" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(1, this)" onkeydown="handleMentorCardKeydown(event, 1, this)">
                      <!-- Blooming shadow effect -->
                      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-indigo-500/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none z-0"></div>
                      
@@ -1571,7 +1534,7 @@
                              <p class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-indigo-500 mt-1 font-display">Dental Graduate, UBC</p>
                            </div>
                          </div>
-                         <p class="text-muted-foreground text-sm leading-relaxed flex-grow">Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.</p>
+                         <p class="text-muted-foreground text-sm leading-relaxed flex-grow">Sherri is a dental graduate from UBC with a strong science and research foundation.</p>
                          
                          <!-- Floating Accolade Badges -->
                          <div class="mt-6 md:mt-8 pt-5 md:pt-6 border-t border-border/50">
@@ -1581,10 +1544,45 @@
          Biological Safety Certificate
        </div><div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
          <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-         Laser & Chemical Safety
+         Laser &amp; Chemical Safety
+       </div>
+                            </div>
+                         </div>
+                         
+                         <!-- View Profile Action -->
+                         <div class="mt-6 flex items-center justify-between text-xs font-bold text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            View Full Profile <svg class="lucide w-4 h-4 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                         </div>
+                     </div>
+                  </div>
+    
+                  <div class="relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="2" role="button" tabindex="0" aria-label="View profile for Dr. Hossein Piri" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(2, this)" onkeydown="handleMentorCardKeydown(event, 2, this)">
+                     <!-- Blooming shadow effect -->
+                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-indigo-500/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none z-0"></div>
+                     
+                     <div class="relative z-10 bg-background border border-border p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] text-left shadow-sm flex flex-col h-full transition-all duration-500 group-hover:border-indigo-500/30 group-hover:shadow-2xl group-hover:-translate-y-1">
+
+                         <div class="flex flex-row items-center gap-4 mb-5 md:mb-6 mt-4">
+                           <div class="relative shrink-0">
+                             <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                             <img src="mentors/Dr.piri.jpg" alt="Portrait of Dr. Hossein Piri" loading="lazy" decoding="async" class="relative w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-background shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 object-[center_10%]">
+                           </div>
+                           <div>
+                             <h3 class="text-lg md:text-xl font-black font-display tracking-tight">Dr. Hossein Piri</h3>
+                             <p class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-indigo-500 mt-1 font-display">Healthcare Operations &amp; AI Expert</p>
+                           </div>
+                         </div>
+                         <p class="text-muted-foreground text-sm leading-relaxed flex-grow">Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations.</p>
+                         
+                         <!-- Floating Accolade Badges -->
+                         <div class="mt-6 md:mt-8 pt-5 md:pt-6 border-t border-border/50">
+                            <div class="flex flex-wrap gap-2">
+                               <div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
+         <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+         40 Under 40 (2026)
        </div><div class="text-[10px] font-bold text-muted-foreground bg-muted/50 border border-border/50 px-2.5 py-1.5 rounded-md flex items-center gap-1.5 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-500/20 transition-colors">
          <svg class="lucide w-3 h-3 text-amber-400 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-         Animal Care Training
+         Dean's Research Scholar, UCalgary
        </div>
                             </div>
                          </div>
