@@ -465,14 +465,24 @@
     .mentor-carousel-button:disabled { cursor: not-allowed; opacity: .38; }
     .mentor-carousel-dots { display: flex; gap: .5rem; }
     .mentor-carousel-dot {
-      width: .5rem;
-      height: .5rem;
+      display: inline-flex;
+      width: 2.75rem;
+      height: 2.75rem;
+      align-items: center;
+      justify-content: center;
       padding: 0;
       border: 0;
       border-radius: 999px;
+      background: transparent;
+    }
+    .mentor-carousel-dot::before {
+      content: "";
+      width: .5rem;
+      height: .5rem;
+      border-radius: 999px;
       background: rgb(100 116 139 / .38);
     }
-    .mentor-carousel-dot[aria-current="true"] { width: 1.5rem; background: #4f46e5; }
+    .mentor-carousel-dot[aria-current="true"]::before { width: 1.5rem; background: #4f46e5; }
 
     @media (prefers-reduced-motion: no-preference) {
       .mentor-card { transition: transform 220ms ease, filter 220ms ease; }
@@ -1642,14 +1652,10 @@
                <div class="mentor-track">
   
                   <div class="mentor-card relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="0" role="button" tabindex="0" aria-label="View profile for Zoey" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(0, this)" onkeydown="handleMentorCardKeydown(event, 0, this)">
-                     <!-- Blooming shadow effect -->
-                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-indigo-500/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none z-0"></div>
-                     
                      <div class="mentor-card-surface relative z-10 bg-background border border-border text-left shadow-sm flex flex-col h-full">
 
-                         <div class="mentor-card-header flex flex-row items-center gap-4 mb-5 md:mb-6 mt-4">
+                         <div class="mentor-card-header">
                            <div class="mentor-portrait-wrap relative shrink-0">
-                             <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                              <img src="mentors/zoey.png" alt="Portrait of Zoey" loading="lazy" decoding="async" class="mentor-portrait">
                            </div>
                            <div>
@@ -1680,14 +1686,10 @@
                   </div>
     
                   <div class="mentor-card relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="1" role="button" tabindex="0" aria-label="View profile for Dr. Sherri Sadr" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(1, this)" onkeydown="handleMentorCardKeydown(event, 1, this)">
-                     <!-- Blooming shadow effect -->
-                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-indigo-500/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none z-0"></div>
-                     
                      <div class="mentor-card-surface relative z-10 bg-background border border-border text-left shadow-sm flex flex-col h-full">
 
-                         <div class="mentor-card-header flex flex-row items-center gap-4 mb-5 md:mb-6 mt-4">
+                         <div class="mentor-card-header">
                            <div class="mentor-portrait-wrap relative shrink-0">
-                             <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                              <img src="mentors/sadr.jpeg" alt="Portrait of Dr. Sherri Sadr" loading="lazy" decoding="async" class="mentor-portrait">
                            </div>
                            <div>
@@ -1718,14 +1720,10 @@
                   </div>
     
                   <div class="mentor-card relative group flex flex-col h-full w-full cursor-pointer rounded-[1.5rem] md:rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background" data-mentor-index="2" role="button" tabindex="0" aria-label="View profile for Dr. Hossein Piri" aria-haspopup="dialog" aria-controls="mentor-modal" onclick="openMentorModal(2, this)" onkeydown="handleMentorCardKeydown(event, 2, this)">
-                     <!-- Blooming shadow effect -->
-                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-indigo-500/20 blur-[60px] rounded-full opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none z-0"></div>
-                     
                      <div class="mentor-card-surface relative z-10 bg-background border border-border text-left shadow-sm flex flex-col h-full">
 
-                         <div class="mentor-card-header flex flex-row items-center gap-4 mb-5 md:mb-6 mt-4">
+                         <div class="mentor-card-header">
                            <div class="mentor-portrait-wrap relative shrink-0">
-                             <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                              <img src="mentors/Dr.piri.jpg" alt="Portrait of Dr. Hossein Piri" loading="lazy" decoding="async" class="mentor-portrait">
                            </div>
                            <div>

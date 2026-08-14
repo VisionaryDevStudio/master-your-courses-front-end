@@ -713,6 +713,35 @@ test("uses an editorial mentor desktop grid and manual mobile snap carousel", ()
   assert.doesNotMatch(mentors, /class="mentor-portrait[^\"]*rotate/);
 });
 
+test("keeps mentor identity content in an unambiguous stacked header", () => {
+  const mentorsStart = html.indexOf("Meet The Mentors");
+  const mentorsEnd = html.indexOf("Results & Quotes Ticker", mentorsStart);
+  const mentors = html.slice(mentorsStart, mentorsEnd);
+  const headers = [...mentors.matchAll(/<div class="mentor-card-header([^\"]*)">/g)];
+
+  assert.equal(headers.length, 3);
+  for (const [, utilities] of headers) {
+    assert.doesNotMatch(utilities, /\bflex(?:-row|-col)?\b/);
+  }
+  assert.match(html, /\.mentor-card-header\s*\{[^}]*display:\s*block;/);
+  assert.match(html, /\.mentor-portrait-wrap\s*\{[^}]*width:\s*100%;/);
+});
+
+test("provides 44px mentor dot targets around restrained visual indicators", () => {
+  assert.match(html, /\.mentor-carousel-dot\s*\{[^}]*width:\s*2\.75rem;[^}]*height:\s*2\.75rem;/);
+  assert.match(html, /\.mentor-carousel-dot::before\s*\{[^}]*width:\s*\.5rem;[^}]*height:\s*\.5rem;/);
+  assert.match(html, /\.mentor-carousel-dot\[aria-current="true"\]::before\s*\{[^}]*width:\s*1\.5rem;/);
+});
+
+test("removes decorative mentor hover glow layers", () => {
+  const mentorsStart = html.indexOf("Meet The Mentors");
+  const mentorsEnd = html.indexOf("Results & Quotes Ticker", mentorsStart);
+  const mentors = html.slice(mentorsStart, mentorsEnd);
+
+  assert.doesNotMatch(mentors, /Blooming shadow effect/);
+  assert.doesNotMatch(mentors, /group-hover:opacity-100/);
+});
+
 test("uses reduced-motion-safe editorial mentor reveal and fine-pointer hover only", () => {
   assert.match(html, /@media \(prefers-reduced-motion:\s*no-preference\)[\s\S]*\.mentor-motion-ready \.mentor-card:not\(\.mentor-visible\)[\s\S]*opacity:\s*0[\s\S]*transform:\s*translateY\(16px\)/);
   assert.match(html, /@media \(hover:\s*hover\) and \(pointer:\s*fine\) and \(prefers-reduced-motion:\s*no-preference\)[\s\S]*\.mentor-card:hover\s*\{\s*transform:\s*translateY\(-2px\)/);
