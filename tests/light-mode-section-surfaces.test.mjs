@@ -482,10 +482,22 @@ test("hides the mobile advisor while Elite Programs is in view so it cannot cove
   const floating = html.slice(floatingStart, floatingEnd);
 
   assert.match(floating, /let programsAdvisorIntersecting = false;/);
-  assert.match(floating, /const shouldHide = resultsAdvisorMedia\.matches && \(resultsSectionIntersecting \|\| programsAdvisorIntersecting\);/);
+  assert.match(floating, /const shouldHideResults = resultsAdvisorMedia\.matches && resultsSectionIntersecting;/);
+  assert.match(floating, /floatingCtaContainer\.classList\.toggle\('programs-advisor-hidden', programsAdvisorIntersecting\);/);
   assert.match(floating, /const programsAdvisorSection = document\.getElementById\('programs-container'\);/);
   assert.match(floating, /programsAdvisorIntersecting = entries\[0\]\.isIntersecting;/);
   assert.match(floating, /syncResultsAdvisorState\(\);/);
+});
+
+test("hides the desktop advisor while the Elite Programs stage is in view so it cannot cover its CTA", () => {
+  const floatingStart = html.indexOf('// Floating CTA Logic');
+  const floatingEnd = html.indexOf('// Scroll reveal observer', floatingStart);
+  const floating = html.slice(floatingStart, floatingEnd);
+  const sharedStyles = html.slice(0, html.indexOf('@media (max-width: 767px)'));
+
+  assert.match(sharedStyles, /#floating-cta-container\.programs-advisor-hidden\s*\{[\s\S]*opacity:\s*0;[\s\S]*visibility:\s*hidden;[\s\S]*pointer-events:\s*none;/);
+  assert.match(floating, /floatingCtaContainer\.classList\.toggle\('programs-advisor-hidden', programsAdvisorIntersecting\);/);
+  assert.match(floating, /if \(programsAdvisorIntersecting && isCtaOpen\) \{/);
 });
 
 test("retains dark-mode backgrounds and accessible canonical mentor profiles", () => {

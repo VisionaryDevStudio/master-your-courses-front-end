@@ -452,6 +452,13 @@
         0 0 0 4px rgb(99 102 241 / 0.42);
     }
 
+    #floating-cta-container.programs-advisor-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(1rem);
+    }
+
     .advisor-trigger-calendar {
       display: none;
     }
@@ -2746,8 +2753,9 @@
 
     function syncResultsAdvisorState() {
       if (!floatingCtaContainer) return;
-      const shouldHide = resultsAdvisorMedia.matches && (resultsSectionIntersecting || programsAdvisorIntersecting);
-      floatingCtaContainer.classList.toggle('results-advisor-hidden', shouldHide);
+      const shouldHideResults = resultsAdvisorMedia.matches && resultsSectionIntersecting;
+      floatingCtaContainer.classList.toggle('results-advisor-hidden', shouldHideResults);
+      floatingCtaContainer.classList.toggle('programs-advisor-hidden', programsAdvisorIntersecting);
     }
 
     function hideFloatingCTA() {
@@ -2810,7 +2818,7 @@
     if (programsAdvisorSection) {
       const programsAdvisorObserver = new IntersectionObserver(entries => {
         programsAdvisorIntersecting = entries[0].isIntersecting;
-        if (resultsAdvisorMedia.matches && programsAdvisorIntersecting && isCtaOpen) {
+        if (programsAdvisorIntersecting && isCtaOpen) {
           setFloatingCtaOpen(false, { restoreFocus: false });
         }
         syncResultsAdvisorState();
@@ -2820,7 +2828,7 @@
 
     resultsAdvisorMedia.addEventListener('change', () => {
       if (floatingCtaPing) floatingCtaPing.style.display = isCtaOpen || resultsAdvisorMedia.matches ? 'none' : 'flex';
-      if (resultsAdvisorMedia.matches && resultsSectionIntersecting && isCtaOpen) {
+      if (resultsAdvisorMedia.matches && (resultsSectionIntersecting || programsAdvisorIntersecting) && isCtaOpen) {
         setFloatingCtaOpen(false, { restoreFocus: false });
       }
       if (resultsAdvisorMedia.matches && !hasPassedResultsSection) {
