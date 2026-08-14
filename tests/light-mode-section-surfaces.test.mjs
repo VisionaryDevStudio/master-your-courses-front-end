@@ -455,13 +455,14 @@ test("drives Elite Programs from one guarded four-category data model", () => {
   assert.deepEqual(JSON.parse(dataSource), [
     { title: "AP Prep", coverage: "All AP STEM courses", desc: "Self-paced Mastery Engines, live programs, and private AP tutoring.", iconColor: "text-emerald-600 dark:text-emerald-400", glowColor: "rgba(16, 185, 129, 0.12)", cta: "Explore AP Prep", proof: "Complete AP STEM Pathway" },
     { title: "1-on-1 Tutoring", coverage: "High-school and university courses", desc: "Personalized tutoring matched to the student's exact course and goals.", iconColor: "text-violet-600 dark:text-violet-400", glowColor: "rgba(139, 92, 246, 0.12)", cta: "Find Your Tutor", proof: "Matched to Course and Goals" },
-    { title: "SAT Prep", coverage: "SAT Math now, broader SAT later", desc: "Targeted instruction, practice, and score-improvement programs.", iconColor: "text-blue-600 dark:text-blue-400", glowColor: "rgba(59, 130, 246, 0.12)", cta: "Explore SAT Prep", proof: "Focused SAT Math Improvement" },
+    { title: "SAT Prep", coverage: "", desc: "Targeted instruction, practice, and score-improvement programs.", iconColor: "text-blue-600 dark:text-blue-400", glowColor: "rgba(59, 130, 246, 0.12)", cta: "Explore SAT Prep", proof: "Focused SAT Math Improvement" },
     { title: "Competition Prep", coverage: "AMC, AIME, F=ma, Physics Olympiad, and more", desc: "Advanced preparation for competitive STEM exams.", iconColor: "text-rose-600 dark:text-rose-400", glowColor: "rgba(244, 63, 94, 0.12)", cta: "Explore Competition Prep", proof: "Advanced STEM Competition Training" },
   ]);
   assert.match(programs, /if \(!Number\.isInteger\(idx\) \|\| idx < 0 \|\| idx >= PROGRAMS_DATA\.length\) return;/);
   assert.match(programs, /mobile-program-coverage['"]\)\.innerText = activeData\.coverage/);
   assert.match(programs, /stage-coverage['"]\)\.innerText = prog\.coverage/);
   assert.doesNotMatch(programs, /querySelectorAll\(['"]\.program-acc-item/);
+  assert.doesNotMatch(programs, /SAT Math now, broader SAT later/);
 
 });
 
