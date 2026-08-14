@@ -445,6 +445,41 @@ test("uses the approved four Elite Programs categories across mobile and desktop
   assert.doesNotMatch(programs, />AP STEM<|>SAT Math<|>Mastery Engines<|>1-on-1 AP<|>University<|>Olympiad</);
 });
 
+test("drives Elite Programs from one guarded four-category data model", () => {
+  const programsStart = html.indexOf("Elite Programs");
+  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programs = html.slice(programsStart, mentorsStart);
+
+  assert.match(programs, /const PROGRAMS_DATA = \[[\s\S]*"title":"AP Prep"[\s\S]*"title":"1-on-1 Tutoring"[\s\S]*"title":"SAT Prep"[\s\S]*"title":"Competition Prep"[\s\S]*\];/);
+  assert.equal((programs.match(/"coverage":/g) ?? []).length, 4);
+  assert.equal((programs.match(/"title":/g) ?? []).length, 4);
+  assert.match(programs, /if \(!Number\.isInteger\(idx\) \|\| idx < 0 \|\| idx >= PROGRAMS_DATA\.length\) return;/);
+  assert.match(programs, /mobile-program-coverage['"]\)\.innerText = activeData\.coverage/);
+  assert.match(programs, /stage-coverage['"]\)\.innerText = prog\.coverage/);
+  assert.doesNotMatch(programs, /querySelectorAll\(['"]\.program-acc-item/);
+
+  for (const value of [
+    "All AP STEM courses",
+    "High-school and university courses",
+    "SAT Math now, broader SAT later",
+    "AMC, AIME, F=ma, Physics Olympiad, and more",
+    "Self-paced Mastery Engines, live programs, and private AP tutoring.",
+    "Personalized tutoring matched to the student's exact course and goals.",
+    "Targeted instruction, practice, and score-improvement programs.",
+    "Advanced preparation for competitive STEM exams.",
+    "Explore AP Prep",
+    "Find Your Tutor",
+    "Explore SAT Prep",
+    "Explore Competition Prep",
+    "Complete AP STEM Pathway",
+    "Matched to Course and Goals",
+    "Focused SAT Math Improvement",
+    "Advanced STEM Competition Training",
+  ]) {
+    assert.match(programs, new RegExp(`PROGRAMS_DATA[\\s\\S]*${value}`));
+  }
+});
+
 test("keeps the floating advisor from blocking content outside its visible controls", () => {
   const floatingStart = html.indexOf('id="floating-cta-container"');
   const floatingEnd = html.indexOf("// Scroll reveal observer", floatingStart);
