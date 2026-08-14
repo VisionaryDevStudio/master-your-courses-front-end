@@ -647,6 +647,18 @@ test("retains dark-mode backgrounds and accessible canonical mentor profiles", (
     assert.ok(card.includes('role="button"'), `${mentor.name} card is missing button semantics`);
     assert.ok(card.includes('tabindex="0"'), `${mentor.name} card is not keyboard focusable`);
     assert.ok(
+      card.includes(`aria-label="View profile for ${mentor.name}"`),
+      `${mentor.name} card has an inaccurate accessible name`,
+    );
+    assert.ok(
+      card.includes(`src="${mentor.avatar}"`),
+      `${mentor.name} card is missing its canonical portrait source`,
+    );
+    assert.ok(
+      card.includes(`alt="Portrait of ${mentor.name}"`),
+      `${mentor.name} card has an inaccurate portrait alternative text`,
+    );
+    assert.ok(
       card.includes(`onclick="openMentorModal(${index}, this)"`),
       `${mentor.name} card is wired to the wrong modal record`,
     );
