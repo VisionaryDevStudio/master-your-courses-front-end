@@ -16,6 +16,9 @@ Elena is removed from the visible cards, mentor data, accessibility labels, moda
 
 - Keep all three mentors visible in one row at desktop widths.
 - Use compact `4:3` editorial portraits instead of small circular avatars or tall portrait panels.
+- Keep every portrait frame at its existing `4:3` dimensions. Show each complete portrait as a contained foreground image so the mentor's head and visible shirt/shoulders are not cropped.
+- Fill only the otherwise-unused side area with a quiet, softly blurred extension of the same source image. The extension is atmospheric support, not a second readable portrait: it remains low-contrast, slightly enlarged, and clipped inside the existing rounded frame.
+- Tune foreground scale and vertical focal position per mentor where needed, while preserving natural proportions and avoiding stretching.
 - Preserve the warm mentor-section canvas so the section remains integrated with the existing page.
 - Each card shows the portrait, name, role, a concise two-to-three-line summary, and two selected credentials.
 - Cards use restrained borders, soft elevation, and subtle accent color; avoid decorative glow, oversized empty areas, or excessive badges.
@@ -77,6 +80,8 @@ Dr. Sherri Sadr uses `mentors/sherri.png`; Dr. Hossein Piri retains `mentors/Dr.
 - Preserve the existing section spacing tokens and neighboring-section boundaries.
 - Avoid clipping, horizontal overflow, stretched portraits, and overlap with the floating consultation trigger.
 - Portraits use stable aspect ratios and intentional object positioning at every breakpoint.
+- The portrait treatment must preserve the current frame height and card geometry at every breakpoint; no card-height, grid, carousel-width, or surrounding-spacing changes are permitted.
+- Zoey, Dr. Piri, and Dr. Sherri must each show an uncropped head and meaningful shirt/shoulder context without plain letterbox bars.
 
 ## Testing
 
@@ -84,6 +89,7 @@ Dr. Sherri Sadr uses `mentors/sherri.png`; Dr. Hossein Piri retains `mentors/Dr.
 - Test Zoey’s portrait, visible content, modal data, and accessible label.
 - Test the mobile snap-carousel structure, manual controls, pagination, and no-auto-advance contract.
 - Test desktop/tablet preservation and reduced-motion behavior.
+- Test the shared layered portrait structure, `4:3` frame contract, contained foreground images, and mentor-specific source mapping.
 - Run the existing section-surface test suite, a clean diff check, HTTP preview check, and rendered responsive QA.
 
 ## Out of Scope
