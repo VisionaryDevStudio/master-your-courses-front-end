@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Replace the current mentor cards with a premium three-profile editorial layout for Zoey, Dr. Sherri Sadr, and Dr. Hossein Piri, plus a manual mobile snap carousel.
+**Goal:** Present Zoey, Dr. Hossein Piri, and Dr. Sherri Sadr in a premium editorial layout with a manual mobile snap carousel and complete, naturally proportioned portraits inside the existing compact frames.
 
 **Architecture:** Keep the static single-file architecture in `index.html`: canonical mentor data drives the existing modal, semantic card markup presents concise summaries, CSS controls responsive layout and motion, and a small controller synchronizes the mobile carousel controls and pagination. Extend the existing Node static/VM test suite with contract and behavior coverage before implementation.
 
@@ -17,6 +17,8 @@
 - Preserve the warm mentor surface, dark mode, modal focus behavior, section spacing, and neighboring sections.
 - Reduced motion removes reveal displacement, stagger, smooth scrolling, and hover translation.
 - Verify 390px, 768px, and 1440px in light and dark modes without overflow or floating-consultation overlap.
+- Keep the existing `4:3` portrait frames and card geometry unchanged while showing each mentor's uncropped head and meaningful shirt/shoulder context.
+- Use a contained foreground portrait over a quiet, low-contrast blurred extension of the same source image; do not introduce plain letterbox bars or stretch either layer.
 
 ---
 
@@ -32,7 +34,7 @@
 
 - [ ] **Step 1: Write the failing roster and content tests**
 
-Replace `expectedMentors` with the ordered Zoey/Sherri/Piri records. Assert Zoey’s exact role, `mentors/zoey.png`, supplied biography, and all six supplied accolades. Add assertions that the mentor section and `MENTORS_DATA` contain no `Elena` or `elena zhou`.
+Replace `expectedMentors` with the ordered Zoey/Piri/Sherri records. Assert Zoey’s exact role, `mentors/zoey.png`, supplied biography, and all six supplied accolades. Add assertions that the mentor section and `MENTORS_DATA` contain no `Elena` or `elena zhou`.
 
 ```js
 assert.deepEqual(extractMentorData(), expectedMentors);
@@ -110,7 +112,7 @@ Expected: FAIL because the current section is a vertical mobile grid and has no 
 
 - [ ] **Step 3: Implement the responsive editorial structure**
 
-Add scoped classes to the existing section. At `max-width: 767px`, make the track horizontally scrollable with `scroll-snap-type: x mandatory`, cards approximately `calc(100% - 2.75rem)` wide, and a gap that leaves the next card edge visible. At `min-width: 768px`, restore a three-column grid and hide mobile controls. Use a compact `4:3` portrait aspect ratio, `object-fit: cover`, concise body copy, two credential rows, restrained border/elevation, and no portrait rotation.
+Add scoped classes to the existing section. At `max-width: 767px`, make the track horizontally scrollable with `scroll-snap-type: x mandatory`, cards approximately `calc(100% - 2.75rem)` wide, and a gap that leaves the next card edge visible. At `min-width: 768px`, restore a three-column grid and hide mobile controls. Use a compact `4:3` portrait frame, concise body copy, two credential rows, restrained border/elevation, and no portrait rotation. Task 4 defines the final contained-foreground portrait treatment inside that frame.
 
 ```css
 .mentor-card { scroll-snap-align: center; }
@@ -223,3 +225,118 @@ git commit -m "fix: finalize mentor editorial experience"
 ```
 
 If no correction was required, leave the report uncommitted and do not create an empty commit.
+
+---
+
+### Task 4: Full-Subject Portrait Treatment
+
+**Files:**
+- Modify: `tests/light-mode-section-surfaces.test.mjs`
+- Modify: `index.html:424-433,951,1658-1728`
+- Modify: `docs/superpowers/plans/2026-08-14-mentor-editorial-hybrid.md`
+
+**Interfaces:**
+- Consumes: the existing `.mentor-portrait-wrap`, `.mentor-portrait`, ordered mentor sources, and unchanged `4:3` frame geometry.
+- Produces: `.mentor-portrait-backdrop` for the atmospheric layer and `.mentor-portrait-foreground` for the complete subject image, with `data-mentor-portrait="zoey|piri|sherri"` hooks for restrained per-person positioning.
+
+- [ ] **Step 1: Write the failing layered-portrait contract**
+
+Extend the existing mentor test to require one backdrop and one foreground image per card, matching sources and mentor identifiers. Require the frame to remain `4 / 3`, the backdrop to use `object-fit: cover`, and the foreground to use `object-fit: contain`.
+
+```js
+for (const mentor of ["zoey", "piri", "sherri"]) {
+  const frame = mentorCardFor(mentor);
+  assert.match(frame, new RegExp(`data-mentor-portrait="${mentor}"`));
+  assert.match(frame, /class="mentor-portrait-backdrop"/);
+  assert.match(frame, /class="mentor-portrait mentor-portrait-foreground"/);
+}
+assert.match(css, /\.mentor-portrait-wrap\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*3/s);
+assert.match(css, /\.mentor-portrait-backdrop\s*\{[^}]*object-fit:\s*cover/s);
+assert.match(css, /\.mentor-portrait-foreground\s*\{[^}]*object-fit:\s*contain/s);
+```
+
+- [ ] **Step 2: Run the focused test and confirm RED**
+
+Run:
+
+```bash
+node --test --test-name-pattern="mentor|editorial mentor" tests/light-mode-section-surfaces.test.mjs
+```
+
+Expected: FAIL because each card currently contains only one cover-cropped `.mentor-portrait` image.
+
+- [ ] **Step 3: Implement the two-layer portrait frame**
+
+Move the stable aspect ratio to `.mentor-portrait-wrap`. Keep the wrapper dimensions and rounded clipping unchanged. Add an `aria-hidden="true"` duplicate source as the backdrop and retain the existing meaningful `alt` text only on the foreground image.
+
+```html
+<div class="mentor-portrait-wrap relative shrink-0" data-mentor-portrait="zoey">
+  <img src="mentors/zoey.png" alt="" aria-hidden="true" class="mentor-portrait-backdrop">
+  <img src="mentors/zoey.png" alt="Portrait of Zoey" loading="lazy" decoding="async" class="mentor-portrait mentor-portrait-foreground">
+</div>
+```
+
+Use the same structure for Piri and Sherri with their existing sources and accessible names.
+
+- [ ] **Step 4: Add restrained shared styling and per-mentor tuning**
+
+Keep the frame at `4 / 3`. Make both image layers fill the frame. Blur, enlarge, and soften the cover backdrop; contain the foreground at natural proportions above it. Use mentor-specific hooks only for small scale or vertical-position adjustments verified from screenshots.
+
+```css
+.mentor-portrait-wrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--muted) 82%, white);
+}
+.mentor-portrait-backdrop,
+.mentor-portrait-foreground {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.mentor-portrait-backdrop {
+  object-fit: cover;
+  filter: blur(18px) saturate(.72);
+  opacity: .34;
+  transform: scale(1.09);
+}
+.mentor-portrait-foreground {
+  object-fit: contain;
+  object-position: center bottom;
+}
+```
+
+Do not add new animation. Ensure hover/reveal transforms remain on the card rather than either portrait layer.
+
+- [ ] **Step 5: Run the focused and full static gates**
+
+Run:
+
+```bash
+node --test --test-name-pattern="mentor|editorial mentor" tests/light-mode-section-surfaces.test.mjs
+node --test tests/light-mode-section-surfaces.test.mjs
+git diff --check
+```
+
+Expected: PASS with exactly three layered portraits, correct source mapping, stable `4:3` geometry, and no whitespace errors.
+
+- [ ] **Step 6: Perform rendered responsive QA**
+
+Using the exact local preview, capture and inspect 390×844, 768×1024, and 1440×900 in light and dark modes. Verify for every mentor:
+
+- the full head remains visible with breathing room;
+- meaningful shirt or shoulder context remains visible;
+- the foreground is not stretched;
+- the backdrop reads as ambient color rather than a duplicate face;
+- card height, mobile next-card preview, section spacing, modal behavior, and root width remain unchanged.
+
+If a mentor needs correction, adjust only that mentor's `object-position`, foreground inset, or maximum scale and repeat all three viewport captures.
+
+- [ ] **Step 7: Commit the verified portrait refinement**
+
+```bash
+git add index.html tests/light-mode-section-surfaces.test.mjs docs/superpowers/plans/2026-08-14-mentor-editorial-hybrid.md
+git commit -m "fix: preserve full mentor portraits"
+```
