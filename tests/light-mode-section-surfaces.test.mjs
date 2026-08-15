@@ -218,7 +218,10 @@ const expectedMentors = [
   {
     name: "Zoey",
     role: "Certified Biology & Science Teacher",
-    avatar: "mentors/zoey.png",
+    cardImage: "mentors/zoey.png",
+    profileImage: "mentors/zoey.png",
+    cardObjectPosition: "center center",
+    profileObjectPosition: "center 10%",
     bio: "Zoey is one of the most decorated AP Biology teachers in the country. She has a rare gift for making difficult biology concepts feel manageable—breaking them down step-by-step and adapting her instruction to how each individual student learns best. Parents choose her because she doesn't just teach content; she builds the confidence and skills students need to earn top grades and score a 5. Her teacher mentorship has included coaching 39+ educators in mastery-based learning, and she was Teacher of the Year at U.S. Grant High School in 2020–21.",
     credentials: [
       { type: "award", title: "2025–26 National Virtual Teacher of the Year", detail: "", featured: true },
@@ -230,7 +233,10 @@ const expectedMentors = [
   {
     name: "Dr. Hossein Piri",
     role: "Healthcare Operations & AI Expert",
-    avatar: "mentors/Dr.piri.jpg",
+    cardImage: "mentors/Dr.piri.jpg",
+    profileImage: "mentors/Dr.piri.jpg",
+    cardObjectPosition: "center center",
+    profileObjectPosition: "center 10%",
     bio: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations. He focuses on practical systems that improve care delivery, including patient-centered warning systems and AI-driven approaches for addressing healthcare disparities.",
     credentials: [
       { type: "award", title: "40 Under 40", detail: "2026", featured: true },
@@ -242,7 +248,10 @@ const expectedMentors = [
   {
     name: "Dr. Sherri Sadr",
     role: "Doctor of Dental Medicine, UBC",
-    avatar: "mentors/sherri.png",
+    cardImage: "mentors/sherri.png",
+    profileImage: "mentors/sherri.png",
+    cardObjectPosition: "center center",
+    profileObjectPosition: "center 10%",
     bio: "Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.",
     credentials: [
       { type: "education", title: "Doctor of Dental Medicine", detail: "UBC Faculty of Dentistry", featured: true },
@@ -635,7 +644,7 @@ test("retains dark-mode backgrounds and accessible canonical mentor profiles", (
   assert.doesNotMatch(mentorsSection, /Elena|elena zhou/i);
   assert.doesNotMatch(JSON.stringify(extractMentorData()), /Elena|elena zhou/i);
   assert.equal(expectedMentors[0].name, "Zoey");
-  assert.equal(expectedMentors[0].avatar, "mentors/zoey.png");
+  assert.equal(expectedMentors[0].cardImage, "mentors/zoey.png");
   assert.equal(expectedMentors[0].credentials.length, 4);
   for (const [index, mentor] of expectedMentors.entries()) {
     const cardStart = mentorsSection.indexOf(`data-mentor-index="${index}"`);
@@ -651,7 +660,7 @@ test("retains dark-mode backgrounds and accessible canonical mentor profiles", (
       `${mentor.name} card has an inaccurate accessible name`,
     );
     assert.ok(
-      card.includes(`src="${mentor.avatar}"`),
+      card.includes(`src="${mentor.cardImage}"`),
       `${mentor.name} card is missing its canonical portrait source`,
     );
     assert.ok(
@@ -880,7 +889,7 @@ function createMentorModalHarness() {
     "mentor-modal": modal,
     "mentor-modal-content": content,
     "mentor-modal-close": close,
-    "mentor-modal-avatar": {},
+    "mentor-modal-avatar": { src: "", alt: "", style: {} },
     "mentor-modal-name": {},
     "mentor-modal-role": {},
     "mentor-modal-bio": {},
@@ -891,8 +900,20 @@ function createMentorModalHarness() {
     get activeElement() { return documentState.activeElement; },
     getElementById(id) { return elements[id] ?? null; },
     addEventListener(type, listener) { documentListeners.set(type, listener); },
+    querySelectorAll(selector) {
+      if (selector !== '.mentor-card[data-mentor-index]') return [];
+      return [0, 1, 2].map(index => ({
+        dataset: { mentorIndex: String(index) },
+        querySelector(candidate) {
+          return candidate === '.mentor-portrait' ? elements[`mentor-card-image-${index}`] : null;
+        },
+      }));
+    },
   };
-  const api = runInNewContext(`${mentorModalLogicSource}; ({ openMentorModal, closeMentorModal })`, {
+  for (let index = 0; index < 3; index += 1) {
+    elements[`mentor-card-image-${index}`] = { src: "", alt: "", style: {} };
+  }
+  const api = runInNewContext(`${mentorModalLogicSource}; ({ MENTORS_DATA, hydrateMentorCardImages, openMentorModal, closeMentorModal })`, {
     clearTimeout() {},
     document,
     requestAnimationFrame(callback) { callback(); },
@@ -902,7 +923,11 @@ function createMentorModalHarness() {
   return {
     apply,
     close,
+    image(index) { return elements[`mentor-card-image-${index}`]; },
+    modalImage: elements["mentor-modal-avatar"],
+    mentors: api.MENTORS_DATA,
     modal,
+    hydrateCards() { api.hydrateMentorCardImages(); },
     open(index = 0) {
       api.openMentorModal(index, trigger);
       return elements["mentor-modal-accolades"].innerHTML;
@@ -917,6 +942,33 @@ function createMentorModalHarness() {
     activeElement() { return documentState.activeElement; },
   };
 }
+
+test("uses independent mentor images for cards and profiles", () => {
+  assert.match(mentorModalLogicSource, /cardImage:\s*["']/);
+  assert.match(mentorModalLogicSource, /profileImage:\s*["']/);
+  assert.match(mentorModalLogicSource, /cardObjectPosition:\s*["']/);
+  assert.match(mentorModalLogicSource, /profileObjectPosition:\s*["']/);
+  assert.match(mentorModalLogicSource, /function hydrateMentorCardImages\(\)/);
+  assert.match(mentorModalLogicSource, /modalImage\.src\s*=\s*mentor\.profileImage/);
+  assert.doesNotMatch(mentorModalLogicSource, /mentor\.avatar/);
+
+  assert.match(html, /\.mentor-portrait-wrap\s*\{[\s\S]*?aspect-ratio:\s*4\s*\/\s*3/);
+  assert.match(html, /\.mentor-profile-portrait-frame\s*\{[\s\S]*?aspect-ratio:\s*4\s*\/\s*5/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*?\.mentor-profile-portrait-frame\s*\{[\s\S]*?aspect-ratio:\s*3\s*\/\s*2/);
+
+  const harness = createMentorModalHarness();
+  harness.mentors[0].cardImage = "mentors/zoey-card.webp";
+  harness.mentors[0].profileImage = "mentors/zoey-profile.webp";
+  harness.hydrateCards();
+  harness.open(0);
+
+  assert.equal(harness.image(0).src, "mentors/zoey-card.webp");
+  assert.equal(harness.image(0).alt, "Portrait of Zoey");
+  assert.equal(harness.image(0).style.objectPosition, "center center");
+  assert.equal(harness.modalImage.src, "mentors/zoey-profile.webp");
+  assert.equal(harness.modalImage.alt, "Portrait of Zoey");
+  assert.equal(harness.modalImage.style.objectPosition, "center 10%");
+});
 
 test("renders curated semantic credentials for every mentor", () => {
   assert.match(mentorModalLogicSource, /credentials:\s*\[/);
