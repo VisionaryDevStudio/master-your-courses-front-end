@@ -219,14 +219,12 @@ const expectedMentors = [
     name: "Zoey",
     role: "Certified Biology & Science Teacher",
     avatar: "mentors/zoey.png",
-    bio: "Zoey is one of the most decorated AP Biology teachers in the country. She has a rare gift for making difficult biology concepts feel manageable—breaking them down step-by-step and adapting her instruction to how each individual student learns best. Parents choose her because she doesn't just teach content; she builds the confidence and skills students need to earn top grades and score a 5.",
-    accolades: [
-      "AP Biology Teacher Since 2017",
-      "2025–26 National Virtual Teacher of the Year",
-      "Teacher of the Year, 2020–21 — U.S. Grant High School",
-      "Master's Degree, Johns Hopkins University — 4.0 GPA",
-      "Scored a 5 on the AP Biology Exam — then built a career teaching others to do the same",
-      "Teacher Mentor — Coached 39+ educators in mastery-based learning",
+    bio: "Zoey is one of the most decorated AP Biology teachers in the country. She has a rare gift for making difficult biology concepts feel manageable—breaking them down step-by-step and adapting her instruction to how each individual student learns best. Parents choose her because she doesn't just teach content; she builds the confidence and skills students need to earn top grades and score a 5. Her teacher mentorship has included coaching 39+ educators in mastery-based learning, and she was Teacher of the Year at U.S. Grant High School in 2020–21.",
+    credentials: [
+      { type: "award", title: "2025–26 National Virtual Teacher of the Year", detail: "", featured: true },
+      { type: "education", title: "Master’s Degree, Johns Hopkins University", detail: "4.0 GPA", featured: false },
+      { type: "experience", title: "AP Biology Teacher Since 2017", detail: "", featured: false },
+      { type: "exam", title: "Scored a 5 on the AP Biology Exam", detail: "", featured: false },
     ],
   },
   {
@@ -234,10 +232,11 @@ const expectedMentors = [
     role: "Healthcare Operations & AI Expert",
     avatar: "mentors/Dr.piri.jpg",
     bio: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations. He focuses on practical systems that improve care delivery, including patient-centered warning systems and AI-driven approaches for addressing healthcare disparities.",
-    accolades: [
-      "40 Under 40 (2026)",
-      "Dean's Research Scholar, UCalgary",
-      "Killam Teaching Award, UBC",
+    credentials: [
+      { type: "award", title: "40 Under 40", detail: "2026", featured: true },
+      { type: "research", title: "Dean’s Research Scholar", detail: "University of Calgary", featured: false },
+      { type: "award", title: "Killam Teaching Award", detail: "University of British Columbia", featured: false },
+      { type: "research", title: "Collaborative Researcher", detail: "Harvard Business School", featured: false },
     ],
   },
   {
@@ -245,11 +244,11 @@ const expectedMentors = [
     role: "Doctor of Dental Medicine, UBC",
     avatar: "mentors/sherri.png",
     bio: "Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.",
-    accolades: [
-      "Doctor of Dental Medicine — UBC Faculty of Dentistry",
-      "Research Experience (REX) Mentor — UBC",
-      "VICE Mentor — AMS of UBC",
-      "Healthcare Service — Vancouver Coastal Health",
+    credentials: [
+      { type: "education", title: "Doctor of Dental Medicine", detail: "UBC Faculty of Dentistry", featured: true },
+      { type: "mentorship", title: "Research Experience (REX) Mentor", detail: "University of British Columbia", featured: false },
+      { type: "mentorship", title: "VICE Mentor", detail: "AMS of UBC", featured: false },
+      { type: "experience", title: "Healthcare Service", detail: "Vancouver Coastal Health", featured: false },
     ],
   },
 ];
@@ -637,7 +636,7 @@ test("retains dark-mode backgrounds and accessible canonical mentor profiles", (
   assert.doesNotMatch(JSON.stringify(extractMentorData()), /Elena|elena zhou/i);
   assert.equal(expectedMentors[0].name, "Zoey");
   assert.equal(expectedMentors[0].avatar, "mentors/zoey.png");
-  assert.equal(expectedMentors[0].accolades.length, 6);
+  assert.equal(expectedMentors[0].credentials.length, 4);
   for (const [index, mentor] of expectedMentors.entries()) {
     const cardStart = mentorsSection.indexOf(`data-mentor-index="${index}"`);
     const nextCardStart = mentorsSection.indexOf(`data-mentor-index="${index + 1}"`);
@@ -889,7 +888,10 @@ function createMentorModalHarness() {
     apply,
     close,
     modal,
-    open() { api.openMentorModal(0, trigger); },
+    open(index = 0) {
+      api.openMentorModal(index, trigger);
+      return elements["mentor-modal-accolades"].innerHTML;
+    },
     closeModal() { api.closeMentorModal(); },
     trigger,
     keydown(key, { shiftKey = false } = {}) {
@@ -900,6 +902,36 @@ function createMentorModalHarness() {
     activeElement() { return documentState.activeElement; },
   };
 }
+
+test("renders curated semantic credentials for every mentor", () => {
+  assert.match(mentorModalLogicSource, /credentials:\s*\[/);
+  assert.match(mentorModalLogicSource, /const MENTOR_CREDENTIAL_ICONS/);
+  assert.match(mentorModalLogicSource, /function renderMentorCredentials\(credentials\)/);
+  assert.doesNotMatch(mentorModalLogicSource, /mentor\.accolades\.forEach/);
+  assert.doesNotMatch(mentorModalLogicSource, /M6 9H4\.5/);
+
+  const supportedTypes = ["award", "education", "exam", "experience", "research", "mentorship"];
+  for (const type of supportedTypes) {
+    assert.match(mentorModalLogicSource, new RegExp(`${type}:\\s*['\"]<svg`));
+  }
+
+  const harness = createMentorModalHarness();
+  for (const [index, mentor] of expectedMentors.entries()) {
+    const markup = harness.open(index);
+    const types = [...markup.matchAll(/data-credential-type="([^"]+)"/g)].map(([, type]) => type);
+    const featured = [...markup.matchAll(/data-featured="([^"]+)"/g)].map(([, value]) => value);
+
+    assert.equal((markup.match(/class="mentor-profile-credential(?:\s|")/g) ?? []).length, 4, `${mentor.name} needs four credentials`);
+    assert.deepEqual(types, mentor.credentials.map(credential => credential.type), `${mentor.name} credential types are out of order`);
+    assert.deepEqual(featured, mentor.credentials.map(credential => String(credential.featured)), `${mentor.name} featured credential is incorrect`);
+    assert.equal((markup.match(/mentor-profile-credential-icon" aria-hidden="true"/g) ?? []).length, 4, `${mentor.name} icons must be decorative`);
+
+    for (const credential of mentor.credentials) {
+      assert.ok(markup.includes(`<strong>${credential.title}</strong>`), `${mentor.name} is missing ${credential.title}`);
+      if (credential.detail) assert.ok(markup.includes(`<small>${credential.detail}</small>`), `${mentor.name} is missing ${credential.detail}`);
+    }
+  }
+});
 
 test("restores mentor trigger focus before the close transition completes", () => {
   const harness = createMentorModalHarness();

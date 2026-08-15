@@ -43,14 +43,12 @@
         name: "Zoey",
         role: "Certified Biology & Science Teacher",
         avatar: "mentors/zoey.png",
-        bio: "Zoey is one of the most decorated AP Biology teachers in the country. She has a rare gift for making difficult biology concepts feel manageable—breaking them down step-by-step and adapting her instruction to how each individual student learns best. Parents choose her because she doesn't just teach content; she builds the confidence and skills students need to earn top grades and score a 5.",
-        accolades: [
-          "AP Biology Teacher Since 2017",
-          "2025–26 National Virtual Teacher of the Year",
-          "Teacher of the Year, 2020–21 — U.S. Grant High School",
-          "Master's Degree, Johns Hopkins University — 4.0 GPA",
-          "Scored a 5 on the AP Biology Exam — then built a career teaching others to do the same",
-          "Teacher Mentor — Coached 39+ educators in mastery-based learning"
+        bio: "Zoey is one of the most decorated AP Biology teachers in the country. She has a rare gift for making difficult biology concepts feel manageable—breaking them down step-by-step and adapting her instruction to how each individual student learns best. Parents choose her because she doesn't just teach content; she builds the confidence and skills students need to earn top grades and score a 5. Her teacher mentorship has included coaching 39+ educators in mastery-based learning, and she was Teacher of the Year at U.S. Grant High School in 2020–21.",
+        credentials: [
+          { type: "award", title: "2025–26 National Virtual Teacher of the Year", detail: "", featured: true },
+          { type: "education", title: "Master’s Degree, Johns Hopkins University", detail: "4.0 GPA", featured: false },
+          { type: "experience", title: "AP Biology Teacher Since 2017", detail: "", featured: false },
+          { type: "exam", title: "Scored a 5 on the AP Biology Exam", detail: "", featured: false }
         ]
       },
       {
@@ -58,10 +56,11 @@
         role: "Healthcare Operations & AI Expert",
         avatar: "mentors/Dr.piri.jpg",
         bio: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations. He focuses on practical systems that improve care delivery, including patient-centered warning systems and AI-driven approaches for addressing healthcare disparities.",
-        accolades: [
-          "40 Under 40 (2026)",
-          "Dean's Research Scholar, UCalgary",
-          "Killam Teaching Award, UBC"
+        credentials: [
+          { type: "award", title: "40 Under 40", detail: "2026", featured: true },
+          { type: "research", title: "Dean’s Research Scholar", detail: "University of Calgary", featured: false },
+          { type: "award", title: "Killam Teaching Award", detail: "University of British Columbia", featured: false },
+          { type: "research", title: "Collaborative Researcher", detail: "Harvard Business School", featured: false }
         ]
       },
       {
@@ -69,14 +68,49 @@
           role: "Doctor of Dental Medicine, UBC",
           avatar: "mentors/sherri.png",
           bio: "Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.",
-          accolades: [
-            "Doctor of Dental Medicine — UBC Faculty of Dentistry",
-            "Research Experience (REX) Mentor — UBC",
-            "VICE Mentor — AMS of UBC",
-            "Healthcare Service — Vancouver Coastal Health"
+          credentials: [
+            { type: "education", title: "Doctor of Dental Medicine", detail: "UBC Faculty of Dentistry", featured: true },
+            { type: "mentorship", title: "Research Experience (REX) Mentor", detail: "University of British Columbia", featured: false },
+            { type: "mentorship", title: "VICE Mentor", detail: "AMS of UBC", featured: false },
+            { type: "experience", title: "Healthcare Service", detail: "Vancouver Coastal Health", featured: false }
           ]
       }
     ];
+
+    const MENTOR_CREDENTIAL_ICONS = {
+      award: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 3h10v5a5 5 0 0 1-10 0V3Z"/><path d="M7 5H4a2 2 0 0 0 2 4h1"/><path d="M17 5h3a2 2 0 0 1-2 4h-1"/></svg>',
+      education: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>',
+      exam: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h10l4 4v14H5z"/><path d="M15 3v5h5"/><path d="m8 15 2 2 4-4"/></svg>',
+      experience: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/><path d="M10 12v2h4v-2"/></svg>',
+      research: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6"/><path d="M10 3v6l-5 8a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-8V3"/><path d="M8 16h8"/></svg>',
+      mentorship: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a5 5 0 0 1 10 0v1"/><path d="M16 11a3 3 0 1 0-1-5.83"/><path d="M16 14a5 5 0 0 1 5 5v1"/></svg>'
+    };
+
+    function escapeMentorCredentialText(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function renderMentorCredentials(credentials) {
+      return credentials.map(credential => {
+        const type = escapeMentorCredentialText(credential.type);
+        const icon = MENTOR_CREDENTIAL_ICONS[credential.type] ?? MENTOR_CREDENTIAL_ICONS.experience;
+        const detail = credential.detail ? `<small>${escapeMentorCredentialText(credential.detail)}</small>` : '';
+
+        return `<div class="mentor-profile-credential" data-credential-type="${type}" data-featured="${Boolean(credential.featured)}">
+          <span class="mentor-profile-credential-icon" aria-hidden="true">${icon}</span>
+          <span class="mentor-profile-credential-text">
+            <strong>${escapeMentorCredentialText(credential.title)}</strong>
+            ${detail}
+          </span>
+        </div>`;
+      }).join('');
+    }
 
     let mentorModalTrigger = null;
     let mentorModalCloseTimer = null;
@@ -132,15 +166,7 @@
       document.getElementById('mentor-modal-bio').innerText = mentor.bio;
       
       const accoladesContainer = document.getElementById('mentor-modal-accolades');
-      accoladesContainer.innerHTML = '';
-      mentor.accolades.forEach(acc => {
-        accoladesContainer.innerHTML += '<div class="mentor-modal-accolade rounded-lg p-3 flex items-center gap-3">' +
-             '<div class="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center shrink-0">' +
-                '<svg class="lucide w-4 h-4 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>' +
-             '</div>' +
-             '<span class="mentor-modal-accolade-copy text-sm font-bold">' + acc + '</span>' +
-          '</div>';
-      });
+      accoladesContainer.innerHTML = renderMentorCredentials(mentor.credentials);
       
       const modal = document.getElementById('mentor-modal');
       const content = document.getElementById('mentor-modal-content');
