@@ -242,13 +242,14 @@ const expectedMentors = [
   },
   {
     name: "Dr. Sherri Sadr",
-    role: "Dental Graduate, UBC",
+    role: "Doctor of Dental Medicine, UBC",
     avatar: "mentors/sherri.png",
     bio: "Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.",
     accolades: [
-      "Biological Safety Certificate",
-      "Laser & Chemical Safety",
-      "Animal Care Training",
+      "Doctor of Dental Medicine — UBC Faculty of Dentistry",
+      "Research Experience (REX) Mentor — UBC",
+      "VICE Mentor — AMS of UBC",
+      "Healthcare Service — Vancouver Coastal Health",
     ],
   },
 ];
@@ -267,7 +268,7 @@ const expectedVisibleMentorContent = [
   },
   {
     summary: "Sherri is a dental graduate from UBC with a strong science and research foundation.",
-    credentials: ["Biological Safety Certificate", "Laser & Chemical Safety"],
+    credentials: ["Doctor of Dental Medicine — UBC", "Research Experience (REX) Mentor — UBC"],
   },
 ];
 

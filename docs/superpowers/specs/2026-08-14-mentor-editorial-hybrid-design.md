@@ -72,7 +72,7 @@ Accolades:
 
 ## Existing Mentor Content
 
-Dr. Sherri Sadr uses `mentors/sherri.png`; Dr. Hossein Piri retains `mentors/Dr.piri.jpg`. Their names, roles, biographies, and detailed-profile accolades remain unchanged. Their visible cards are edited only for presentation length and hierarchy; factual meaning is not changed.
+Dr. Sherri Sadr uses `mentors/sherri.png` and the role **Doctor of Dental Medicine, UBC**. Her visible credentials are **Doctor of Dental Medicine — UBC** and **Research Experience (REX) Mentor — UBC**. Her expanded profile uses four evidence-backed credentials: **Doctor of Dental Medicine — UBC Faculty of Dentistry**, **Research Experience (REX) Mentor — UBC**, **VICE Mentor — AMS of UBC**, and **Healthcare Service — Vancouver Coastal Health**. Safety-training certificates are removed from the marketing hierarchy. Dr. Hossein Piri retains `mentors/Dr.piri.jpg`; his content remains unchanged.
 
 ## Responsive and Theme Requirements
 

@@ -360,3 +360,18 @@ git commit -m "fix: preserve full mentor portraits"
 - [x] Preserve the wrapper aspect ratio, card dimensions, carousel, ordering, accessible alt text, and modal behavior.
 - [x] Run the focused test, full suite, diff check, and responsive rendered checks at 390px, 768px, and 1440px.
 - [x] Commit only the HTML, test, specification, and plan changes.
+
+---
+
+### Task 6: Sherri Authority Credentials
+
+**Files:**
+- Modify: `tests/light-mode-section-surfaces.test.mjs`
+- Modify: `index.html`
+- Modify: `docs/superpowers/specs/2026-08-14-mentor-editorial-hybrid-design.md`
+
+- [x] Replace Sherri's safety-certificate marketing bullets with the approved UBC degree, REX mentorship, AMS mentorship, and Vancouver Coastal Health service credentials.
+- [x] Change her role line to `Doctor of Dental Medicine, UBC` in canonical data and visible markup.
+- [x] Keep two concise credentials on the card and four evidence-backed credentials in the expanded profile.
+- [x] Run the focused mentor test, full suite, diff check, and local HTTP verification.
+- [x] Commit only the HTML, test, specification, and plan changes.
