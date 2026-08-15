@@ -709,8 +709,32 @@ test("uses an editorial mentor desktop grid and manual mobile snap carousel", ()
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.mentor-card\s*\{[^}]*flex:\s*0 0 calc\(100% - 2\.75rem\);[^}]*scroll-snap-align:\s*center/);
   assert.match(html, /@media \(min-width:\s*768px\)[\s\S]*\.mentor-track\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
   assert.match(html, /@media \(min-width:\s*768px\)[\s\S]*\.mentor-carousel-controls\s*\{\s*display:\s*none/);
-  assert.match(html, /\.mentor-portrait\s*\{[^}]*aspect-ratio:\s*4 \/ 3;[^}]*object-fit:\s*cover/);
   assert.doesNotMatch(mentors, /class="mentor-portrait[^\"]*rotate/);
+});
+
+test("keeps full mentor subjects over atmospheric portrait backdrops", () => {
+  const mentorsStart = html.indexOf("Meet The Mentors");
+  const mentorsEnd = html.indexOf("Results & Quotes Ticker", mentorsStart);
+  const mentors = html.slice(mentorsStart, mentorsEnd);
+  const expectedPortraits = {
+    zoey: { source: "mentors/zoey.png", alt: "Portrait of Zoey" },
+    piri: { source: "mentors/Dr.piri.jpg", alt: "Portrait of Dr. Hossein Piri" },
+    sherri: { source: "mentors/sherri.png", alt: "Portrait of Dr. Sherri Sadr" },
+  };
+
+  for (const [mentor, { source, alt }] of Object.entries(expectedPortraits)) {
+    const frameStart = mentors.indexOf(`data-mentor-portrait="${mentor}"`);
+    const nextFrameStart = mentors.indexOf('data-mentor-portrait="', frameStart + 1);
+    const frame = mentors.slice(frameStart, nextFrameStart === -1 ? undefined : nextFrameStart);
+
+    assert.notEqual(frameStart, -1, `${mentor} portrait frame is missing its identity hook`);
+    assert.match(frame, new RegExp(`<img src="${source}" alt="" aria-hidden="true" class="mentor-portrait-backdrop">`));
+    assert.match(frame, new RegExp(`<img src="${source}" alt="${alt}" loading="lazy" decoding="async" class="mentor-portrait mentor-portrait-foreground">`));
+  }
+
+  assert.match(html, /\.mentor-portrait-wrap\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*3/s);
+  assert.match(html, /\.mentor-portrait-backdrop\s*\{[^}]*object-fit:\s*cover/s);
+  assert.match(html, /\.mentor-portrait-foreground\s*\{[^}]*object-fit:\s*contain/s);
 });
 
 test("keeps mentor identity content in an unambiguous stacked header", () => {

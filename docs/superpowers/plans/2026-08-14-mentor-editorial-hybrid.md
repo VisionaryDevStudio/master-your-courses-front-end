@@ -239,7 +239,7 @@ If no correction was required, leave the report uncommitted and do not create an
 - Consumes: the existing `.mentor-portrait-wrap`, `.mentor-portrait`, ordered mentor sources, and unchanged `4:3` frame geometry.
 - Produces: `.mentor-portrait-backdrop` for the atmospheric layer and `.mentor-portrait-foreground` for the complete subject image, with `data-mentor-portrait="zoey|piri|sherri"` hooks for restrained per-person positioning.
 
-- [ ] **Step 1: Write the failing layered-portrait contract**
+- [x] **Step 1: Write the failing layered-portrait contract**
 
 Extend the existing mentor test to require one backdrop and one foreground image per card, matching sources and mentor identifiers. Require the frame to remain `4 / 3`, the backdrop to use `object-fit: cover`, and the foreground to use `object-fit: contain`.
 
@@ -255,7 +255,7 @@ assert.match(css, /\.mentor-portrait-backdrop\s*\{[^}]*object-fit:\s*cover/s);
 assert.match(css, /\.mentor-portrait-foreground\s*\{[^}]*object-fit:\s*contain/s);
 ```
 
-- [ ] **Step 2: Run the focused test and confirm RED**
+- [x] **Step 2: Run the focused test and confirm RED**
 
 Run:
 
@@ -265,7 +265,7 @@ node --test --test-name-pattern="mentor|editorial mentor" tests/light-mode-secti
 
 Expected: FAIL because each card currently contains only one cover-cropped `.mentor-portrait` image.
 
-- [ ] **Step 3: Implement the two-layer portrait frame**
+- [x] **Step 3: Implement the two-layer portrait frame**
 
 Move the stable aspect ratio to `.mentor-portrait-wrap`. Keep the wrapper dimensions and rounded clipping unchanged. Add an `aria-hidden="true"` duplicate source as the backdrop and retain the existing meaningful `alt` text only on the foreground image.
 
@@ -278,7 +278,7 @@ Move the stable aspect ratio to `.mentor-portrait-wrap`. Keep the wrapper dimens
 
 Use the same structure for Piri and Sherri with their existing sources and accessible names.
 
-- [ ] **Step 4: Add restrained shared styling and per-mentor tuning**
+- [x] **Step 4: Add restrained shared styling and per-mentor tuning**
 
 Keep the frame at `4 / 3`. Make both image layers fill the frame. Blur, enlarge, and soften the cover backdrop; contain the foreground at natural proportions above it. Use mentor-specific hooks only for small scale or vertical-position adjustments verified from screenshots.
 
@@ -310,7 +310,7 @@ Keep the frame at `4 / 3`. Make both image layers fill the frame. Blur, enlarge,
 
 Do not add new animation. Ensure hover/reveal transforms remain on the card rather than either portrait layer.
 
-- [ ] **Step 5: Run the focused and full static gates**
+- [x] **Step 5: Run the focused and full static gates**
 
 Run:
 
@@ -322,7 +322,7 @@ git diff --check
 
 Expected: PASS with exactly three layered portraits, correct source mapping, stable `4:3` geometry, and no whitespace errors.
 
-- [ ] **Step 6: Perform rendered responsive QA**
+- [x] **Step 6: Perform rendered responsive QA**
 
 Using the exact local preview, capture and inspect 390×844, 768×1024, and 1440×900 in light and dark modes. Verify for every mentor:
 
@@ -334,7 +334,7 @@ Using the exact local preview, capture and inspect 390×844, 768×1024, and 1440
 
 If a mentor needs correction, adjust only that mentor's `object-position`, foreground inset, or maximum scale and repeat all three viewport captures.
 
-- [ ] **Step 7: Commit the verified portrait refinement**
+- [x] **Step 7: Commit the verified portrait refinement**
 
 ```bash
 git add index.html tests/light-mode-section-surfaces.test.mjs docs/superpowers/plans/2026-08-14-mentor-editorial-hybrid.md
