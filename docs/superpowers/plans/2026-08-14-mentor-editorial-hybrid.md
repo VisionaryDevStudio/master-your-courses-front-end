@@ -340,3 +340,23 @@ If a mentor needs correction, adjust only that mentor's `object-position`, foreg
 git add index.html tests/light-mode-section-surfaces.test.mjs docs/superpowers/plans/2026-08-14-mentor-editorial-hybrid.md
 git commit -m "fix: preserve full mentor portraits"
 ```
+
+---
+
+### Task 5: Native 4:3 Portrait Asset Contract
+
+**Files:**
+- Modify: `tests/light-mode-section-surfaces.test.mjs`
+- Modify: `index.html`
+- Modify: `docs/superpowers/specs/2026-08-14-mentor-editorial-hybrid-design.md`
+
+**Interfaces:**
+- Consumes: the unchanged `.mentor-portrait-wrap` 4:3 frame and existing mentor source paths.
+- Produces: one accessible `.mentor-portrait` image per mentor, ready for direct replacement with native 1600×1200 assets.
+
+- [x] Write a failing contract that rejects backdrop/foreground duplicates and requires one cover image per frame.
+- [x] Run the focused test and confirm it fails against the temporary layered treatment.
+- [x] Remove `.mentor-portrait-backdrop`, `.mentor-portrait-foreground`, duplicate decorative images, blur, contain, and mentor-specific positioning.
+- [x] Preserve the wrapper aspect ratio, card dimensions, carousel, ordering, accessible alt text, and modal behavior.
+- [x] Run the focused test, full suite, diff check, and responsive rendered checks at 390px, 768px, and 1440px.
+- [x] Commit only the HTML, test, specification, and plan changes.

@@ -712,7 +712,7 @@ test("uses an editorial mentor desktop grid and manual mobile snap carousel", ()
   assert.doesNotMatch(mentors, /class="mentor-portrait[^\"]*rotate/);
 });
 
-test("keeps full mentor subjects over atmospheric portrait backdrops", () => {
+test("uses clean native four-by-three mentor portraits without filler layers", () => {
   const mentorsStart = html.indexOf("Meet The Mentors");
   const mentorsEnd = html.indexOf("Results & Quotes Ticker", mentorsStart);
   const mentors = html.slice(mentorsStart, mentorsEnd);
@@ -724,17 +724,17 @@ test("keeps full mentor subjects over atmospheric portrait backdrops", () => {
 
   for (const [mentor, { source, alt }] of Object.entries(expectedPortraits)) {
     const frameStart = mentors.indexOf(`data-mentor-portrait="${mentor}"`);
-    const nextFrameStart = mentors.indexOf('data-mentor-portrait="', frameStart + 1);
-    const frame = mentors.slice(frameStart, nextFrameStart === -1 ? undefined : nextFrameStart);
+    const frameEnd = mentors.indexOf("</div>", frameStart);
+    const frame = mentors.slice(frameStart, frameEnd);
 
     assert.notEqual(frameStart, -1, `${mentor} portrait frame is missing its identity hook`);
-    assert.match(frame, new RegExp(`<img src="${source}" alt="" aria-hidden="true" class="mentor-portrait-backdrop">`));
-    assert.match(frame, new RegExp(`<img src="${source}" alt="${alt}" loading="lazy" decoding="async" class="mentor-portrait mentor-portrait-foreground">`));
+    assert.match(frame, new RegExp(`<img src="${source}" alt="${alt}" loading="lazy" decoding="async" class="mentor-portrait">`));
+    assert.doesNotMatch(frame, /mentor-portrait-backdrop|mentor-portrait-foreground|aria-hidden="true"/);
   }
 
   assert.match(html, /\.mentor-portrait-wrap\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*3/s);
-  assert.match(html, /\.mentor-portrait-backdrop\s*\{[^}]*object-fit:\s*cover/s);
-  assert.match(html, /\.mentor-portrait-foreground\s*\{[^}]*object-fit:\s*contain/s);
+  assert.match(html, /\.mentor-portrait\s*\{[^}]*object-fit:\s*cover/s);
+  assert.doesNotMatch(html, /\.mentor-portrait-backdrop\s*\{|\.mentor-portrait-foreground\s*\{/);
 });
 
 test("keeps mentor identity content in an unambiguous stacked header", () => {

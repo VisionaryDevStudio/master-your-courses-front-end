@@ -426,27 +426,16 @@
       width: 100%;
       aspect-ratio: 4 / 3;
       overflow: hidden;
-      background: color-mix(in srgb, var(--muted) 82%, white);
+      background: hsl(var(--muted));
     }
-    .mentor-portrait-backdrop,
-    .mentor-portrait-foreground {
-      position: absolute;
-      inset: 0;
+    .mentor-portrait {
+      display: block;
       width: 100%;
       height: 100%;
       border: 0;
       border-radius: 0;
-    }
-    .mentor-portrait-backdrop {
       object-fit: cover;
-      filter: blur(18px) saturate(.72);
-      opacity: .34;
-      transform: scale(1.09);
-    }
-    .mentor-portrait-foreground {
-      display: block;
-      object-fit: contain;
-      object-position: center bottom;
+      object-position: center center;
       box-shadow: none;
     }
     .mentor-card-header > div:last-child { padding: 1.25rem 1.25rem 0; }
@@ -1673,8 +1662,7 @@
 
                          <div class="mentor-card-header">
                            <div class="mentor-portrait-wrap relative shrink-0" data-mentor-portrait="zoey">
-                             <img src="mentors/zoey.png" alt="" aria-hidden="true" class="mentor-portrait-backdrop">
-                             <img src="mentors/zoey.png" alt="Portrait of Zoey" loading="lazy" decoding="async" class="mentor-portrait mentor-portrait-foreground">
+                             <img src="mentors/zoey.png" alt="Portrait of Zoey" loading="lazy" decoding="async" class="mentor-portrait">
                            </div>
                            <div>
                              <h3 class="text-lg md:text-xl font-black font-display tracking-tight">Zoey</h3>
@@ -1708,8 +1696,7 @@
 
                          <div class="mentor-card-header">
                            <div class="mentor-portrait-wrap relative shrink-0" data-mentor-portrait="piri">
-                             <img src="mentors/Dr.piri.jpg" alt="" aria-hidden="true" class="mentor-portrait-backdrop">
-                             <img src="mentors/Dr.piri.jpg" alt="Portrait of Dr. Hossein Piri" loading="lazy" decoding="async" class="mentor-portrait mentor-portrait-foreground">
+                             <img src="mentors/Dr.piri.jpg" alt="Portrait of Dr. Hossein Piri" loading="lazy" decoding="async" class="mentor-portrait">
                            </div>
                            <div>
                              <h3 class="text-lg md:text-xl font-black font-display tracking-tight">Dr. Hossein Piri</h3>
@@ -1743,8 +1730,7 @@
 
                          <div class="mentor-card-header">
                            <div class="mentor-portrait-wrap relative shrink-0" data-mentor-portrait="sherri">
-                             <img src="mentors/sherri.png" alt="" aria-hidden="true" class="mentor-portrait-backdrop">
-                             <img src="mentors/sherri.png" alt="Portrait of Dr. Sherri Sadr" loading="lazy" decoding="async" class="mentor-portrait mentor-portrait-foreground">
+                             <img src="mentors/sherri.png" alt="Portrait of Dr. Sherri Sadr" loading="lazy" decoding="async" class="mentor-portrait">
                            </div>
                            <div>
                              <h3 class="text-lg md:text-xl font-black font-display tracking-tight">Dr. Sherri Sadr</h3>
