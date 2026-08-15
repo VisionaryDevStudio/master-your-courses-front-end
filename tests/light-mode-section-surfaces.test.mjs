@@ -779,7 +779,7 @@ test("uses a theme-aware accessible mentor profile dialog", () => {
   assert.match(modal, /mentor-modal-footer/);
   assert.match(modal, /mentor-modal-primary/);
   assert.match(modal, /id="mentor-modal-close"[^>]*w-11 h-11/);
-  assert.match(modal, />\s*Book a Consultation\s*</);
+  assert.match(modal, /<a href="#"[^>]*mentor-modal-primary[^>]*>\s*Book a Consultation/);
   assert.match(html, /\.mentor-modal-surface\s*\{[^}]*background:\s*rgb\(255 255 255 \/ \.98\)/s);
   assert.match(html, /\.dark \.mentor-modal-surface\s*\{[^}]*background:\s*rgb\(2 6 23 \/ \.98\)/s);
 });
@@ -788,6 +788,7 @@ test("compacts tablet mentor cards and removes modal motion when requested", () 
   assert.match(html, /@media \(min-width:\s*768px\) and \(max-width:\s*1023px\)[\s\S]*\.mentor-card-header > div:last-child\s*\{[^}]*padding:\s*1rem 1rem 0/s);
   assert.match(html, /@media \(min-width:\s*768px\) and \(max-width:\s*1023px\)[\s\S]*\.mentor-card-credentials\s*\{[^}]*margin:\s*1rem 1rem 0;[^}]*padding-top:\s*\.75rem/s);
   assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*#mentor-modal[\s\S]*#mentor-modal-content\s*\{[^}]*transition:\s*none(?:\s*!important)?;/s);
+  assert.match(html, /@media \(min-width:\s*1024px\)[\s\S]*#mentor-section \.section-intro-gap\s*\{[^}]*margin-bottom:\s*1\.5rem;/s);
 });
 
 test("closes the mentor dialog faster and without delay for reduced motion", () => {
