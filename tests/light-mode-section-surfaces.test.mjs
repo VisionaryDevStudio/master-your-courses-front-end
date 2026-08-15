@@ -857,6 +857,14 @@ const mentorModalLogicSource = html.slice(mentorModalLogicStart, mentorModalLogi
 
 function createMentorModalHarness() {
   const documentListeners = new Map();
+  const style = () => {
+    const customProperties = new Map();
+    return {
+      getPropertyValue(name) { return customProperties.get(name) ?? ""; },
+      objectPosition: "",
+      setProperty(name, value) { customProperties.set(name, value); },
+    };
+  };
   const classList = (...initial) => {
     const values = new Set(initial);
     return {
@@ -889,7 +897,7 @@ function createMentorModalHarness() {
     "mentor-modal": modal,
     "mentor-modal-content": content,
     "mentor-modal-close": close,
-    "mentor-modal-avatar": { src: "", alt: "", style: {} },
+    "mentor-modal-avatar": { src: "", alt: "", style: style() },
     "mentor-modal-name": {},
     "mentor-modal-role": {},
     "mentor-modal-bio": {},
@@ -911,7 +919,7 @@ function createMentorModalHarness() {
     },
   };
   for (let index = 0; index < 3; index += 1) {
-    elements[`mentor-card-image-${index}`] = { src: "", alt: "", style: {} };
+    elements[`mentor-card-image-${index}`] = { src: "", alt: "", style: style() };
   }
   const api = runInNewContext(`${mentorModalLogicSource}; ({ MENTORS_DATA, hydrateMentorCardImages, openMentorModal, closeMentorModal })`, {
     clearTimeout() {},
@@ -950,11 +958,15 @@ test("uses independent mentor images for cards and profiles", () => {
   assert.match(mentorModalLogicSource, /profileObjectPosition:\s*["']/);
   assert.match(mentorModalLogicSource, /function hydrateMentorCardImages\(\)/);
   assert.match(mentorModalLogicSource, /modalImage\.src\s*=\s*mentor\.profileImage/);
+  assert.match(mentorModalLogicSource, /modalImage\.style\.setProperty\(\s*["']--mentor-profile-object-position["'],\s*mentor\.profileObjectPosition\s*\)/);
+  assert.doesNotMatch(mentorModalLogicSource, /modalImage\.style\.objectPosition\s*=/);
   assert.doesNotMatch(mentorModalLogicSource, /mentor\.avatar/);
 
   assert.match(html, /\.mentor-portrait-wrap\s*\{[\s\S]*?aspect-ratio:\s*4\s*\/\s*3/);
   assert.match(html, /\.mentor-profile-portrait-frame\s*\{[\s\S]*?aspect-ratio:\s*4\s*\/\s*5/);
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*?\.mentor-profile-portrait-frame\s*\{[\s\S]*?aspect-ratio:\s*3\s*\/\s*2/);
+  assert.match(html, /\.mentor-profile-portrait-frame img\s*\{[\s\S]*?object-position:\s*var\(--mentor-profile-object-position,\s*center 10%\)/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*?\.mentor-profile-portrait-frame img\s*\{[\s\S]*?object-position:\s*center 18%/);
 
   const harness = createMentorModalHarness();
   harness.mentors[0].cardImage = "mentors/zoey-card.webp";
@@ -967,7 +979,7 @@ test("uses independent mentor images for cards and profiles", () => {
   assert.equal(harness.image(0).style.objectPosition, "center center");
   assert.equal(harness.modalImage.src, "mentors/zoey-profile.webp");
   assert.equal(harness.modalImage.alt, "Portrait of Zoey");
-  assert.equal(harness.modalImage.style.objectPosition, "center 10%");
+  assert.equal(harness.modalImage.style.getPropertyValue("--mentor-profile-object-position"), "center 10%");
 });
 
 test("renders curated semantic credentials for every mentor", () => {
