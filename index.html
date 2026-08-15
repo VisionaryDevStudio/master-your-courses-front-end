@@ -484,6 +484,26 @@
       background: rgb(15 23 42 / .58);
       backdrop-filter: blur(8px);
     }
+    #mentor-modal { transition: opacity 240ms ease; }
+    #mentor-modal-content {
+      opacity: 0;
+      transform: translateY(10px) scale(.985);
+      transition: opacity 300ms cubic-bezier(.22, 1, .36, 1), transform 300ms cubic-bezier(.22, 1, .36, 1);
+    }
+    #mentor-modal:not(.opacity-0) #mentor-modal-content {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .mentor-profile-stage {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 260ms cubic-bezier(.22, 1, .36, 1), transform 260ms cubic-bezier(.22, 1, .36, 1);
+      transition-delay: var(--mentor-profile-delay, 0ms);
+    }
+    #mentor-modal:not(.opacity-0) .mentor-profile-stage {
+      opacity: 1;
+      transform: translateY(0);
+    }
     .mentor-modal-surface {
       width: min(1080px, calc(100vw - 48px));
       max-height: 90vh;
@@ -679,6 +699,7 @@
     .mentor-modal-primary:hover { background: rgb(67 56 202); }
     #mentor-modal.mentor-modal-closing { transition-duration: 200ms; }
     #mentor-modal.mentor-modal-closing #mentor-modal-content { transition-duration: 200ms; }
+    #mentor-modal.mentor-modal-closing .mentor-profile-stage { transition-delay: 0ms; transition-duration: 200ms; }
     .dark .mentor-modal-backdrop { background: rgb(2 6 23 / .8); }
     .dark .mentor-modal-surface {
       border-color: rgb(255 255 255 / .1);
@@ -791,6 +812,7 @@
       .mentor-card, .mentor-card-surface { opacity: 1; transform: none; transition: none; }
       .mentor-card-action svg { transform: none !important; transition: none !important; }
       #mentor-modal, #mentor-modal-content { transition: none !important; }
+      .mentor-profile-stage { opacity: 1; transform: none; transition: none !important; }
     }
 
     html:not(.dark) .surface-full-bleed {
@@ -3066,10 +3088,10 @@
         <div class="mentor-profile-layout">
            <section class="mentor-profile-visual" aria-label="Mentor identity">
               <p class="mentor-profile-eyebrow">Meet your mentor</p>
-              <div class="mentor-profile-portrait-frame">
+              <div class="mentor-profile-portrait-frame mentor-profile-stage" style="--mentor-profile-delay: 0ms;">
                  <img id="mentor-modal-avatar" src="" alt="" />
               </div>
-              <div class="mentor-profile-identity">
+              <div class="mentor-profile-identity mentor-profile-stage" style="--mentor-profile-delay: 40ms;">
                  <h2 id="mentor-modal-name" class="mentor-profile-name"></h2>
                  <p id="mentor-modal-role" class="mentor-profile-role"></p>
                  <div class="mentor-profile-badges" aria-label="Mentor profile tags">
@@ -3080,11 +3102,13 @@
            </section>
 
            <section class="mentor-profile-content" aria-label="Mentor biography and credentials">
-              <p class="mentor-profile-section-label">Mentor profile</p>
-              <h3>About the Mentor</h3>
-              <p id="mentor-modal-bio" class="mentor-profile-copy"></p>
+              <div class="mentor-profile-biography mentor-profile-stage" style="--mentor-profile-delay: 80ms;">
+                 <p class="mentor-profile-section-label">Mentor profile</p>
+                 <h3>About the Mentor</h3>
+                 <p id="mentor-modal-bio" class="mentor-profile-copy"></p>
+              </div>
 
-              <div class="mentor-profile-credentials-panel">
+              <div class="mentor-profile-credentials-panel mentor-profile-stage" style="--mentor-profile-delay: 120ms;">
                  <div class="mentor-profile-credentials-heading">
                     <p class="mentor-profile-section-label">Authority profile</p>
                     <h3>Selected Credentials</h3>
@@ -3094,7 +3118,7 @@
                  </div>
               </div>
 
-              <div class="mentor-profile-footer">
+              <div class="mentor-profile-footer mentor-profile-stage" style="--mentor-profile-delay: 160ms;">
                  <a href="#" class="mentor-modal-primary px-6 py-3 rounded-xl font-bold transition-colors flex items-center gap-2 shadow-sm text-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
                     Book a Consultation
                     <svg aria-hidden="true" class="lucide w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>

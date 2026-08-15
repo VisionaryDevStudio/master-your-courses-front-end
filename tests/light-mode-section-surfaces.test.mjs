@@ -792,6 +792,12 @@ test("uses a theme-aware editorial authority profile dialog", () => {
   assert.doesNotMatch(modal, /mentor-profile-portrait-frame[^>]*rounded-full/);
 });
 
+test("stages the mentor authority profile with restrained reduced-motion-safe timing", () => {
+  assert.match(html, /\.mentor-profile-stage[\s\S]*transition-delay:\s*var\(--mentor-profile-delay, 0ms\)/);
+  assert.match(html, /#mentor-modal-content[\s\S]*translateY\(10px\)[\s\S]*scale\(\.985\)/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.mentor-profile-stage[\s\S]*transition:\s*none/);
+});
+
 test("compacts tablet mentor cards and removes modal motion when requested", () => {
   assert.match(html, /@media \(min-width:\s*768px\) and \(max-width:\s*1023px\)[\s\S]*\.mentor-card-header > div:last-child\s*\{[^}]*padding:\s*1rem 1rem 0/s);
   assert.match(html, /@media \(min-width:\s*768px\) and \(max-width:\s*1023px\)[\s\S]*\.mentor-card-credentials\s*\{[^}]*margin:\s*1rem 1rem 0;[^}]*padding-top:\s*\.75rem/s);
