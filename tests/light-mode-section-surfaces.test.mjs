@@ -758,6 +758,46 @@ test("provides 44px mentor dot targets around restrained visual indicators", () 
   assert.match(html, /\.mentor-carousel-dot\[aria-current="true"\]::before\s*\{[^}]*width:\s*1\.5rem;/);
 });
 
+test("keeps mentor carousel labels aligned with the visible mentor order", () => {
+  const mentorsStart = html.indexOf("Meet The Mentors");
+  const mentorsEnd = html.indexOf("Results & Quotes Ticker", mentorsStart);
+  const mentors = html.slice(mentorsStart, mentorsEnd);
+  const labels = [...mentors.matchAll(/data-mentor-dot aria-label="([^"]+)"/g)].map(match => match[1]);
+
+  assert.deepEqual(labels, ["Show Zoey", "Show Dr. Hossein Piri", "Show Dr. Sherri Sadr"]);
+});
+
+test("uses a theme-aware accessible mentor profile dialog", () => {
+  const modalStart = html.indexOf('id="mentor-modal"');
+  const modalEnd = html.indexOf("<!-- Floating Contact CTA -->", modalStart);
+  const modal = html.slice(modalStart, modalEnd);
+
+  assert.match(modal, /mentor-modal-backdrop/);
+  assert.match(modal, /mentor-modal-surface/);
+  assert.match(modal, /mentor-modal-sidebar/);
+  assert.match(modal, /mentor-modal-copy/);
+  assert.match(modal, /mentor-modal-footer/);
+  assert.match(modal, /mentor-modal-primary/);
+  assert.match(modal, /id="mentor-modal-close"[^>]*w-11 h-11/);
+  assert.match(modal, />\s*Book a Consultation\s*</);
+  assert.match(html, /\.mentor-modal-surface\s*\{[^}]*background:\s*rgb\(255 255 255 \/ \.98\)/s);
+  assert.match(html, /\.dark \.mentor-modal-surface\s*\{[^}]*background:\s*rgb\(2 6 23 \/ \.98\)/s);
+});
+
+test("compacts tablet mentor cards and removes modal motion when requested", () => {
+  assert.match(html, /@media \(min-width:\s*768px\) and \(max-width:\s*1023px\)[\s\S]*\.mentor-card-header > div:last-child\s*\{[^}]*padding:\s*1rem 1rem 0/s);
+  assert.match(html, /@media \(min-width:\s*768px\) and \(max-width:\s*1023px\)[\s\S]*\.mentor-card-credentials\s*\{[^}]*margin:\s*1rem 1rem 0;[^}]*padding-top:\s*\.75rem/s);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*#mentor-modal[\s\S]*#mentor-modal-content\s*\{[^}]*transition:\s*none(?:\s*!important)?;/s);
+});
+
+test("closes the mentor dialog faster and without delay for reduced motion", () => {
+  const modalLogic = html.slice(html.indexOf("// Mentor Modal Logic"), html.indexOf("  </script>", html.indexOf("// Mentor Modal Logic")));
+  assert.match(html, /#mentor-modal\.mentor-modal-closing\s*\{[^}]*transition-duration:\s*200ms;/s);
+  assert.match(html, /#mentor-modal\.mentor-modal-closing #mentor-modal-content\s*\{[^}]*transition-duration:\s*200ms;/s);
+  assert.match(modalLogic, /mentorModalReducedMotion\s*=\s*window\.matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+  assert.match(modalLogic, /mentorModalReducedMotion\.matches\s*\?\s*0\s*:\s*200/);
+});
+
 test("removes decorative mentor hover glow layers", () => {
   const mentorsStart = html.indexOf("Meet The Mentors");
   const mentorsEnd = html.indexOf("Results & Quotes Ticker", mentorsStart);
@@ -842,6 +882,7 @@ function createMentorModalHarness() {
     document,
     requestAnimationFrame(callback) { callback(); },
     setTimeout() { return 1; },
+    window: { matchMedia() { return { matches: false }; } },
   });
   return {
     apply,
