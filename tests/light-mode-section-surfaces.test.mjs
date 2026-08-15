@@ -766,21 +766,30 @@ test("keeps mentor carousel labels aligned with the visible mentor order", () =>
   assert.deepEqual(labels, ["Show Zoey", "Show Dr. Hossein Piri", "Show Dr. Sherri Sadr"]);
 });
 
-test("uses a theme-aware accessible mentor profile dialog", () => {
+test("uses a theme-aware editorial authority profile dialog", () => {
   const modalStart = html.indexOf('id="mentor-modal"');
   const modalEnd = html.indexOf("<!-- Floating Contact CTA -->", modalStart);
   const modal = html.slice(modalStart, modalEnd);
 
   assert.match(modal, /mentor-modal-backdrop/);
   assert.match(modal, /mentor-modal-surface/);
-  assert.match(modal, /mentor-modal-sidebar/);
-  assert.match(modal, /mentor-modal-copy/);
-  assert.match(modal, /mentor-modal-footer/);
+  assert.match(modal, /mentor-profile-layout/);
+  assert.match(modal, /mentor-profile-portrait-frame/);
+  assert.match(modal, /mentor-profile-identity/);
+  assert.match(modal, /mentor-profile-credentials-panel/);
+  assert.match(modal, /mentor-profile-footer/);
   assert.match(modal, /mentor-modal-primary/);
   assert.match(modal, /id="mentor-modal-close"[^>]*w-11 h-11/);
   assert.match(modal, /<a href="#"[^>]*mentor-modal-primary[^>]*>\s*Book a Consultation/);
-  assert.match(html, /\.mentor-modal-surface\s*\{[^}]*background:\s*rgb\(255 255 255 \/ \.98\)/s);
-  assert.match(html, /\.dark \.mentor-modal-surface\s*\{[^}]*background:\s*rgb\(2 6 23 \/ \.98\)/s);
+  assert.match(html, /\.mentor-modal-surface\s*\{[^}]*width:\s*min\(1080px, calc\(100vw - 48px\)\);[^}]*max-height:\s*90vh;[^}]*background:\s*rgb\(255 253 249/s);
+  assert.match(html, /\.dark \.mentor-modal-surface\s*\{[^}]*background:\s*rgb\(2 6 23/s);
+  assert.match(html, /@media \(min-width:\s*1024px\)[\s\S]*\.mentor-profile-layout\s*\{[^}]*grid-template-columns:\s*42fr 58fr/s);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*\.mentor-profile-portrait-frame\s*\{[^}]*aspect-ratio:\s*3\s*\/\s*2/s);
+  assert.match(html, /\.mentor-profile-portrait-frame\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*5/s);
+  assert.match(html, /\.mentor-profile-credentials-panel\s*\{[^}]*background:\s*rgb\(15 23 42/s);
+  assert.doesNotMatch(modal, /mentor-modal-sidebar|mentor-modal-avatar-frame/);
+  assert.doesNotMatch(modal, /mentor-modal-accolade(?:\s|"|')/);
+  assert.doesNotMatch(modal, /mentor-profile-portrait-frame[^>]*rounded-full/);
 });
 
 test("compacts tablet mentor cards and removes modal motion when requested", () => {
