@@ -484,17 +484,15 @@ test("keeps testimonial motion readable and reduced-motion safe", () => {
   assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.testimonial-marquee-group\[aria-hidden="true"\]\s*\{\s*display:\s*none/);
 });
 
-test("uses a poster-first accessible Track Record player", () => {
+test("uses a direct accessible YouTube embed in the Track Record player", () => {
   const start = html.indexOf("Verified Impact & Video Testimonials");
   const end = html.indexOf("MENTORS_AND_RESULTS_INSERTED", start);
   const section = html.slice(start, end);
-  assert.match(section, /id="testimonial-media"/);
-  assert.match(section, /id="testimonial-story-surface"/);
-  assert.match(section, /id="testimonial-position"[^>]*>\s*1\s*\/\s*9\s*</);
-  assert.match(section, /aria-label="Previous testimonial"/);
-  assert.match(section, /aria-label="Next testimonial"/);
-  assert.doesNotMatch(section, /<iframe[^>]*id="main-video-iframe"/);
-  assert.match(section, /Play testimonial from Shivam Maji/);
+  assert.match(section, /<iframe[^>]*id="main-video-iframe"/);
+  assert.match(section, /src="https:\/\/www\.youtube\.com\/embed\/OXvoto-nhnY\?rel=0"/);
+  assert.match(section, /title="Testimonial from Shivam Maji"/);
+  assert.doesNotMatch(section, /id="testimonial-play"|testimonial-poster|testimonial-play-icon/);
+  assert.doesNotMatch(section, /[?&]autoplay=1/);
   assert.equal((section.match(/aria-pressed="(?:true|false)"/g) ?? []).length, 9);
   assert.match(section, /href="#"[\s\S]*View All Testimonials/);
 });
@@ -537,9 +535,13 @@ function createTrackRecordHarness({ reducedMotion = true, innerWidth = 390 } = {
     };
   };
   const textElement = () => ({ innerText: "", textContent: "", style: {} });
+  const initialIframe = createElement("iframe");
+  initialIframe.id = "main-video-iframe";
+  initialIframe.src = "https://www.youtube.com/embed/OXvoto-nhnY?rel=0";
+  initialIframe.title = "Testimonial from Shivam Maji";
   const media = {
     ...textElement(),
-    children: [],
+    children: [initialIframe],
     replaceChildren(...children) { this.children = children; },
   };
   const storySurface = {
@@ -593,7 +595,7 @@ function createTrackRecordHarness({ reducedMotion = true, innerWidth = 390 } = {
     clearTimeout: timer => timers.delete(timer),
   };
   context.globalThis = context;
-  runInNewContext(`${trackRecordScriptSource}\nglobalThis.__trackRecordApi = { setActiveVideo, nextVideo, prevVideo, playActiveVideo };`, context);
+  runInNewContext(`${trackRecordScriptSource}\nglobalThis.__trackRecordApi = { setActiveVideo, nextVideo, prevVideo };`, context);
 
   return {
     api: context.__trackRecordApi,
@@ -602,8 +604,6 @@ function createTrackRecordHarness({ reducedMotion = true, innerWidth = 390 } = {
     iframeCount: () => media.children.filter(child => child.tagName === "IFRAME").length,
     iframeTitle: () => media.children[0]?.title,
     iframeSrc: () => media.children[0]?.src,
-    posterLabel: () => media.children[0]?.getAttribute("aria-label"),
-    posterSrc: () => media.children[0]?.children.find(child => child.tagName === "IMG")?.src,
     isChanging: () => storySurface.classList.contains("is-changing"),
     flushTimers() {
       const pending = [...timers.values()];
@@ -620,15 +620,22 @@ function createTrackRecordHarness({ reducedMotion = true, innerWidth = 390 } = {
   };
 }
 
-test("coordinates Track Record selection playback wrapping and swipe", () => {
+test("coordinates direct Track Record embeds with selection, wrapping, and swipe", () => {
   const harness = createTrackRecordHarness();
+  assert.equal(harness.iframeCount(), 1);
+  assert.equal(harness.iframeTitle(), "Testimonial from Shivam Maji");
+  assert.match(harness.iframeSrc(), /OXvoto-nhnY\?rel=0$/);
+  assert.doesNotMatch(harness.iframeSrc(), /autoplay=1/);
+
   harness.api.nextVideo();
   assert.equal(harness.text("main-video-student"), "Edrik");
   assert.equal(harness.text("main-video-school"), "Scored a 5 on AP Exam");
   assert.match(harness.text("main-video-quote"), /practice questions were the best/);
   assert.equal(harness.text("testimonial-position"), "2 / 9");
   assert.equal(harness.pressed(1), "true");
-  assert.equal(harness.iframeCount(), 0);
+  assert.equal(harness.iframeCount(), 1);
+  assert.equal(harness.iframeTitle(), "Testimonial from Edrik");
+  assert.match(harness.iframeSrc(), /cEfGnov3ykU\?rel=0$/);
   harness.api.setActiveVideo(8, { immediate: true });
   harness.api.nextVideo();
   assert.equal(harness.text("main-video-student"), "Shivam Maji");
@@ -636,13 +643,10 @@ test("coordinates Track Record selection playback wrapping and swipe", () => {
   assert.equal(harness.text("main-video-student"), "Edrik");
   harness.swipe({ startX: 220, startY: 100, endX: 215, endY: 180 });
   assert.equal(harness.text("main-video-student"), "Edrik");
-  harness.api.playActiveVideo();
-  assert.equal(harness.iframeTitle(), "Testimonial from Edrik");
-  assert.match(harness.iframeSrc(), /cEfGnov3ykU/);
   harness.api.setActiveVideo(0, { immediate: true });
-  assert.equal(harness.iframeCount(), 0);
-  assert.equal(harness.posterLabel(), "Play testimonial from Shivam Maji");
-  assert.match(harness.posterSrc(), /OXvoto-nhnY/);
+  assert.equal(harness.iframeCount(), 1);
+  assert.equal(harness.iframeTitle(), "Testimonial from Shivam Maji");
+  assert.match(harness.iframeSrc(), /OXvoto-nhnY\?rel=0$/);
 });
 
 test("preserves every Track Record action during normal-motion fades and protects swipe boundaries", () => {
@@ -675,7 +679,6 @@ test("preserves every Track Record action during normal-motion fades and protect
   assert.equal(harness.text("main-video-student"), "Shivam Maji");
 
   harness.setWidth(390);
-  harness.api.playActiveVideo();
   harness.swipe({ startX: 300, startY: 100, endX: 220, endY: 110, startsInIframe: true });
   harness.flushTimers();
   assert.equal(harness.text("main-video-student"), "Shivam Maji");
@@ -694,10 +697,7 @@ test("coordinates Track Record media and copy fades with reduced-motion protecti
   assert.match(fadingElements, /transition:\s*opacity 220ms/);
   assert.match(changingElements, /opacity:\s*0/);
   assert.match(extractCssBlock(reducedMotion, ".testimonial-media,\n      .testimonial-story-content"), /transition:\s*none/);
-  assert.match(extractCssBlock(trackRecordCss, ".testimonial-poster-shade"), /linear-gradient/);
-  const playIcon = extractCssBlock(trackRecordCss, ".testimonial-play-icon");
-  assert.match(playIcon, /min-width:\s*3\.5rem/);
-  assert.match(playIcon, /min-height:\s*3\.5rem/);
+  assert.doesNotMatch(trackRecordCss, /testimonial-poster-shade|testimonial-play-icon/);
 });
 
 test("tightens only Track Record mobile story gaps", () => {

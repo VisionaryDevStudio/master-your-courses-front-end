@@ -1409,21 +1409,6 @@
     }
     .testimonial-story-surface.is-changing .testimonial-media,
     .testimonial-story-surface.is-changing .testimonial-story-content { opacity: 0; }
-    .testimonial-poster-shade {
-      background: linear-gradient(to top, rgb(2 6 23 / 0.62), transparent 58%);
-    }
-    .testimonial-play-icon {
-      position: absolute;
-      inset: 50% auto auto 50%;
-      transform: translate(-50%, -50%);
-      min-width: 3.5rem;
-      min-height: 3.5rem;
-      display: grid;
-      place-items: center;
-      border-radius: 9999px;
-      background: rgb(79 70 229 / 0.92);
-      box-shadow: 0 12px 32px rgb(15 23 42 / 0.4);
-    }
     @media (max-width: 767px) {
       #main-video-quote { font-size: 1rem; line-height: 1.65; }
       .testimonial-story-content { padding-inline: 0.5rem; }
@@ -1435,7 +1420,6 @@
     @media (prefers-reduced-motion: reduce) {
       .testimonial-media,
       .testimonial-story-content { transition: none; }
-      .testimonial-play-icon { transition: none; }
     }
   </style>
   <style>
@@ -2860,11 +2844,14 @@
                 <div id="testimonial-story-surface" class="testimonial-story-surface lg:col-span-2 flex flex-col">
                    <div class="testimonial-story-media-frame w-full aspect-video rounded-2xl md:rounded-3xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10 relative group mb-8 md:mb-10">
                       <div id="testimonial-media" class="testimonial-media absolute inset-0">
-                        <button id="testimonial-play" type="button" class="testimonial-poster absolute inset-0 h-full w-full text-white" aria-label="Play testimonial from Shivam Maji" onclick="playActiveVideo()">
-                          <img id="testimonial-poster-image" src="https://i.ytimg.com/vi/OXvoto-nhnY/hqdefault.jpg" alt="" class="absolute inset-0 h-full w-full object-cover">
-                          <span class="testimonial-poster-shade absolute inset-0" aria-hidden="true"></span>
-                          <span class="testimonial-play-icon" aria-hidden="true"><svg class="lucide w-12 h-12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
-                        </button>
+                        <iframe
+                          id="main-video-iframe"
+                          src="https://www.youtube.com/embed/OXvoto-nhnY?rel=0"
+                          title="Testimonial from Shivam Maji"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen
+                          class="absolute inset-0 h-full w-full"
+                        ></iframe>
                       </div>
                    </div>
                    
@@ -3079,39 +3066,7 @@
         return (Number(index) % VIDEOS_DATA.length + VIDEOS_DATA.length) % VIDEOS_DATA.length;
       }
 
-      function posterUrlFor(video) {
-        return `https://i.ytimg.com/vi/${video.youtubeId}/hqdefault.jpg`;
-      }
-
-      function renderVideoPoster(video) {
-        const poster = document.createElement('button');
-        poster.id = 'testimonial-play';
-        poster.type = 'button';
-        poster.className = 'testimonial-poster absolute inset-0 h-full w-full text-white';
-        poster.setAttribute('aria-label', `Play testimonial from ${video.student}`);
-        poster.onclick = playActiveVideo;
-
-        const image = document.createElement('img');
-        image.id = 'testimonial-poster-image';
-        image.src = posterUrlFor(video);
-        image.alt = '';
-        image.className = 'absolute inset-0 h-full w-full object-cover';
-
-        const shade = document.createElement('span');
-        shade.className = 'testimonial-poster-shade absolute inset-0';
-        shade.setAttribute('aria-hidden', 'true');
-
-        const playIcon = document.createElement('span');
-        playIcon.className = 'testimonial-play-icon';
-        playIcon.setAttribute('aria-hidden', 'true');
-        playIcon.innerHTML = '<svg class="lucide w-12 h-12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
-
-        poster.append(image, shade, playIcon);
-        document.getElementById('testimonial-media').replaceChildren(poster);
-      }
-
-      function playActiveVideo() {
-        const video = VIDEOS_DATA[activeVideoIndex];
+      function renderVideoEmbed(video) {
         const iframe = document.createElement('iframe');
         iframe.id = 'main-video-iframe';
         iframe.src = `https://www.youtube.com/embed/${video.youtubeId}?rel=0`;
@@ -3126,7 +3081,7 @@
         activeVideoIndex = normalizeVideoIndex(index);
         selectedVideoIndex = activeVideoIndex;
         const video = VIDEOS_DATA[activeVideoIndex];
-        renderVideoPoster(video);
+        renderVideoEmbed(video);
         document.getElementById('main-video-student').textContent = video.student;
         document.getElementById('main-video-school').textContent = video.school;
         document.getElementById('main-video-quote').textContent = video.quote;
