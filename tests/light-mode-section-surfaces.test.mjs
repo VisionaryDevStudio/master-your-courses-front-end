@@ -1942,7 +1942,7 @@ test("scopes reduced concierge motion to mobile open and closing states", () => 
   assert.match(html, /transition-duration:\s*0\.01ms !important/);
 });
 
-test("keeps the closed mobile advisor circular while it transitions into the results-hidden state", () => {
+test("keeps the closed mobile consultation trigger circular while it transitions into the results-hidden state", () => {
   const triggerStart = html.indexOf('id="floating-cta-toggle"');
   const triggerEnd = html.indexOf('</button>', triggerStart);
   const trigger = html.slice(triggerStart, triggerEnd);
@@ -1953,14 +1953,15 @@ test("keeps the closed mobile advisor circular while it transitions into the res
   assert.match(trigger, /class="[^"]*advisor-trigger-calendar[^"]*"[^>]*aria-hidden="true"/);
   assert.match(trigger, /class="[^"]*advisor-trigger-phone[^"]*"[^>]*aria-hidden="true"/);
   assert.match(trigger, /id="floating-cta-ping"/);
+  assert.match(trigger, /id="floating-cta-toggle-content"[^>]*>[\s\S]*?<span class="advisor-trigger-icon">[\s\S]*?advisor-trigger-calendar[^>]*w-\[22px\][^>]*h-\[22px\]/);
+  assert.doesNotMatch(trigger, /<div class="relative">\s*<div>\s*<svg class="lucide advisor-trigger-calendar/);
   assert.match(
     mobileStyles,
     /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle\s*\{[^}]*width:\s*3\.5rem;[^}]*height:\s*3\.5rem;[^}]*border:\s*1px solid rgb\(255 255 255 \/ 0\.76\);[^}]*box-shadow:\s*0 8px 22px rgb\(67 56 202 \/ 0\.2\);/
   );
-  assert.match(
-    mobileStyles,
-    /\.advisor-trigger-calendar\s*\{[^}]*display:\s*block;[^}]*margin:\s*0 auto;[^}]*flex:\s*0 0 auto;/
-  );
+  assert.match(mobileStyles, /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle-content\s*\{[^}]*display:\s*grid;[^}]*place-items:\s*center;/);
+  assert.match(mobileStyles, /\.advisor-trigger-icon\s*\{[^}]*display:\s*grid;[^}]*place-items:\s*center;[^}]*width:\s*100%;[^}]*height:\s*100%;/);
+  assert.match(mobileStyles, /\.advisor-trigger-calendar\s*\{[^}]*display:\s*block;[^}]*margin:\s*0;/);
   assert.doesNotMatch(
     mobileStyles,
     /#floating-cta-container:not\(\.advisor-menu-open\) #floating-cta-toggle\s*\{[^}]*border:\s*2px/
