@@ -471,12 +471,16 @@ test("uses one semantic testimonial group with silent loop duplicates", () => {
 test("keeps testimonial motion readable and reduced-motion safe", () => {
   assert.match(html, /@keyframes testimonial-marquee[\s\S]*translate3d\(-25%,\s*0,\s*0\)/);
   assert.match(html, /\.testimonial-marquee-track\s*\{[\s\S]*--testimonial-duration:\s*80s[\s\S]*animation:\s*testimonial-marquee var\(--testimonial-duration\) linear infinite/);
+  assert.match(html, /\.testimonial-marquee-track\s*\{[\s\S]*flex-shrink:\s*0/);
+  assert.match(html, /\.testimonial-marquee-viewport\s*\{[\s\S]*-webkit-mask-image:\s*linear-gradient\(to right,\s*transparent 0,\s*#000 4%,\s*#000 96%,\s*transparent 100%\)[\s\S]*mask-image:\s*linear-gradient\(to right,\s*transparent 0,\s*#000 4%,\s*#000 96%,\s*transparent 100%\)/);
   assert.match(html, /\.testimonial-marquee-group\s*\{[\s\S]*gap:\s*48px\s*!important[\s\S]*padding-right:\s*48px/);
   assert.match(html, /\.testimonial-marquee-card\s*\{[\s\S]*height:\s*66px/);
   assert.match(html, /testimonial-marquee-viewport:(?:hover|active)[\s\S]*animation-play-state:\s*paused/);
   assert.match(html, /testimonial-marquee-viewport:focus-within[\s\S]*animation-play-state:\s*paused/);
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*--testimonial-duration:\s*96s[\s\S]*gap:\s*24px\s*!important[\s\S]*height:\s*156px/);
-  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.testimonial-marquee-track\s*\{[\s\S]*animation:\s*none[\s\S]*transform:\s*none/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*--testimonial-duration:\s*96s[\s\S]*gap:\s*24px\s*!important[\s\S]*width:\s*280px[\s\S]*height:\s*156px/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*-webkit-mask-image:\s*linear-gradient\(to right,\s*transparent 0,\s*#000 16px,\s*#000 calc\(100% - 16px\),\s*transparent 100%\)[\s\S]*mask-image:\s*linear-gradient\(to right,\s*transparent 0,\s*#000 16px,\s*#000 calc\(100% - 16px\),\s*transparent 100%\)/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.testimonial-marquee-viewport\s*\{[\s\S]*overflow-x:\s*auto[\s\S]*-webkit-mask-image:\s*none[\s\S]*mask-image:\s*none/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.testimonial-marquee-track\s*\{[\s\S]*animation:\s*none[\s\S]*transform:\s*none[\s\S]*will-change:\s*auto/);
   assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.testimonial-marquee-group\[aria-hidden="true"\]\s*\{\s*display:\s*none/);
 });
 
