@@ -42,6 +42,107 @@ test("defines responsive Facebook proof card sizing with reusable track tokens",
   assert.match(css, /scroll-snap-type:\s*x mandatory/);
 });
 
+const facebookReviewCarouselStart = html.indexOf("// Facebook review carousel");
+const facebookReviewCarouselEnd = html.indexOf("// Facebook review carousel end", facebookReviewCarouselStart);
+const facebookReviewCarouselSource = html.slice(facebookReviewCarouselStart, facebookReviewCarouselEnd);
+
+function createFacebookReviewCarouselHarness() {
+  let innerWidth = 1440;
+  let reducedMotion = false;
+  const windowListeners = new Map();
+  const createEventTarget = (extra = {}) => {
+    const listeners = new Map();
+    return {
+      ...extra,
+      addEventListener(type, listener, options) {
+        const current = listeners.get(type) ?? [];
+        current.push({ listener, options });
+        listeners.set(type, current);
+      },
+      dispatch(type, event = {}) {
+        for (const { listener } of listeners.get(type) ?? []) listener(event);
+      },
+    };
+  };
+
+  const cards = [0, 100, 200, 300].map(offsetLeft => ({ offsetLeft }));
+  const track = { offsetLeft: 0, children: cards };
+  const viewport = createEventTarget({
+    clientWidth: 300,
+    scrollLeft: 0,
+    scrollTo({ left, behavior }) {
+      this.scrollLeft = left;
+      this.lastScrollBehavior = behavior;
+    },
+  });
+  const previous = createEventTarget({ disabled: false });
+  const next = createEventTarget({ disabled: false });
+  const position = { textContent: "" };
+  const elements = {
+    "facebook-reviews-viewport": viewport,
+    "facebook-reviews-track": track,
+    "facebook-review-prev": previous,
+    "facebook-review-next": next,
+    "facebook-review-position": position,
+  };
+  const window = {
+    get innerWidth() { return innerWidth; },
+    addEventListener(type, listener) {
+      const current = windowListeners.get(type) ?? [];
+      current.push(listener);
+      windowListeners.set(type, current);
+    },
+    matchMedia(query) { return { matches: query === "(prefers-reduced-motion: reduce)" && reducedMotion }; },
+  };
+
+  assert.notEqual(facebookReviewCarouselStart, -1, "Facebook review carousel marker is missing");
+  assert.notEqual(facebookReviewCarouselEnd, -1, "Facebook review carousel end marker is missing");
+  assert.doesNotMatch(facebookReviewCarouselSource, /setInterval|setTimeout|requestAnimationFrame/);
+  const context = { FACEBOOK_REVIEWS: Array.from({ length: 4 }), document: { getElementById: id => elements[id] ?? null }, window };
+  runInNewContext(facebookReviewCarouselSource, context);
+
+  return {
+    pageSize(width) { innerWidth = width; return context.getFacebookReviewPageSize(); },
+    counter({ width }) { innerWidth = width; context.syncFacebookReviewControls(); return position.textContent; },
+    next() { next.dispatch("click"); },
+    previous() { previous.dispatch("click"); },
+    index() { return Math.round(viewport.scrollLeft / 100); },
+    nextDisabled() { return next.disabled; },
+    setIndex(index) { context.setFacebookReviewIndex(index); },
+    resize(width) {
+      innerWidth = width;
+      for (const listener of windowListeners.get("resize") ?? []) listener();
+    },
+    behavior({ reduced }) {
+      reducedMotion = reduced;
+      context.setFacebookReviewIndex(1);
+      return viewport.lastScrollBehavior;
+    },
+  };
+}
+
+test("Facebook review carousel keeps bounded responsive manual navigation", () => {
+  const harness = createFacebookReviewCarouselHarness();
+
+  assert.equal(harness.pageSize(390), 1);
+  assert.equal(harness.pageSize(768), 2);
+  assert.equal(harness.pageSize(1440), 3);
+  assert.equal(harness.counter({ width: 390 }), "1 / 4");
+  assert.equal(harness.counter({ width: 768 }), "1–2 / 4");
+  assert.equal(harness.counter({ width: 1440 }), "1–3 / 4");
+  harness.next();
+  assert.equal(harness.index(), 1);
+  assert.equal(harness.counter({ width: 1440 }), "2–4 / 4");
+  assert.equal(harness.nextDisabled(), true);
+  harness.resize(390);
+  harness.setIndex(3);
+  assert.equal(harness.nextDisabled(), true);
+  harness.previous();
+  assert.equal(harness.index(), 2);
+  assert.equal(harness.behavior({ reduced: false }), "smooth");
+  assert.equal(harness.behavior({ reduced: true }), "auto");
+});
+
 test("uses an accessible three-group university marquee with silent duplicates", () => {
   const start = html.indexOf('class="surface-universities');
   const end = html.indexOf('<!-- ----------------- Methodology', start);

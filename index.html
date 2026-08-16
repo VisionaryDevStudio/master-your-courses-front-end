@@ -3345,6 +3345,75 @@
   }
 
   renderFacebookReviews();
+
+  // Facebook review carousel
+  const facebookReviewsViewport = document.getElementById("facebook-reviews-viewport");
+  const facebookReviewsTrack = document.getElementById("facebook-reviews-track");
+  const facebookReviewPrevious = document.getElementById("facebook-review-prev");
+  const facebookReviewNext = document.getElementById("facebook-review-next");
+  const facebookReviewPosition = document.getElementById("facebook-review-position");
+  let facebookReviewIndex = 0;
+
+  function getFacebookReviewPageSize() {
+    if (window.innerWidth >= 1024) return 3;
+    if (window.innerWidth >= 768) return 2;
+    return 1;
+  }
+
+  function getFacebookReviewMaxIndex() {
+    return Math.max(0, FACEBOOK_REVIEWS.length - getFacebookReviewPageSize());
+  }
+
+  function syncFacebookReviewControls() {
+    facebookReviewIndex = Math.min(Math.max(facebookReviewIndex, 0), getFacebookReviewMaxIndex());
+    const pageSize = getFacebookReviewPageSize();
+    const visibleStart = facebookReviewIndex + 1;
+    const visibleEnd = Math.min(FACEBOOK_REVIEWS.length, facebookReviewIndex + pageSize);
+    facebookReviewPrevious.disabled = facebookReviewIndex === 0;
+    facebookReviewNext.disabled = facebookReviewIndex === getFacebookReviewMaxIndex();
+    facebookReviewPosition.textContent = pageSize === 1
+      ? `${visibleStart} / ${FACEBOOK_REVIEWS.length}`
+      : `${visibleStart}–${visibleEnd} / ${FACEBOOK_REVIEWS.length}`;
+  }
+
+  function setFacebookReviewIndex(index, { focus = false } = {}) {
+    facebookReviewIndex = Math.min(Math.max(index, 0), getFacebookReviewMaxIndex());
+    const card = facebookReviewsTrack.children[facebookReviewIndex];
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    facebookReviewsViewport.scrollTo({
+      left: card.offsetLeft - facebookReviewsTrack.offsetLeft,
+      behavior: reducedMotion ? "auto" : "smooth",
+    });
+    syncFacebookReviewControls();
+    if (focus) facebookReviewsViewport.focus();
+  }
+
+  facebookReviewPrevious.addEventListener("click", () => setFacebookReviewIndex(facebookReviewIndex - 1));
+  facebookReviewNext.addEventListener("click", () => setFacebookReviewIndex(facebookReviewIndex + 1));
+  facebookReviewsViewport.addEventListener("keydown", event => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      setFacebookReviewIndex(facebookReviewIndex - 1);
+    }
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      setFacebookReviewIndex(facebookReviewIndex + 1);
+    }
+  });
+  facebookReviewsViewport.addEventListener("scroll", () => {
+    const cards = [...facebookReviewsTrack.children];
+    const nearestIndex = cards.reduce((closestIndex, card, index) => (
+      Math.abs(card.offsetLeft - facebookReviewsTrack.offsetLeft - facebookReviewsViewport.scrollLeft)
+        < Math.abs(cards[closestIndex].offsetLeft - facebookReviewsTrack.offsetLeft - facebookReviewsViewport.scrollLeft)
+        ? index
+        : closestIndex
+    ), 0);
+    facebookReviewIndex = Math.min(nearestIndex, getFacebookReviewMaxIndex());
+    syncFacebookReviewControls();
+  }, { passive: true });
+  window.addEventListener("resize", () => setFacebookReviewIndex(facebookReviewIndex));
+  syncFacebookReviewControls();
+  // Facebook review carousel end
 </script>
 <!-- MENTORS_AND_RESULTS_INSERTED -->
 </main>
