@@ -1,7 +1,7 @@
 # Facebook Review Proof Section Design
 
 **Date:** 2026-08-16
-**Status:** Approved design, awaiting implementation-plan approval
+**Status:** Approved refinement, awaiting implementation-plan approval
 
 ## Objective
 
@@ -11,10 +11,10 @@ Add a compact, premium Facebook-backed review section to the homepage without re
 
 - Place the section after `#track-record-section` and immediately before `#closing-cta`.
 - Use the light-mode editorial surface between the cool Track Record canvas and dark closing CTA.
-- Eyebrow: `Verified Family Feedback`.
 - Heading: `Trusted by students and families`.
 - Supporting copy: `Public feedback from families and students who learned with MasterYourCourses.`
-- Use a restrained Facebook source badge in the section introduction; Facebook is the verification source, not the visual identity of the section.
+- Remove the visible `Facebook review excerpts` source badge and `Verified Family Feedback` eyebrow. They compete with the primary heading and repeat the same trust message.
+- Preserve `Facebook review excerpts` only in semantic and accessible labels where it clarifies the source.
 - Do not show an aggregate score, review count, or `View all` link until those values and the public destination are supplied.
 
 ## Review Content
@@ -68,14 +68,18 @@ The review content must live in one guarded JavaScript data array so names, imag
 - Add accessible previous and next buttons and a visible position counter.
 - Do not auto-advance.
 - Disable the previous control at the first card and the next control at the final card.
-- Keep review cards visually equal in height at each breakpoint and show the approved excerpts in full; do not clamp or hide excerpt text.
+- Keep review cards visually equal in height at each breakpoint.
+- Present the strongest opening portion of longer excerpts within a calm three-to-five-line reading area.
+- Add an accessible `Read more` / `Show less` disclosure only when an approved excerpt exceeds the compact area. Expansion reveals the full approved excerpt in place; it does not navigate away or imply that additional unprovided Facebook copy exists.
 
 ## Visual Language
 
+- Borrow DAT Bootcamp's clear reading hierarchy, but retain the MasterYourCourses editorial identity and carousel behavior.
 - Use a restrained warm-white card surface, subtle slate border, soft low-elevation shadow, and large but not oversized corner radius.
-- Use Facebook blue only for the source badge, small verification detail, and focused control accents.
+- Use Facebook blue only for a small card-level source detail and focused control accents.
 - Use gold only for the five-star row.
-- Use calm subject-tag tints derived from the existing indigo, blue, emerald, and amber palette.
+- Reduce tag noise: retain no more than two concise subject or outcome tags per card, derived from the existing indigo, blue, emerald, and amber palette.
+- Keep the reviewer identity and outcome/context line visually paired at the base of each card.
 - Use placeholder initials rather than fabricated reviewer photography.
 - Avoid large platform logos, screenshot frames, strong rotations, glass panels, gradient borders, and decorative square textures.
 
@@ -95,10 +99,11 @@ The review content must live in one guarded JavaScript data array so names, imag
 - Announce the visible review position politely without announcing every scroll pixel.
 - Keep stars decorative and provide one accessible `5 out of 5 stars` label per review.
 - Preserve quote punctuation and identify the cards as Facebook review excerpts.
+- Make each disclosure a real button with an accurate expanded state and a visible keyboard focus treatment.
 
 ## Verification
 
-- Add structural tests for placement, exact four-review data, semantic list, no autoplay, controls, counter, and local placeholder asset.
+- Add structural tests for placement, the single visible heading hierarchy, exact four-review data, semantic list, no autoplay, controls, counter, local placeholder asset, and conditional disclosures.
 - Add controller tests for previous/next boundaries, position synchronization, responsive visible-card counts, and reduced-motion navigation.
 - Render and inspect light and dark modes at 390px, 768px, and 1440px.
 - Verify genuine touch-style horizontal scrolling on mobile, keyboard controls, focus visibility, and no horizontal page overflow.
