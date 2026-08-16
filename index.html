@@ -3473,6 +3473,9 @@
   facebookReviewsViewport.addEventListener("pointerdown", () => {
     facebookReviewProgrammaticTarget = null;
   }, { passive: true });
+  facebookReviewsViewport.addEventListener("wheel", () => {
+    facebookReviewProgrammaticTarget = null;
+  }, { passive: true });
   window.addEventListener("resize", () => {
     facebookReviewProgrammaticTarget = null;
     setFacebookReviewIndex(facebookReviewIndex, { announce: false, behavior: "auto" });

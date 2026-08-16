@@ -218,6 +218,7 @@ function createFacebookReviewCarouselHarness() {
     scrollTo(left) { viewport.scrollLeft = left; viewport.dispatch("scroll"); },
     settleScroll(left = viewport.scrollLeft) { viewport.scrollLeft = left; viewport.dispatch("scrollend"); },
     interruptProgrammaticScroll() { viewport.dispatch("pointerdown"); },
+    interruptProgrammaticScrollWithWheel() { viewport.dispatch("wheel"); },
     visualPosition() { return position.textContent; },
     visualWrites() { return position.writes; },
     announcement() { return announcement.textContent; },
@@ -309,6 +310,19 @@ test("Facebook review carousel keeps targets stable and announces native scroll 
   noOpNavigation.setIndex(3);
   noOpNavigation.scrollTo(100);
   assert.equal(noOpNavigation.visualPosition(), "2 / 4");
+});
+
+test("Facebook review carousel recovers synchronization when wheel input interrupts smooth navigation", () => {
+  const harness = createFacebookReviewCarouselHarness();
+  harness.pageSize(390);
+  harness.next();
+  harness.scrollTo(40);
+  harness.interruptProgrammaticScrollWithWheel();
+  harness.scrollTo(200);
+  assert.equal(harness.visualPosition(), "3 / 4");
+  harness.settleScroll();
+  assert.equal(harness.announcement(), "Showing review 3 of 4");
+  assert.equal(harness.nextDisabled(), false);
 });
 
 test("uses an accessible three-group university marquee with silent duplicates", () => {
