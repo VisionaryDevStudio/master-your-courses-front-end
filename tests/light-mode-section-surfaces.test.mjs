@@ -18,19 +18,38 @@ test("places a semantic four-review Facebook proof section before the closing CT
   assert.match(section, /<ul[^>]*id="facebook-reviews-track"/);
   assert.match(section, /id="facebook-review-prev"[^>]*aria-label="Previous Facebook reviews"/);
   assert.match(section, /id="facebook-review-next"[^>]*aria-label="Next Facebook reviews"/);
-  assert.match(section, /id="facebook-review-position"[^>]*aria-live="polite"/);
+  assert.match(section, /id="facebook-review-position"[^>]*aria-hidden="true"/);
+  assert.match(section, /id="facebook-review-announcement"[^>]*aria-live="polite"/);
   assert.doesNotMatch(section, /4\.9|234 reviews|View all Facebook|autoplay/);
 });
 
 test("keeps approved Facebook excerpts in one guarded data model", () => {
   assert.match(html, /const FACEBOOK_REVIEWS = Object\.freeze\(\[/);
-  for (const name of ["Mauli Shah", "Shivam Maji", "Velma Burke", "Farhana Hanip"]) {
-    assert.match(html, new RegExp(`name:\\s*["']${name}["']`));
-  }
+  const expectedExcerpts = [
+    "I have enrolled my 11th grader for AP physics. I am very happy with the outcome. Masoud is a very soft spoken, dedicated and hardworking teacher. He works very closely with students and keeps them on track with learning.",
+    "Enrolling in Master Your Courses' Grade Boost Program for AP Chemistry and AP Calculus BC was a game-changer for me. I experienced a remarkable improvement in my grades, going from a C to an A in AP Calculus BC and from a B to an A in AP Chemistry.",
+    "You guys have an AMAZING skill set as TEACHERS!! Your teaching methods for math makes understanding and solving math easy! I was never very good in math because I didn't understand it and thought I couldn't!",
+    "My 10th grader was struggling with Math & Chemistry. I found MasterYourCourses. They've wonderful online platform, all tutors are knowledgeable & experienced. We'll definitely plan to keep working.",
+  ];
   assert.equal((html.match(/avatar:\s*["']assets\/reviewer-placeholder\.svg["']/g) ?? []).length, 4);
   assert.match(html, /Facebook review excerpt/);
   const dataSource = html.match(/const FACEBOOK_REVIEWS = Object\.freeze\(\[[\s\S]*?\]\);/)?.[0] ?? "";
   assert.doesNotMatch(dataSource, /https?:\/\//);
+  const context = {};
+  runInNewContext(`${dataSource}; this.reviews = FACEBOOK_REVIEWS;`, context);
+  assert.equal(context.reviews.length, 4);
+  assert.deepEqual(Array.from(context.reviews, review => review.name), ["Mauli Shah", "Shivam Maji", "Velma Burke", "Farhana Hanip"]);
+  assert.deepEqual(Array.from(context.reviews, review => review.excerpt), expectedExcerpts);
+});
+
+test("keeps native touch panning and one valid accessible star rating per review", () => {
+  const cssStart = html.indexOf("/* Facebook review proof */");
+  const css = html.slice(cssStart, html.indexOf("</style>", cssStart));
+  assert.match(css, /#facebook-reviews-viewport\s*\{[^}]*touch-action:\s*pan-x pan-y/);
+  assert.match(css, /\.facebook-review-avatar\s*\{[^}]*box-shadow:\s*0 0 0 3px rgb\(99 102 241 \/ \.14\)/);
+  assert.doesNotMatch(css, /\.facebook-review-avatar\s*\{[^}]*rgb\(24 119 242/);
+  assert.match(html, /<div class="facebook-review-stars" role="img" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★<\/span><\/div>/);
+  assert.doesNotMatch(html, /<div class="facebook-review-stars" aria-label=/);
 });
 
 test("uses the existing local logo as the page icon", () => {
@@ -93,6 +112,11 @@ function createFacebookReviewMotionHarness({ reducedMotion = false, observerThro
 test("Facebook review motion is scoped, one-shot, reduced-motion-safe, and fail-open", () => {
   assert.match(html, /#facebook-reviews-section\.facebook-review-motion-ready \.facebook-review-stage/);
   assert.match(html, /#facebook-reviews-section\.facebook-review-motion-ready\.is-visible \.facebook-review-stage/);
+  assert.match(html, /transform:\s*translateY\(18px\)/);
+  assert.match(html, /transition:\s*opacity 560ms cubic-bezier\(0\.22, 1, 0\.36, 1\), transform 560ms cubic-bezier\(0\.22, 1, 0\.36, 1\)/);
+  assert.match(html, /\.facebook-reviews-intro\s*\{\s*transition-delay:\s*0ms/);
+  assert.match(html, /\.facebook-reviews-shell\s*\{\s*transition-delay:\s*90ms/);
+  assert.match(html, /facebook-review-motion-ready\.is-visible \.facebook-review-stage\s*\{[^}]*will-change:\s*auto/);
   assert.match(html, /@media \(prefers-reduced-motion: reduce\)[\s\S]*#facebook-reviews-section \.facebook-review-stage[\s\S]*transition:\s*none/);
   assert.match(facebookReviewMotionSource, /const facebookReviewObserver = new IntersectionObserver[\s\S]*facebookReviewsSection\.classList\.add\('facebook-review-motion-ready'\)/);
   assert.match(facebookReviewMotionSource, /facebookReviewsSection\.classList\.remove\('facebook-review-motion-ready'\)/);
@@ -141,18 +165,30 @@ function createFacebookReviewCarouselHarness() {
     scrollLeft: 0,
     scrollTo({ left, behavior }) {
       this.scrollLeft = left;
+      this.lastScrollLeft = left;
       this.lastScrollBehavior = behavior;
     },
+    focus() { this.focused = true; },
   });
   const previous = createEventTarget({ disabled: false });
   const next = createEventTarget({ disabled: false });
-  const position = { textContent: "" };
+  const createTextTarget = (initialText = "") => {
+    let text = initialText;
+    return {
+      writes: 0,
+      get textContent() { return text; },
+      set textContent(value) { text = value; this.writes += 1; },
+    };
+  };
+  const position = createTextTarget("");
+  const announcement = createTextTarget("Showing reviews 1–3 of 4");
   const elements = {
     "facebook-reviews-viewport": viewport,
     "facebook-reviews-track": track,
     "facebook-review-prev": previous,
     "facebook-review-next": next,
     "facebook-review-position": position,
+    "facebook-review-announcement": announcement,
   };
   const window = {
     get innerWidth() { return innerWidth; },
@@ -166,7 +202,7 @@ function createFacebookReviewCarouselHarness() {
 
   assert.notEqual(facebookReviewCarouselStart, -1, "Facebook review carousel marker is missing");
   assert.notEqual(facebookReviewCarouselEnd, -1, "Facebook review carousel end marker is missing");
-  assert.doesNotMatch(facebookReviewCarouselSource, /setInterval|setTimeout|requestAnimationFrame/);
+  assert.doesNotMatch(facebookReviewCarouselSource, /setInterval|setTimeout/);
   const context = { FACEBOOK_REVIEWS: Array.from({ length: 4 }), document: { getElementById: id => elements[id] ?? null }, window };
   runInNewContext(facebookReviewCarouselSource, context);
 
@@ -176,8 +212,17 @@ function createFacebookReviewCarouselHarness() {
     next() { next.dispatch("click"); },
     previous() { previous.dispatch("click"); },
     index() { return Math.round(viewport.scrollLeft / 100); },
+    target() { return viewport.lastScrollLeft; },
     nextDisabled() { return next.disabled; },
     setIndex(index) { context.setFacebookReviewIndex(index); },
+    scrollTo(left) { viewport.scrollLeft = left; viewport.dispatch("scroll"); },
+    settleScroll(left = viewport.scrollLeft) { viewport.scrollLeft = left; viewport.dispatch("scrollend"); },
+    interruptProgrammaticScroll() { viewport.dispatch("pointerdown"); },
+    visualPosition() { return position.textContent; },
+    visualWrites() { return position.writes; },
+    announcement() { return announcement.textContent; },
+    announcementWrites() { return announcement.writes; },
+    setReducedMotion(value) { reducedMotion = value; },
     resize(width) {
       innerWidth = width;
       for (const listener of windowListeners.get("resize") ?? []) listener();
@@ -210,6 +255,60 @@ test("Facebook review carousel keeps bounded responsive manual navigation", () =
   assert.equal(harness.index(), 2);
   assert.equal(harness.behavior({ reduced: false }), "smooth");
   assert.equal(harness.behavior({ reduced: true }), "auto");
+});
+
+test("Facebook review carousel exposes separate visual and polite position outputs", () => {
+  assert.match(html, /id="facebook-review-position"[^>]*aria-hidden="true"/);
+  assert.match(html, /id="facebook-review-announcement"[^>]*aria-live="polite"[^>]*aria-atomic="true"/);
+});
+
+test("Facebook review carousel keeps targets stable and announces native scroll only after settlement", () => {
+  const nativeScroll = createFacebookReviewCarouselHarness();
+  nativeScroll.pageSize(390);
+  const initialAnnouncement = nativeScroll.announcement();
+  const initialAnnouncementWrites = nativeScroll.announcementWrites();
+  nativeScroll.scrollTo(40);
+  nativeScroll.scrollTo(60);
+  assert.equal(nativeScroll.visualPosition(), "2 / 4");
+  assert.equal(nativeScroll.announcement(), initialAnnouncement);
+  assert.equal(nativeScroll.announcementWrites(), initialAnnouncementWrites);
+  nativeScroll.settleScroll();
+  assert.equal(nativeScroll.announcement(), "Showing review 2 of 4");
+  assert.equal(nativeScroll.announcementWrites(), initialAnnouncementWrites + 1);
+  nativeScroll.settleScroll();
+  assert.equal(nativeScroll.announcementWrites(), initialAnnouncementWrites + 1);
+
+  const rapidNavigation = createFacebookReviewCarouselHarness();
+  rapidNavigation.pageSize(390);
+  rapidNavigation.next();
+  rapidNavigation.scrollTo(20);
+  assert.equal(rapidNavigation.visualPosition(), "2 / 4");
+  rapidNavigation.next();
+  assert.equal(rapidNavigation.target(), 200);
+  assert.equal(rapidNavigation.visualPosition(), "3 / 4");
+  rapidNavigation.settleScroll(100);
+  assert.equal(rapidNavigation.visualPosition(), "3 / 4");
+  rapidNavigation.settleScroll(200);
+  assert.equal(rapidNavigation.visualPosition(), "3 / 4");
+
+  rapidNavigation.interruptProgrammaticScroll();
+  rapidNavigation.scrollTo(100);
+  assert.equal(rapidNavigation.visualPosition(), "2 / 4");
+
+  const instantNavigation = createFacebookReviewCarouselHarness();
+  instantNavigation.pageSize(390);
+  instantNavigation.setReducedMotion(true);
+  instantNavigation.setIndex(1);
+  instantNavigation.scrollTo(200);
+  assert.equal(instantNavigation.visualPosition(), "3 / 4");
+
+  const noOpNavigation = createFacebookReviewCarouselHarness();
+  noOpNavigation.pageSize(390);
+  noOpNavigation.setIndex(3);
+  noOpNavigation.settleScroll(300);
+  noOpNavigation.setIndex(3);
+  noOpNavigation.scrollTo(100);
+  assert.equal(noOpNavigation.visualPosition(), "2 / 4");
 });
 
 test("uses an accessible three-group university marquee with silent duplicates", () => {

@@ -1536,7 +1536,7 @@
     .facebook-reviews-shell { margin-top: 2.5rem; }
     #facebook-reviews-viewport {
       overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x mandatory;
-      scrollbar-width: none; touch-action: pan-y; padding: .25rem .25rem .75rem;
+      scrollbar-width: none; touch-action: pan-x pan-y; padding: .25rem .25rem .75rem;
       border-radius: 1.5rem;
     }
     #facebook-reviews-viewport::-webkit-scrollbar { display: none; }
@@ -1549,7 +1549,7 @@
     }
     .dark .facebook-review-card { border-color: rgb(82 82 91); background: rgb(39 39 42); box-shadow: 0 12px 30px rgb(0 0 0 / .2); }
     .facebook-reviewer { display: flex; align-items: center; gap: .8rem; }
-    .facebook-review-avatar { position: relative; width: 3rem; height: 3rem; flex: none; overflow: hidden; border-radius: 50%; box-shadow: 0 0 0 3px rgb(24 119 242 / .12); }
+    .facebook-review-avatar { position: relative; width: 3rem; height: 3rem; flex: none; overflow: hidden; border-radius: 50%; box-shadow: 0 0 0 3px rgb(99 102 241 / .14); }
     .facebook-review-avatar img { display: block; width: 100%; height: 100%; }
     .facebook-review-initials { position: absolute; inset: 0; display: grid; place-items: center; color: white; font-size: .72rem; font-weight: 900; letter-spacing: .04em; text-shadow: 0 1px 2px rgb(15 23 42 / .35); }
     .facebook-reviewer-name { font-size: .95rem; font-weight: 800; color: rgb(15 23 42); }
@@ -3339,7 +3339,8 @@
       </div>
       <div class="facebook-review-controls">
         <button id="facebook-review-prev" type="button" aria-label="Previous Facebook reviews" disabled><span aria-hidden="true">←</span></button>
-        <span id="facebook-review-position" class="facebook-review-position" aria-live="polite" aria-atomic="true">1 / 4</span>
+        <span id="facebook-review-position" class="facebook-review-position" aria-hidden="true">1 / 4</span>
+        <span id="facebook-review-announcement" class="sr-only" aria-live="polite" aria-atomic="true"></span>
         <button id="facebook-review-next" type="button" aria-label="Next Facebook reviews"><span aria-hidden="true">→</span></button>
       </div>
     </div>
@@ -3360,7 +3361,7 @@
           <span class="facebook-review-avatar"><img src="${escapeReviewText(review.avatar)}" alt="" aria-hidden="true"><span class="facebook-review-initials" aria-hidden="true">${escapeReviewText(review.initials)}</span></span>
           <div><span class="facebook-reviewer-name">${escapeReviewText(review.name)}</span><time datetime="${escapeReviewText(review.dateTime)}">${escapeReviewText(review.date)}</time></div>
         </div>
-        <div class="facebook-review-stars" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></div>
+        <div class="facebook-review-stars" role="img" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></div>
         <div class="facebook-review-tags">${review.tags.map(tag => `<span>${escapeReviewText(tag)}</span>`).join("")}</div>
         <blockquote>“${escapeReviewText(review.excerpt)}”</blockquote>
         <p class="facebook-review-context">${escapeReviewText(review.context)}</p>
@@ -3375,7 +3376,9 @@
   const facebookReviewPrevious = document.getElementById("facebook-review-prev");
   const facebookReviewNext = document.getElementById("facebook-review-next");
   const facebookReviewPosition = document.getElementById("facebook-review-position");
+  const facebookReviewAnnouncement = document.getElementById("facebook-review-announcement");
   let facebookReviewIndex = 0;
+  let facebookReviewProgrammaticTarget = null;
 
   function getFacebookReviewPageSize() {
     if (window.innerWidth >= 1024) return 3;
@@ -3394,20 +3397,51 @@
     const visibleEnd = Math.min(FACEBOOK_REVIEWS.length, facebookReviewIndex + pageSize);
     facebookReviewPrevious.disabled = facebookReviewIndex === 0;
     facebookReviewNext.disabled = facebookReviewIndex === getFacebookReviewMaxIndex();
-    facebookReviewPosition.textContent = pageSize === 1
+    const positionText = pageSize === 1
       ? `${visibleStart} / ${FACEBOOK_REVIEWS.length}`
       : `${visibleStart}–${visibleEnd} / ${FACEBOOK_REVIEWS.length}`;
+    if (facebookReviewPosition.textContent !== positionText) facebookReviewPosition.textContent = positionText;
   }
 
-  function setFacebookReviewIndex(index, { focus = false } = {}) {
+  function announceFacebookReviewPosition() {
+    const pageSize = getFacebookReviewPageSize();
+    const visibleStart = facebookReviewIndex + 1;
+    const visibleEnd = Math.min(FACEBOOK_REVIEWS.length, facebookReviewIndex + pageSize);
+    const announcement = pageSize === 1
+      ? `Showing review ${visibleStart} of ${FACEBOOK_REVIEWS.length}`
+      : `Showing reviews ${visibleStart} through ${visibleEnd} of ${FACEBOOK_REVIEWS.length}`;
+    if (facebookReviewAnnouncement.textContent !== announcement) facebookReviewAnnouncement.textContent = announcement;
+  }
+
+  function syncFacebookReviewFromViewport({ announce = false } = {}) {
+    const cards = [...facebookReviewsTrack.children];
+    const nearestIndex = cards.reduce((closestIndex, card, index) => (
+      Math.abs(card.offsetLeft - facebookReviewsTrack.offsetLeft - facebookReviewsViewport.scrollLeft)
+        < Math.abs(cards[closestIndex].offsetLeft - facebookReviewsTrack.offsetLeft - facebookReviewsViewport.scrollLeft)
+        ? index
+        : closestIndex
+    ), 0);
+    facebookReviewIndex = Math.min(nearestIndex, getFacebookReviewMaxIndex());
+    syncFacebookReviewControls();
+    if (announce) announceFacebookReviewPosition();
+  }
+
+  function setFacebookReviewIndex(index, { focus = false, announce = true, behavior } = {}) {
     facebookReviewIndex = Math.min(Math.max(index, 0), getFacebookReviewMaxIndex());
     const card = facebookReviewsTrack.children[facebookReviewIndex];
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const targetScrollLeft = card.offsetLeft - facebookReviewsTrack.offsetLeft;
+    const scrollBehavior = behavior ?? (reducedMotion ? "auto" : "smooth");
+    facebookReviewProgrammaticTarget = scrollBehavior === "smooth"
+      && Math.abs(facebookReviewsViewport.scrollLeft - targetScrollLeft) > 1
+      ? facebookReviewIndex
+      : null;
     facebookReviewsViewport.scrollTo({
-      left: card.offsetLeft - facebookReviewsTrack.offsetLeft,
-      behavior: reducedMotion ? "auto" : "smooth",
+      left: targetScrollLeft,
+      behavior: scrollBehavior,
     });
     syncFacebookReviewControls();
+    if (announce) announceFacebookReviewPosition();
     if (focus) facebookReviewsViewport.focus();
   }
 
@@ -3424,17 +3458,25 @@
     }
   });
   facebookReviewsViewport.addEventListener("scroll", () => {
-    const cards = [...facebookReviewsTrack.children];
-    const nearestIndex = cards.reduce((closestIndex, card, index) => (
-      Math.abs(card.offsetLeft - facebookReviewsTrack.offsetLeft - facebookReviewsViewport.scrollLeft)
-        < Math.abs(cards[closestIndex].offsetLeft - facebookReviewsTrack.offsetLeft - facebookReviewsViewport.scrollLeft)
-        ? index
-        : closestIndex
-    ), 0);
-    facebookReviewIndex = Math.min(nearestIndex, getFacebookReviewMaxIndex());
-    syncFacebookReviewControls();
+    if (facebookReviewProgrammaticTarget !== null) return;
+    syncFacebookReviewFromViewport();
   }, { passive: true });
-  window.addEventListener("resize", () => setFacebookReviewIndex(facebookReviewIndex));
+  facebookReviewsViewport.addEventListener("scrollend", () => {
+    if (facebookReviewProgrammaticTarget !== null) {
+      const targetCard = facebookReviewsTrack.children[facebookReviewProgrammaticTarget];
+      const targetScrollLeft = targetCard.offsetLeft - facebookReviewsTrack.offsetLeft;
+      if (Math.abs(facebookReviewsViewport.scrollLeft - targetScrollLeft) > 1) return;
+    }
+    facebookReviewProgrammaticTarget = null;
+    syncFacebookReviewFromViewport({ announce: true });
+  });
+  facebookReviewsViewport.addEventListener("pointerdown", () => {
+    facebookReviewProgrammaticTarget = null;
+  }, { passive: true });
+  window.addEventListener("resize", () => {
+    facebookReviewProgrammaticTarget = null;
+    setFacebookReviewIndex(facebookReviewIndex, { announce: false, behavior: "auto" });
+  });
   syncFacebookReviewControls();
   // Facebook review carousel end
 
