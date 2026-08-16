@@ -484,6 +484,126 @@ test("keeps testimonial motion readable and reduced-motion safe", () => {
   assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.testimonial-marquee-group\[aria-hidden="true"\]\s*\{\s*display:\s*none/);
 });
 
+test("uses a poster-first accessible Track Record player", () => {
+  const start = html.indexOf("Verified Impact & Video Testimonials");
+  const end = html.indexOf("MENTORS_AND_RESULTS_INSERTED", start);
+  const section = html.slice(start, end);
+  assert.match(section, /id="testimonial-media"/);
+  assert.match(section, /id="testimonial-story-surface"/);
+  assert.match(section, /id="testimonial-position"[^>]*>\s*1\s*\/\s*9\s*</);
+  assert.match(section, /aria-label="Previous testimonial"/);
+  assert.match(section, /aria-label="Next testimonial"/);
+  assert.doesNotMatch(section, /<iframe[^>]*id="main-video-iframe"/);
+  assert.match(section, /Play testimonial from Shivam Maji/);
+  assert.equal((section.match(/aria-pressed="(?:true|false)"/g) ?? []).length, 9);
+  assert.match(section, /href="#"[\s\S]*View All Testimonials/);
+});
+
+const trackRecordScriptStart = html.indexOf("const VIDEOS_DATA");
+const trackRecordScriptEnd = html.indexOf("</script>", trackRecordScriptStart);
+const trackRecordScriptSource = html.slice(trackRecordScriptStart, trackRecordScriptEnd);
+
+function createTrackRecordHarness() {
+  const createElement = tagName => ({
+    tagName: tagName.toUpperCase(),
+    attributes: new Map(),
+    children: [],
+    className: "",
+    style: {},
+    append(...children) { this.children.push(...children); },
+    setAttribute(name, value) { this.attributes.set(name, String(value)); },
+    getAttribute(name) { return this.attributes.get(name) ?? null; },
+  });
+  const eventTarget = () => {
+    const listeners = new Map();
+    return {
+      addEventListener(type, listener) {
+        listeners.set(type, [...(listeners.get(type) ?? []), listener]);
+      },
+      dispatch(type, event) {
+        for (const listener of listeners.get(type) ?? []) listener(event);
+      },
+    };
+  };
+  const textElement = () => ({ innerText: "", textContent: "", style: {} });
+  const media = {
+    ...textElement(),
+    children: [],
+    replaceChildren(...children) { this.children = children; },
+  };
+  const storySurface = eventTarget();
+  const thumbnails = Array.from({ length: 9 }, () => {
+    const icon = { className: "" };
+    const student = { className: "" };
+    return {
+      className: "",
+      attributes: new Map(),
+      setAttribute(name, value) { this.attributes.set(name, String(value)); },
+      getAttribute(name) { return this.attributes.get(name) ?? null; },
+      querySelector(selector) {
+        return selector === ".video-thumbnail-icon" ? icon : student;
+      },
+    };
+  });
+  const elements = {
+    "testimonial-media": media,
+    "testimonial-story-surface": storySurface,
+    "testimonial-story-content": textElement(),
+    "testimonial-position": textElement(),
+    "main-video-student": textElement(),
+    "main-video-school": textElement(),
+    "main-video-quote": textElement(),
+  };
+  const context = {
+    document: {
+      createElement,
+      getElementById: id => elements[id] ?? null,
+      querySelectorAll: selector => selector === ".video-thumbnail-item" ? thumbnails : [],
+    },
+    window: {
+      innerWidth: 390,
+      matchMedia: () => ({ matches: true }),
+    },
+    setTimeout: callback => { callback(); return 1; },
+    clearTimeout() {},
+  };
+  context.globalThis = context;
+  runInNewContext(`${trackRecordScriptSource}\nglobalThis.__trackRecordApi = { setActiveVideo, nextVideo, prevVideo, playActiveVideo };`, context);
+
+  return {
+    api: context.__trackRecordApi,
+    text: id => elements[id].innerText || elements[id].textContent,
+    pressed: index => thumbnails[index].getAttribute("aria-pressed"),
+    iframeCount: () => media.children.filter(child => child.tagName === "IFRAME").length,
+    iframeTitle: () => media.children[0]?.title,
+    iframeSrc: () => media.children[0]?.src,
+    swipe({ startX, startY, endX, endY }) {
+      const target = { closest: () => null };
+      storySurface.dispatch("touchstart", { changedTouches: [{ clientX: startX, clientY: startY }], target });
+      storySurface.dispatch("touchend", { changedTouches: [{ clientX: endX, clientY: endY }], target });
+    },
+  };
+}
+
+test("coordinates Track Record selection playback wrapping and swipe", () => {
+  const harness = createTrackRecordHarness();
+  harness.api.nextVideo();
+  assert.equal(harness.text("main-video-student"), "Edrik");
+  assert.equal(harness.text("testimonial-position"), "2 / 9");
+  assert.equal(harness.pressed(1), "true");
+  assert.equal(harness.iframeCount(), 0);
+  harness.api.setActiveVideo(8, { immediate: true });
+  harness.api.nextVideo();
+  assert.equal(harness.text("main-video-student"), "Shivam Maji");
+  harness.swipe({ startX: 300, startY: 100, endX: 220, endY: 110 });
+  assert.equal(harness.text("main-video-student"), "Edrik");
+  harness.swipe({ startX: 220, startY: 100, endX: 215, endY: 180 });
+  assert.equal(harness.text("main-video-student"), "Edrik");
+  harness.api.playActiveVideo();
+  assert.equal(harness.iframeTitle(), "Testimonial from Edrik");
+  assert.match(harness.iframeSrc(), /cEfGnov3ykU/);
+});
+
 test("keeps square grid textures out of methodology and the closing CTA", () => {
   const methodologyStart = html.indexOf("Methodology");
   const programsStart = html.indexOf("Elite Programs", methodologyStart);

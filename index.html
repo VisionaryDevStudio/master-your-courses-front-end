@@ -2818,13 +2818,19 @@
              
              <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
                 <!-- Main Spotlight Video & Info -->
-                <div class="lg:col-span-2 flex flex-col">
+                <div id="testimonial-story-surface" class="lg:col-span-2 flex flex-col" style="touch-action: pan-y;">
                    <div class="w-full aspect-video rounded-2xl md:rounded-3xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10 relative group mb-8 md:mb-10">
-                      <iframe id="main-video-iframe" class="w-full h-full absolute inset-0 z-0 opacity-90 group-hover:opacity-100 transition-opacity duration-500" src="https://www.youtube.com/embed/OXvoto-nhnY?rel=0" title="Testimonial from Shivam Maji" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                      <div id="testimonial-media" class="testimonial-media absolute inset-0">
+                        <button id="testimonial-play" type="button" class="testimonial-poster absolute inset-0 h-full w-full text-white" aria-label="Play testimonial from Shivam Maji" onclick="playActiveVideo()">
+                          <img id="testimonial-poster-image" src="https://i.ytimg.com/vi/OXvoto-nhnY/hqdefault.jpg" alt="" class="absolute inset-0 h-full w-full object-cover">
+                          <span class="testimonial-poster-shade absolute inset-0" aria-hidden="true"></span>
+                          <span class="testimonial-play-icon" aria-hidden="true"><svg class="lucide w-12 h-12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
+                        </button>
+                      </div>
                    </div>
                    
                    <!-- Text Info Moved Under Video -->
-                   <div class="px-2 md:px-6">
+                   <div id="testimonial-story-content" class="px-2 md:px-6 transition-opacity duration-200">
                       <div class="inline-block px-3 py-1 bg-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-widest rounded-full mb-4 font-display">
                          Featured Story
                       </div>
@@ -2851,10 +2857,11 @@
                     </div>
                     
                     <div class="flex items-center gap-2">
-                       <button onclick="prevVideo()" class="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-full text-white transition-all border border-white/10 active:scale-95">
+                       <button type="button" aria-label="Previous testimonial" onclick="prevVideo()" class="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-full text-white transition-all border border-white/10 active:scale-95">
                           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                        </button>
-                       <button onclick="nextVideo()" class="w-12 h-12 flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-full text-white transition-all shadow-[0_0_20px_rgba(99,102,241,0.4)] active:scale-95">
+                       <span id="testimonial-position" class="sr-only" aria-live="polite">1 / 9</span>
+                       <button type="button" aria-label="Next testimonial" onclick="nextVideo()" class="w-12 h-12 flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-full text-white transition-all shadow-[0_0_20px_rgba(99,102,241,0.4)] active:scale-95">
                           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                        </button>
                     </div>
@@ -2870,8 +2877,10 @@
                          <div class="flex flex-col gap-2" id="video-thumbnails-container">
 
                             <button 
+                              type="button"
                               class="video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-indigo-500/20 border-indigo-500/50"
                               data-index="0"
+                              aria-pressed="true"
                               onclick="setActiveVideo(0)"
                             >
                               <div class="video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-indigo-500 text-white">
@@ -2884,8 +2893,10 @@
                             </button>
   
                             <button 
+                              type="button"
                               class="video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-white/5 border-transparent hover:bg-white/10"
                               data-index="1"
+                              aria-pressed="false"
                               onclick="setActiveVideo(1)"
                             >
                               <div class="video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-white/10 text-slate-400">
@@ -2898,8 +2909,10 @@
                             </button>
   
                             <button 
+                              type="button"
                               class="video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-white/5 border-transparent hover:bg-white/10"
                               data-index="2"
+                              aria-pressed="false"
                               onclick="setActiveVideo(2)"
                             >
                               <div class="video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-white/10 text-slate-400">
@@ -2912,8 +2925,10 @@
                             </button>
   
                             <button 
+                              type="button"
                               class="video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-white/5 border-transparent hover:bg-white/10"
                               data-index="3"
+                              aria-pressed="false"
                               onclick="setActiveVideo(3)"
                             >
                               <div class="video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-white/10 text-slate-400">
@@ -2926,8 +2941,10 @@
                             </button>
   
                             <button 
+                              type="button"
                               class="video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-white/5 border-transparent hover:bg-white/10"
                               data-index="4"
+                              aria-pressed="false"
                               onclick="setActiveVideo(4)"
                             >
                               <div class="video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-white/10 text-slate-400">
@@ -2940,8 +2957,10 @@
                             </button>
   
                             <button 
+                              type="button"
                               class="video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-white/5 border-transparent hover:bg-white/10"
                               data-index="5"
+                              aria-pressed="false"
                               onclick="setActiveVideo(5)"
                             >
                               <div class="video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-white/10 text-slate-400">
@@ -2954,8 +2973,10 @@
                             </button>
   
                             <button 
+                              type="button"
                               class="video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-white/5 border-transparent hover:bg-white/10"
                               data-index="6"
+                              aria-pressed="false"
                               onclick="setActiveVideo(6)"
                             >
                               <div class="video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-white/10 text-slate-400">
@@ -2968,8 +2989,10 @@
                             </button>
   
                             <button 
+                              type="button"
                               class="video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-white/5 border-transparent hover:bg-white/10"
                               data-index="7"
+                              aria-pressed="false"
                               onclick="setActiveVideo(7)"
                             >
                               <div class="video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-white/10 text-slate-400">
@@ -2982,8 +3005,10 @@
                             </button>
   
                             <button 
+                              type="button"
                               class="video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-white/5 border-transparent hover:bg-white/10"
                               data-index="8"
+                              aria-pressed="false"
                               onclick="setActiveVideo(8)"
                             >
                               <div class="video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-white/10 text-slate-400">
@@ -3005,30 +3030,123 @@
   
     <script>
       const VIDEOS_DATA = [{"student":"Shivam Maji","school":"Admitted to NYU","youtubeId":"OXvoto-nhnY","quote":"I was struggling in my core classes, but the 1-on-1 mentorship completely turned things around. Jumping from a C to an A+ gave me the confidence to apply to NYU—and I got in!"},{"student":"Edrik","school":"Scored a 5 on AP Exam","youtubeId":"cEfGnov3ykU","quote":"The practice questions were the best, especially the ones for every unit and the practice exams leading up to the actual exam. I think I would have been surprised if I did not get a five."},{"student":"Sawar and Sanj","school":"Scored a 5 on AP Bio","youtubeId":"Q9d0cr_SZig","quote":"MasterYourCourses gave us everything our school class didn't—clear explanations, tons of practice, and a positive space to ask questions. The mix of short content lessons, weekly Q&As, and constant MCQ/FRQ drills pushed our grades from the B- range to consistent A+ 100s, and we walked into the exam confident. We both came out with a 5 on AP Bio—something that felt impossible before this program."},{"student":"Esther","school":"Scored a 5 on AP Exam","youtubeId":"u5SM9AtcJd0","quote":"Master Your Courses was really helpful. The study guide and the prep tests for every unit helped a lot with prepping for the AP exam. The mock exams and live classes were especially beneficial because I could ask questions. These resources definitely prepared me well, and getting a 5 was definitely a big accomplishment for me."},{"student":"Seema","school":"Parent of Sameepa","youtubeId":"--BvlNsYR94","quote":"I wanted a mentor who teaches concepts, not shortcuts. MasterYourCourses showed Sameepa how to think through problems instead of memorising formulas. Her confidence exploded—she earned a 5 on AP Physics at just 14 and dove straight into computer science at 15."},{"student":"Aryan","school":"Scored a 5 on AP Physics","youtubeId":"QQX4S97b_j0","quote":"I liked that he gave lots of challenging practice problems. In class we moved much slower, but here I learned ahead, knew exactly what I was doing, and gained deeper intuition. I scored a 5 on AP Physics and now Im preparing for F=ma exam."},{"student":"Rizwan","school":"Parent of Nabeel","youtubeId":"TzrkTogLW80","quote":"Before we met MasterYourCourses, Nabeel dreaded physics and was stuck at a C. Within five weeks the one-on-one coaching, gentle guidance, and perfectly matched practice raised his class grade to an A. He now looks forward to every session—and even asks for more problems. He scored a 5 on the AP Exam."},{"student":"Bobby","school":"AP Student","youtubeId":"BKex7kU8LZo","quote":"MasterYourCourses gave me questions that looked just like my teacher's—heavy on application—and the chat feature meant I could get help even when class wasn't in session. My grade rose fast, and those tough AP problems finally started to make sense."},{"student":"Nisha & Maya","school":"Parent & AP Biology Student","youtubeId":"cUZIoMVWJos","quote":"Maya was overwhelmed by the sheer volume of AP Biology content, but the 1-on-1 mentorship broke it down into manageable, structured lessons. Her grades improved instantly, and the personalized guidance was a lifesaver. We couldn't have survived the year without it!"}];
+      const trackRecordReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const STORY_FADE_MS = 220;
       let activeVideoIndex = 0;
+      let storyTransitionTimer = 0;
 
-      function setActiveVideo(idx) {
-        if(activeVideoIndex === idx) return;
-        activeVideoIndex = idx;
-        
-        const vid = VIDEOS_DATA[idx];
-        document.getElementById('main-video-iframe').src = "https://www.youtube.com/embed/" + vid.youtubeId + "?rel=0";
-        document.getElementById('main-video-student').innerText = vid.student;
-        document.getElementById('main-video-school').innerText = vid.school;
-        document.getElementById('main-video-quote').innerText = vid.quote;
+      function normalizeVideoIndex(index) {
+        return (Number(index) % VIDEOS_DATA.length + VIDEOS_DATA.length) % VIDEOS_DATA.length;
+      }
 
-        document.querySelectorAll('.video-thumbnail-item').forEach((item, index) => {
-          if (index === idx) {
-             item.className = 'video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-indigo-500/20 border-indigo-500/50';
-             item.querySelector('.video-thumbnail-icon').className = 'video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-indigo-500 text-white';
-             item.querySelector('.video-thumbnail-student').className = 'video-thumbnail-student text-sm font-bold mb-0.5 text-white';
-          } else {
-             item.className = 'video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-white/5 border-transparent hover:bg-white/10';
-             item.querySelector('.video-thumbnail-icon').className = 'video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-white/10 text-slate-400';
-             item.querySelector('.video-thumbnail-student').className = 'video-thumbnail-student text-sm font-bold mb-0.5 text-slate-300';
-          }
+      function posterUrlFor(video) {
+        return `https://i.ytimg.com/vi/${video.youtubeId}/hqdefault.jpg`;
+      }
+
+      function renderVideoPoster(video) {
+        const poster = document.createElement('button');
+        poster.id = 'testimonial-play';
+        poster.type = 'button';
+        poster.className = 'testimonial-poster absolute inset-0 h-full w-full text-white';
+        poster.setAttribute('aria-label', `Play testimonial from ${video.student}`);
+        poster.onclick = playActiveVideo;
+
+        const image = document.createElement('img');
+        image.id = 'testimonial-poster-image';
+        image.src = posterUrlFor(video);
+        image.alt = '';
+        image.className = 'absolute inset-0 h-full w-full object-cover';
+
+        const shade = document.createElement('span');
+        shade.className = 'testimonial-poster-shade absolute inset-0';
+        shade.setAttribute('aria-hidden', 'true');
+
+        const playIcon = document.createElement('span');
+        playIcon.className = 'testimonial-play-icon';
+        playIcon.setAttribute('aria-hidden', 'true');
+        playIcon.innerHTML = '<svg class="lucide w-12 h-12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+
+        poster.append(image, shade, playIcon);
+        document.getElementById('testimonial-media').replaceChildren(poster);
+      }
+
+      function playActiveVideo() {
+        const video = VIDEOS_DATA[activeVideoIndex];
+        const iframe = document.createElement('iframe');
+        iframe.id = 'main-video-iframe';
+        iframe.src = `https://www.youtube.com/embed/${video.youtubeId}?rel=0`;
+        iframe.title = `Testimonial from ${video.student}`;
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        iframe.className = 'absolute inset-0 h-full w-full';
+        document.getElementById('testimonial-media').replaceChildren(iframe);
+      }
+
+      function commitActiveVideo(index) {
+        activeVideoIndex = normalizeVideoIndex(index);
+        const video = VIDEOS_DATA[activeVideoIndex];
+        renderVideoPoster(video);
+        document.getElementById('main-video-student').textContent = video.student;
+        document.getElementById('main-video-school').textContent = video.school;
+        document.getElementById('main-video-quote').textContent = video.quote;
+        document.getElementById('testimonial-position').textContent = `${activeVideoIndex + 1} / ${VIDEOS_DATA.length}`;
+
+        document.querySelectorAll('.video-thumbnail-item').forEach((item, itemIndex) => {
+          const isActive = itemIndex === activeVideoIndex;
+          item.setAttribute('aria-pressed', String(isActive));
+          item.className = isActive
+            ? 'video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-indigo-500/20 border-indigo-500/50'
+            : 'video-thumbnail-item text-left p-3 rounded-xl transition-all duration-300 border flex items-center gap-4 bg-white/5 border-transparent hover:bg-white/10';
+          item.querySelector('.video-thumbnail-icon').className = isActive
+            ? 'video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-indigo-500 text-white'
+            : 'video-thumbnail-icon w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors bg-white/10 text-slate-400';
+          item.querySelector('.video-thumbnail-student').className = isActive
+            ? 'video-thumbnail-student text-sm font-bold mb-0.5 text-white'
+            : 'video-thumbnail-student text-sm font-bold mb-0.5 text-slate-300';
         });
       }
+
+      function setActiveVideo(index, { immediate = trackRecordReducedMotion.matches } = {}) {
+        const storyContent = document.getElementById('testimonial-story-content');
+        clearTimeout(storyTransitionTimer);
+        if (immediate) {
+          commitActiveVideo(index);
+          storyContent.style.opacity = '1';
+          return;
+        }
+        storyContent.style.opacity = '0';
+        storyTransitionTimer = setTimeout(() => {
+          commitActiveVideo(index);
+          storyContent.style.opacity = '1';
+        }, STORY_FADE_MS);
+      }
+
+      function nextVideo() {
+        setActiveVideo(activeVideoIndex + 1);
+      }
+
+      function prevVideo() {
+        setActiveVideo(activeVideoIndex - 1);
+      }
+
+      let touchStart = null;
+      const testimonialStorySurface = document.getElementById('testimonial-story-surface');
+      testimonialStorySurface.addEventListener('touchstart', event => {
+        if (window.innerWidth >= 1024 || event.target.closest?.('iframe')) return;
+        const touch = event.changedTouches[0];
+        touchStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
+      }, { passive: true });
+      testimonialStorySurface.addEventListener('touchend', event => {
+        const touch = event.changedTouches[0];
+        const start = touchStart;
+        touchStart = null;
+        if (!start || !touch || window.innerWidth >= 1024) return;
+        const deltaX = touch.clientX - start.x;
+        const deltaY = touch.clientY - start.y;
+        if (Math.abs(deltaX) < 50 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+        if (deltaX < 0) nextVideo();
+        else prevVideo();
+      }, { passive: true });
     </script>
   
 <!-- MENTORS_AND_RESULTS_INSERTED -->
