@@ -3033,6 +3033,7 @@
       const trackRecordReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       const STORY_FADE_MS = 220;
       let activeVideoIndex = 0;
+      let selectedVideoIndex = 0;
       let storyTransitionTimer = 0;
 
       function normalizeVideoIndex(index) {
@@ -3084,6 +3085,7 @@
 
       function commitActiveVideo(index) {
         activeVideoIndex = normalizeVideoIndex(index);
+        selectedVideoIndex = activeVideoIndex;
         const video = VIDEOS_DATA[activeVideoIndex];
         renderVideoPoster(video);
         document.getElementById('main-video-student').textContent = video.student;
@@ -3108,25 +3110,27 @@
 
       function setActiveVideo(index, { immediate = trackRecordReducedMotion.matches } = {}) {
         const storyContent = document.getElementById('testimonial-story-content');
+        const selectedIndex = normalizeVideoIndex(index);
+        selectedVideoIndex = selectedIndex;
         clearTimeout(storyTransitionTimer);
         if (immediate) {
-          commitActiveVideo(index);
+          commitActiveVideo(selectedIndex);
           storyContent.style.opacity = '1';
           return;
         }
         storyContent.style.opacity = '0';
         storyTransitionTimer = setTimeout(() => {
-          commitActiveVideo(index);
+          commitActiveVideo(selectedIndex);
           storyContent.style.opacity = '1';
         }, STORY_FADE_MS);
       }
 
       function nextVideo() {
-        setActiveVideo(activeVideoIndex + 1);
+        setActiveVideo(selectedVideoIndex + 1);
       }
 
       function prevVideo() {
-        setActiveVideo(activeVideoIndex - 1);
+        setActiveVideo(selectedVideoIndex - 1);
       }
 
       let touchStart = null;

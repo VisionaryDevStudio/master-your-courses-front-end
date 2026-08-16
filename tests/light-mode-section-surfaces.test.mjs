@@ -503,7 +503,7 @@ const trackRecordScriptStart = html.indexOf("const VIDEOS_DATA");
 const trackRecordScriptEnd = html.indexOf("</script>", trackRecordScriptStart);
 const trackRecordScriptSource = html.slice(trackRecordScriptStart, trackRecordScriptEnd);
 
-function createTrackRecordHarness() {
+function createTrackRecordHarness({ reducedMotion = true, innerWidth = 390 } = {}) {
   const createElement = tagName => ({
     tagName: tagName.toUpperCase(),
     attributes: new Map(),
@@ -517,11 +517,14 @@ function createTrackRecordHarness() {
   const eventTarget = () => {
     const listeners = new Map();
     return {
-      addEventListener(type, listener) {
-        listeners.set(type, [...(listeners.get(type) ?? []), listener]);
+      addEventListener(type, listener, options) {
+        listeners.set(type, [...(listeners.get(type) ?? []), { listener, options }]);
       },
       dispatch(type, event) {
-        for (const listener of listeners.get(type) ?? []) listener(event);
+        for (const { listener } of listeners.get(type) ?? []) listener(event);
+      },
+      optionsFor(type) {
+        return (listeners.get(type) ?? []).map(({ options }) => options);
       },
     };
   };
@@ -554,6 +557,8 @@ function createTrackRecordHarness() {
     "main-video-school": textElement(),
     "main-video-quote": textElement(),
   };
+  let nextTimer = 1;
+  const timers = new Map();
   const context = {
     document: {
       createElement,
@@ -561,11 +566,15 @@ function createTrackRecordHarness() {
       querySelectorAll: selector => selector === ".video-thumbnail-item" ? thumbnails : [],
     },
     window: {
-      innerWidth: 390,
-      matchMedia: () => ({ matches: true }),
+      innerWidth,
+      matchMedia: () => ({ matches: reducedMotion }),
     },
-    setTimeout: callback => { callback(); return 1; },
-    clearTimeout() {},
+    setTimeout: callback => {
+      const timer = nextTimer++;
+      timers.set(timer, callback);
+      return timer;
+    },
+    clearTimeout: timer => timers.delete(timer),
   };
   context.globalThis = context;
   runInNewContext(`${trackRecordScriptSource}\nglobalThis.__trackRecordApi = { setActiveVideo, nextVideo, prevVideo, playActiveVideo };`, context);
@@ -577,8 +586,16 @@ function createTrackRecordHarness() {
     iframeCount: () => media.children.filter(child => child.tagName === "IFRAME").length,
     iframeTitle: () => media.children[0]?.title,
     iframeSrc: () => media.children[0]?.src,
-    swipe({ startX, startY, endX, endY }) {
-      const target = { closest: () => null };
+    opacity: () => elements["testimonial-story-content"].style.opacity,
+    flushTimers() {
+      const pending = [...timers.values()];
+      timers.clear();
+      for (const callback of pending) callback();
+    },
+    setWidth(width) { context.window.innerWidth = width; },
+    listenerOptions: type => storySurface.optionsFor(type),
+    swipe({ startX, startY, endX, endY, startsInIframe = false }) {
+      const target = { closest: selector => startsInIframe && selector === "iframe" ? {} : null };
       storySurface.dispatch("touchstart", { changedTouches: [{ clientX: startX, clientY: startY }], target });
       storySurface.dispatch("touchend", { changedTouches: [{ clientX: endX, clientY: endY }], target });
     },
@@ -602,6 +619,41 @@ test("coordinates Track Record selection playback wrapping and swipe", () => {
   harness.api.playActiveVideo();
   assert.equal(harness.iframeTitle(), "Testimonial from Edrik");
   assert.match(harness.iframeSrc(), /cEfGnov3ykU/);
+});
+
+test("preserves every Track Record action during normal-motion fades and protects swipe boundaries", () => {
+  const harness = createTrackRecordHarness({ reducedMotion: false });
+  assert.equal(harness.listenerOptions("touchstart")[0]?.passive, true);
+  assert.equal(harness.listenerOptions("touchend")[0]?.passive, true);
+
+  harness.api.nextVideo();
+  harness.api.nextVideo();
+  assert.equal(harness.opacity(), "0");
+  harness.flushTimers();
+  assert.equal(harness.text("main-video-student"), "Sawar and Sanj");
+
+  harness.api.prevVideo();
+  harness.api.prevVideo();
+  harness.flushTimers();
+  assert.equal(harness.text("main-video-student"), "Shivam Maji");
+
+  harness.setWidth(1023);
+  harness.swipe({ startX: 300, startY: 100, endX: 220, endY: 110 });
+  harness.swipe({ startX: 300, startY: 100, endX: 220, endY: 110 });
+  harness.flushTimers();
+  assert.equal(harness.text("main-video-student"), "Sawar and Sanj");
+
+  harness.api.setActiveVideo(0, { immediate: true });
+  harness.setWidth(1024);
+  harness.swipe({ startX: 300, startY: 100, endX: 220, endY: 110 });
+  harness.flushTimers();
+  assert.equal(harness.text("main-video-student"), "Shivam Maji");
+
+  harness.setWidth(390);
+  harness.api.playActiveVideo();
+  harness.swipe({ startX: 300, startY: 100, endX: 220, endY: 110, startsInIframe: true });
+  harness.flushTimers();
+  assert.equal(harness.text("main-video-student"), "Shivam Maji");
 });
 
 test("keeps square grid textures out of methodology and the closing CTA", () => {
