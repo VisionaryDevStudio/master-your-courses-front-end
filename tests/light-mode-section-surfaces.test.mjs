@@ -656,6 +656,15 @@ test("preserves every Track Record action during normal-motion fades and protect
   assert.equal(harness.text("main-video-student"), "Shivam Maji");
 });
 
+test("uses restrained responsive and reduced-motion Track Record polish", () => {
+  assert.match(html, /\.testimonial-story-surface\s*\{[^}]*touch-action:\s*pan-y/s);
+  assert.match(html, /\.testimonial-story-content\s*\{[^}]*transition:\s*opacity 220ms/s);
+  assert.match(html, /\.testimonial-poster-shade\s*\{[^}]*linear-gradient/s);
+  assert.match(html, /\.testimonial-play-icon\s*\{[\s\S]*min-width:\s*3\.5rem[\s\S]*min-height:\s*3\.5rem/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*#main-video-quote\s*\{[^}]*font-size:\s*1rem;[^}]*line-height:\s*1\.65/s);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.testimonial-story-content\s*\{[^}]*transition:\s*none/s);
+});
+
 test("keeps square grid textures out of methodology and the closing CTA", () => {
   const methodologyStart = html.indexOf("Methodology");
   const programsStart = html.indexOf("Elite Programs", methodologyStart);

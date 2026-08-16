@@ -1398,6 +1398,37 @@
     @media (min-width: 1024px) {
       #mentor-section .section-intro-gap { margin-bottom: 1.5rem; }
     }
+    .testimonial-story-surface {
+      touch-action: pan-y;
+    }
+    .testimonial-story-content {
+      opacity: 1;
+      transition: opacity 220ms ease;
+    }
+    .testimonial-story-content.is-changing { opacity: 0; }
+    .testimonial-poster-shade {
+      background: linear-gradient(to top, rgb(2 6 23 / 0.62), transparent 58%);
+    }
+    .testimonial-play-icon {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      min-width: 3.5rem;
+      min-height: 3.5rem;
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      background: rgb(79 70 229 / 0.92);
+      box-shadow: 0 12px 32px rgb(15 23 42 / 0.4);
+    }
+    @media (max-width: 767px) {
+      #main-video-quote { font-size: 1rem; line-height: 1.65; }
+      .testimonial-story-content { padding-inline: 0.5rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .testimonial-story-content { transition: none; }
+      .testimonial-play-icon { transition: none; }
+    }
   </style>
   <style>
     /* Scroll Reveal Animations */
@@ -2818,7 +2849,7 @@
              
              <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
                 <!-- Main Spotlight Video & Info -->
-                <div id="testimonial-story-surface" class="lg:col-span-2 flex flex-col" style="touch-action: pan-y;">
+                <div id="testimonial-story-surface" class="testimonial-story-surface lg:col-span-2 flex flex-col">
                    <div class="w-full aspect-video rounded-2xl md:rounded-3xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10 relative group mb-8 md:mb-10">
                       <div id="testimonial-media" class="testimonial-media absolute inset-0">
                         <button id="testimonial-play" type="button" class="testimonial-poster absolute inset-0 h-full w-full text-white" aria-label="Play testimonial from Shivam Maji" onclick="playActiveVideo()">
@@ -2830,7 +2861,7 @@
                    </div>
                    
                    <!-- Text Info Moved Under Video -->
-                   <div id="testimonial-story-content" class="px-2 md:px-6 transition-opacity duration-200">
+                   <div id="testimonial-story-content" class="testimonial-story-content px-2 md:px-6">
                       <div class="inline-block px-3 py-1 bg-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-widest rounded-full mb-4 font-display">
                          Featured Story
                       </div>
