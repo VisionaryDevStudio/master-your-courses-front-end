@@ -1230,13 +1230,51 @@
     .lucide.fill-amber-400 {
       fill: #fbbf24;
     }
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    @keyframes testimonial-marquee {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-25%, 0, 0); }
     }
-    .animate-marquee {
-      animation: marquee 40s linear infinite;
+    .testimonial-marquee-viewport {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%);
+    }
+    .testimonial-marquee-track {
+      --testimonial-duration: 80s;
+      display: flex;
       width: max-content;
+      animation: testimonial-marquee var(--testimonial-duration) linear infinite;
+      will-change: transform;
+    }
+    .testimonial-marquee-group {
+      display: flex;
+      align-items: center;
+      gap: 48px !important;
+      padding-right: 48px;
+    }
+    .testimonial-marquee-card { height: 66px; }
+    .testimonial-marquee-viewport:hover .testimonial-marquee-track,
+    .testimonial-marquee-viewport:focus-within .testimonial-marquee-track,
+    .testimonial-marquee-viewport:active .testimonial-marquee-track {
+      animation-play-state: paused;
+    }
+    @media (max-width: 767px) {
+      .testimonial-marquee-track { --testimonial-duration: 96s; }
+      .testimonial-marquee-group { gap: 24px !important; padding-right: 24px; }
+      .testimonial-marquee-card { width: 280px; height: 156px; }
+      .testimonial-marquee-viewport {
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .testimonial-marquee-viewport {
+        overflow-x: auto;
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+      .testimonial-marquee-track { animation: none; transform: none; will-change: auto; }
+      .testimonial-marquee-group[aria-hidden="true"] { display: none; }
     }
     @keyframes university-marquee {
       from { transform: translateX(0); }
@@ -2241,8 +2279,8 @@
         <!-- ----------------- Results & Quotes Ticker ----------------- -->
         <section class="testimonial-marquee-section section-space-band bg-slate-950 overflow-hidden relative flex items-center" aria-label="Student outcomes">
           <div class="testimonial-marquee-viewport relative w-full flex items-center" tabindex="0">
-            <!-- Scrolling Track (Slowed down to 80s) -->
-            <div class="testimonial-marquee-track animate-marquee flex gap-12 pr-12 items-center" style="animation-duration: 80s">
+            <!-- Scrolling Track -->
+            <div class="testimonial-marquee-track flex items-center">
               <div class="testimonial-marquee-group flex gap-12 items-center shrink-0" role="list">
   
                 <div role="listitem" class="testimonial-marquee-card flex flex-col md:flex-row md:items-center gap-4 md:gap-6 shrink-0 bg-white/5 border border-white/10 p-5 md:py-3 md:px-6 rounded-2xl md:rounded-full w-[280px] md:w-auto hover:bg-white/10 transition-colors">

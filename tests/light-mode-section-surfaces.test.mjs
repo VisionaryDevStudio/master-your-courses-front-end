@@ -468,6 +468,18 @@ test("uses one semantic testimonial group with silent loop duplicates", () => {
   }
 });
 
+test("keeps testimonial motion readable and reduced-motion safe", () => {
+  assert.match(html, /@keyframes testimonial-marquee[\s\S]*translate3d\(-25%,\s*0,\s*0\)/);
+  assert.match(html, /\.testimonial-marquee-track\s*\{[\s\S]*--testimonial-duration:\s*80s[\s\S]*animation:\s*testimonial-marquee var\(--testimonial-duration\) linear infinite/);
+  assert.match(html, /\.testimonial-marquee-group\s*\{[\s\S]*gap:\s*48px\s*!important[\s\S]*padding-right:\s*48px/);
+  assert.match(html, /\.testimonial-marquee-card\s*\{[\s\S]*height:\s*66px/);
+  assert.match(html, /testimonial-marquee-viewport:(?:hover|active)[\s\S]*animation-play-state:\s*paused/);
+  assert.match(html, /testimonial-marquee-viewport:focus-within[\s\S]*animation-play-state:\s*paused/);
+  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*--testimonial-duration:\s*96s[\s\S]*gap:\s*24px\s*!important[\s\S]*height:\s*156px/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.testimonial-marquee-track\s*\{[\s\S]*animation:\s*none[\s\S]*transform:\s*none/);
+  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.testimonial-marquee-group\[aria-hidden="true"\]\s*\{\s*display:\s*none/);
+});
+
 test("keeps square grid textures out of methodology and the closing CTA", () => {
   const methodologyStart = html.indexOf("Methodology");
   const programsStart = html.indexOf("Elite Programs", methodologyStart);
