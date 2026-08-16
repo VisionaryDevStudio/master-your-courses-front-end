@@ -394,6 +394,39 @@ test("uses one semantic testimonial group with silent loop duplicates", () => {
   const tickerStart = html.indexOf("Results & Quotes Ticker");
   const tickerEnd = html.indexOf("Verified Impact & Video Testimonials", tickerStart);
   const ticker = html.slice(tickerStart, tickerEnd);
+  const extractDivsByClass = (source, className) => {
+    const openingPattern = new RegExp(`<div\\b[^>]*class="[^"]*\\b${className}\\b[^"]*"[^>]*>`, "g");
+    return [...source.matchAll(openingPattern)].map(openingMatch => {
+      const divPattern = /<\/?div\b[^>]*>/g;
+      let depth = 0;
+      for (const divMatch of source.slice(openingMatch.index).matchAll(divPattern)) {
+        depth += divMatch[0].startsWith("</") ? -1 : 1;
+        if (depth === 0) {
+          return source.slice(openingMatch.index, openingMatch.index + divMatch.index + divMatch[0].length);
+        }
+      }
+      assert.fail(`unterminated ${className} element`);
+    });
+  };
+  const normalizeCardMarkup = card => card
+    .replace(/\srole="listitem"/, "")
+    .replace(/\s+/g, " ")
+    .replace(/> </g, "><")
+    .trim();
+  const readCardContent = card => {
+    const values = [...card.matchAll(/<span(?:\s[^>]*)?>([^<]+)<\/span>/g)].map(([, value]) => value.trim());
+    assert.equal(values.length, 5, "testimonial cards must expose name, assessment, before, after, and quote values");
+    const [name, assessment, before, after, quote] = values;
+    return { name, assessment, before, after, quote };
+  };
+  const canonicalTestimonials = [
+    { name: "Duncan", assessment: "SAT", before: "1280", after: "1500", quote: '"Got into my dream school because of the bootcamp."' },
+    { name: "Ari", assessment: "ACT", before: "33", after: "36", quote: '"The strategies they teach are next level."' },
+    { name: "Kaitlyn", assessment: "SAT", before: "1400", after: "1510", quote: '"Finally broke the 1500 barrier!"' },
+    { name: "Sakina", assessment: "SAT", before: "1370", after: "1540", quote: '"My confidence went through the roof."' },
+    { name: "David", assessment: "AP BIO", before: "3", after: "5", quote: '"The mastery engines made studying actually fun."' },
+    { name: "Emma", assessment: "SAT", before: "1350", after: "1560", quote: '"Best investment my parents made for college."' },
+  ];
 
   assert.match(ticker, /class="[^"]*testimonial-marquee-section/);
   assert.match(ticker, /class="[^"]*testimonial-marquee-viewport[^"]*"[^>]*tabindex="0"/);
@@ -404,8 +437,34 @@ test("uses one semantic testimonial group with silent loop duplicates", () => {
   assert.equal((ticker.match(/role="list"/g) ?? []).length, 1);
   assert.equal((ticker.match(/role="listitem"/g) ?? []).length, 6);
 
-  for (const name of ["Duncan", "Ari", "Kaitlyn", "Sakina", "David", "Emma"]) {
-    assert.equal((ticker.match(new RegExp(`>${name}<`, "g")) ?? []).length, 4);
+  const groups = extractDivsByClass(ticker, "testimonial-marquee-group");
+  const cardsByGroup = groups.map(group => extractDivsByClass(group, "testimonial-marquee-card"));
+  assert.match(groups[0].slice(0, groups[0].indexOf(">") + 1), /role="list"/);
+  assert.doesNotMatch(groups[0].slice(0, groups[0].indexOf(">") + 1), /aria-hidden/);
+  for (const [groupIndex, cards] of cardsByGroup.entries()) {
+    assert.equal(cards.length, 6, `testimonial group ${groupIndex + 1} must contain six cards`);
+    if (groupIndex === 0) {
+      cards.forEach(card => assert.match(card.slice(0, card.indexOf(">") + 1), /role="listitem"/));
+    } else {
+      const groupOpening = groups[groupIndex].slice(0, groups[groupIndex].indexOf(">") + 1);
+      assert.match(groupOpening, /aria-hidden="true"/);
+      assert.doesNotMatch(groupOpening, /role="list"/);
+      cards.forEach(card => assert.doesNotMatch(card.slice(0, card.indexOf(">") + 1), /role="listitem"/));
+    }
+    assert.deepEqual(
+      cards.map(readCardContent),
+      canonicalTestimonials,
+      `testimonial group ${groupIndex + 1} changed canonical order or content`,
+    );
+  }
+
+  const canonicalMarkup = cardsByGroup[0].map(normalizeCardMarkup);
+  for (const [groupIndex, cards] of cardsByGroup.entries()) {
+    assert.deepEqual(
+      cards.map(normalizeCardMarkup),
+      canonicalMarkup,
+      `testimonial group ${groupIndex + 1} differs from the semantic group`,
+    );
   }
 });
 
