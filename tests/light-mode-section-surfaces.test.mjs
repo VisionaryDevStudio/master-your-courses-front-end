@@ -499,6 +499,14 @@ test("uses a poster-first accessible Track Record player", () => {
   assert.match(section, /href="#"[\s\S]*View All Testimonials/);
 });
 
+test("shows the Track Record position in the compact mobile controls", () => {
+  const start = html.indexOf("Verified Impact & Video Testimonials");
+  const end = html.indexOf("MENTORS_AND_RESULTS_INSERTED", start);
+  const section = html.slice(start, end);
+  assert.match(section, /id="testimonial-position"[^>]*class="testimonial-story-counter[^"]*"[^>]*aria-live="polite"[^>]*>\s*1\s*\/\s*9\s*</);
+  assert.doesNotMatch(section, /id="testimonial-position"[^>]*\bsr-only\b/);
+});
+
 const trackRecordScriptStart = html.indexOf("const VIDEOS_DATA");
 const trackRecordScriptEnd = html.indexOf("</script>", trackRecordScriptStart);
 const trackRecordScriptSource = html.slice(trackRecordScriptStart, trackRecordScriptEnd);
@@ -534,7 +542,15 @@ function createTrackRecordHarness({ reducedMotion = true, innerWidth = 390 } = {
     children: [],
     replaceChildren(...children) { this.children = children; },
   };
-  const storySurface = eventTarget();
+  const storySurface = {
+    ...eventTarget(),
+    classList: {
+      names: new Set(),
+      add(...names) { names.forEach(name => this.names.add(name)); },
+      remove(...names) { names.forEach(name => this.names.delete(name)); },
+      contains(name) { return this.names.has(name); },
+    },
+  };
   const thumbnails = Array.from({ length: 9 }, () => {
     const icon = { className: "" };
     const student = { className: "" };
@@ -586,7 +602,9 @@ function createTrackRecordHarness({ reducedMotion = true, innerWidth = 390 } = {
     iframeCount: () => media.children.filter(child => child.tagName === "IFRAME").length,
     iframeTitle: () => media.children[0]?.title,
     iframeSrc: () => media.children[0]?.src,
-    opacity: () => elements["testimonial-story-content"].style.opacity,
+    posterLabel: () => media.children[0]?.getAttribute("aria-label"),
+    posterSrc: () => media.children[0]?.children.find(child => child.tagName === "IMG")?.src,
+    isChanging: () => storySurface.classList.contains("is-changing"),
     flushTimers() {
       const pending = [...timers.values()];
       timers.clear();
@@ -606,6 +624,8 @@ test("coordinates Track Record selection playback wrapping and swipe", () => {
   const harness = createTrackRecordHarness();
   harness.api.nextVideo();
   assert.equal(harness.text("main-video-student"), "Edrik");
+  assert.equal(harness.text("main-video-school"), "Scored a 5 on AP Exam");
+  assert.match(harness.text("main-video-quote"), /practice questions were the best/);
   assert.equal(harness.text("testimonial-position"), "2 / 9");
   assert.equal(harness.pressed(1), "true");
   assert.equal(harness.iframeCount(), 0);
@@ -619,6 +639,10 @@ test("coordinates Track Record selection playback wrapping and swipe", () => {
   harness.api.playActiveVideo();
   assert.equal(harness.iframeTitle(), "Testimonial from Edrik");
   assert.match(harness.iframeSrc(), /cEfGnov3ykU/);
+  harness.api.setActiveVideo(0, { immediate: true });
+  assert.equal(harness.iframeCount(), 0);
+  assert.equal(harness.posterLabel(), "Play testimonial from Shivam Maji");
+  assert.match(harness.posterSrc(), /OXvoto-nhnY/);
 });
 
 test("preserves every Track Record action during normal-motion fades and protects swipe boundaries", () => {
@@ -628,8 +652,9 @@ test("preserves every Track Record action during normal-motion fades and protect
 
   harness.api.nextVideo();
   harness.api.nextVideo();
-  assert.equal(harness.opacity(), "0");
+  assert.equal(harness.isChanging(), true);
   harness.flushTimers();
+  assert.equal(harness.isChanging(), false);
   assert.equal(harness.text("main-video-student"), "Sawar and Sanj");
 
   harness.api.prevVideo();
@@ -656,13 +681,36 @@ test("preserves every Track Record action during normal-motion fades and protect
   assert.equal(harness.text("main-video-student"), "Shivam Maji");
 });
 
-test("uses restrained responsive and reduced-motion Track Record polish", () => {
-  assert.match(html, /\.testimonial-story-surface\s*\{[^}]*touch-action:\s*pan-y/s);
-  assert.match(html, /\.testimonial-story-content\s*\{[^}]*transition:\s*opacity 220ms/s);
-  assert.match(html, /\.testimonial-poster-shade\s*\{[^}]*linear-gradient/s);
-  assert.match(html, /\.testimonial-play-icon\s*\{[\s\S]*min-width:\s*3\.5rem[\s\S]*min-height:\s*3\.5rem/);
-  assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*#main-video-quote\s*\{[^}]*font-size:\s*1rem;[^}]*line-height:\s*1\.65/s);
-  assert.match(html, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.testimonial-story-content\s*\{[^}]*transition:\s*none/s);
+test("coordinates Track Record media and copy fades with reduced-motion protection", () => {
+  const cssStart = html.indexOf("/* Track Record story player */");
+  assert.notEqual(cssStart, -1, "Track Record CSS marker is missing");
+  const trackRecordCss = html.slice(cssStart, html.indexOf("</style>", cssStart));
+  const fadingElements = extractCssBlock(trackRecordCss, ".testimonial-media,\n    .testimonial-story-content");
+  const changingElements = extractCssBlock(trackRecordCss, ".testimonial-story-surface.is-changing .testimonial-media,\n    .testimonial-story-surface.is-changing .testimonial-story-content");
+  const reducedMotion = extractCssBlock(trackRecordCss, "@media (prefers-reduced-motion: reduce)");
+
+  assert.match(extractCssBlock(trackRecordCss, ".testimonial-story-surface"), /touch-action:\s*pan-y/);
+  assert.match(fadingElements, /opacity:\s*1/);
+  assert.match(fadingElements, /transition:\s*opacity 220ms/);
+  assert.match(changingElements, /opacity:\s*0/);
+  assert.match(extractCssBlock(reducedMotion, ".testimonial-media,\n      .testimonial-story-content"), /transition:\s*none/);
+  assert.match(extractCssBlock(trackRecordCss, ".testimonial-poster-shade"), /linear-gradient/);
+  const playIcon = extractCssBlock(trackRecordCss, ".testimonial-play-icon");
+  assert.match(playIcon, /min-width:\s*3\.5rem/);
+  assert.match(playIcon, /min-height:\s*3\.5rem/);
+});
+
+test("tightens only Track Record mobile story gaps", () => {
+  const cssStart = html.indexOf("/* Track Record story player */");
+  assert.notEqual(cssStart, -1, "Track Record CSS marker is missing");
+  const trackRecordCss = html.slice(cssStart, html.indexOf("</style>", cssStart));
+  const mobile = extractCssBlock(trackRecordCss, "@media (max-width: 767px)");
+
+  assert.match(extractCssBlock(mobile, ".testimonial-story-media-frame"), /margin-bottom:\s*1\.5rem/);
+  assert.match(extractCssBlock(mobile, ".testimonial-story-label"), /margin-bottom:\s*0\.75rem/);
+  assert.match(extractCssBlock(mobile, ".testimonial-story-school"), /margin-bottom:\s*1rem/);
+  assert.match(extractCssBlock(mobile, ".testimonial-story-navigation"), /margin-top:\s*1\.5rem/);
+  assert.match(extractCssBlock(mobile, "#main-video-quote"), /font-size:\s*1rem;\s*line-height:\s*1\.65/);
 });
 
 test("keeps square grid textures out of methodology and the closing CTA", () => {
