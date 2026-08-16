@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Master Your Courses - Hero Section</title>
+  <link rel="icon" href="logo/logo.svg" type="image/svg+xml">
   
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -1576,6 +1577,28 @@
     @media (min-width: 1024px) {
       #facebook-reviews-track { --review-card-count: 3; }
       .facebook-review-card { flex-basis: calc((100% - (var(--review-card-gap) + var(--review-card-gap))) / var(--review-card-count)); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      #facebook-reviews-section.facebook-review-motion-ready .facebook-review-stage {
+        opacity: 0;
+        transform: translateY(18px);
+        will-change: opacity, transform;
+        transition: opacity 560ms cubic-bezier(0.22, 1, 0.36, 1), transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      #facebook-reviews-section.facebook-review-motion-ready.is-visible .facebook-review-stage {
+        opacity: 1;
+        transform: none;
+        will-change: auto;
+      }
+      #facebook-reviews-section.facebook-review-motion-ready .facebook-reviews-intro { transition-delay: 0ms; }
+      #facebook-reviews-section.facebook-review-motion-ready .facebook-reviews-shell { transition-delay: 90ms; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #facebook-reviews-section .facebook-review-stage {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
     }
   </style>
   <style>
@@ -3414,6 +3437,25 @@
   window.addEventListener("resize", () => setFacebookReviewIndex(facebookReviewIndex));
   syncFacebookReviewControls();
   // Facebook review carousel end
+
+  // Facebook review motion
+  const facebookReviewsSection = document.getElementById("facebook-reviews-section");
+  if (facebookReviewsSection && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    try {
+      const facebookReviewObserver = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          facebookReviewsSection.classList.add('is-visible');
+          facebookReviewObserver.unobserve(entry.target);
+        }
+      }, { threshold: 0.18 });
+      facebookReviewsSection.classList.add('facebook-review-motion-ready');
+      facebookReviewObserver.observe(facebookReviewsSection);
+    } catch {
+      facebookReviewsSection.classList.remove('facebook-review-motion-ready');
+    }
+  }
+  // Facebook review motion end
 </script>
 <!-- MENTORS_AND_RESULTS_INSERTED -->
 </main>

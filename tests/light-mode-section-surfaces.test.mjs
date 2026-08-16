@@ -33,6 +33,10 @@ test("keeps approved Facebook excerpts in one guarded data model", () => {
   assert.doesNotMatch(dataSource, /https?:\/\//);
 });
 
+test("uses the existing local logo as the page icon", () => {
+  assert.match(html, /<link rel="icon" href="logo\/logo\.svg" type="image\/svg\+xml">/);
+});
+
 test("defines responsive Facebook proof card sizing with reusable track tokens", () => {
   const cssStart = html.indexOf("/* Facebook review proof */");
   const css = html.slice(cssStart, html.indexOf("</style>", cssStart));
@@ -40,6 +44,71 @@ test("defines responsive Facebook proof card sizing with reusable track tokens",
   assert.match(css, /@media \(min-width:\s*768px\) and \(max-width:\s*1023px\)\s*\{[\s\S]*#facebook-reviews-track\s*\{\s*--review-card-count:\s*2/);
   assert.match(css, /@media \(min-width:\s*1024px\)\s*\{[\s\S]*#facebook-reviews-track\s*\{\s*--review-card-count:\s*3/);
   assert.match(css, /scroll-snap-type:\s*x mandatory/);
+});
+
+const facebookReviewMotionStart = html.indexOf("// Facebook review motion");
+const facebookReviewMotionEnd = html.indexOf("// Facebook review motion end", facebookReviewMotionStart);
+const facebookReviewMotionSource = html.slice(facebookReviewMotionStart, facebookReviewMotionEnd);
+
+function createFacebookReviewMotionHarness({ reducedMotion = false, observerThrows = false } = {}) {
+  const observers = [];
+  const classes = new Set();
+  const section = {
+    classList: {
+      add: name => classes.add(name),
+      remove: name => classes.delete(name),
+      contains: name => classes.has(name),
+    },
+  };
+
+  class HarnessIntersectionObserver {
+    constructor(callback) {
+      if (observerThrows) throw new Error("IntersectionObserver unavailable");
+      this.callback = callback;
+      this.observed = [];
+      this.unobserved = [];
+      observers.push(this);
+    }
+
+    observe(element) { this.observed.push(element); }
+    unobserve(element) { this.unobserved.push(element); }
+  }
+
+  assert.notEqual(facebookReviewMotionStart, -1, "Facebook review motion marker is missing");
+  assert.notEqual(facebookReviewMotionEnd, -1, "Facebook review motion end marker is missing");
+  runInNewContext(facebookReviewMotionSource, {
+    IntersectionObserver: HarnessIntersectionObserver,
+    document: { getElementById: id => id === "facebook-reviews-section" ? section : null },
+    window: { matchMedia: query => ({ matches: query === "(prefers-reduced-motion: reduce)" && reducedMotion }) },
+  });
+
+  return {
+    hasClass: name => classes.has(name),
+    observerCount: () => observers.length,
+    intersect() { observers[0].callback([{ isIntersecting: true, target: section }]); },
+    unobserveCount: () => observers[0].unobserved.length,
+  };
+}
+
+test("Facebook review motion is scoped, one-shot, reduced-motion-safe, and fail-open", () => {
+  assert.match(html, /#facebook-reviews-section\.facebook-review-motion-ready \.facebook-review-stage/);
+  assert.match(html, /#facebook-reviews-section\.facebook-review-motion-ready\.is-visible \.facebook-review-stage/);
+  assert.match(html, /@media \(prefers-reduced-motion: reduce\)[\s\S]*#facebook-reviews-section \.facebook-review-stage[\s\S]*transition:\s*none/);
+  assert.match(facebookReviewMotionSource, /const facebookReviewObserver = new IntersectionObserver[\s\S]*facebookReviewsSection\.classList\.add\('facebook-review-motion-ready'\)/);
+  assert.match(facebookReviewMotionSource, /facebookReviewsSection\.classList\.remove\('facebook-review-motion-ready'\)/);
+
+  const normal = createFacebookReviewMotionHarness();
+  assert.equal(normal.hasClass("facebook-review-motion-ready"), true);
+  normal.intersect();
+  assert.equal(normal.hasClass("is-visible"), true);
+  assert.equal(normal.unobserveCount(), 1);
+
+  const reduced = createFacebookReviewMotionHarness({ reducedMotion: true });
+  assert.equal(reduced.observerCount(), 0);
+  assert.equal(reduced.hasClass("facebook-review-motion-ready"), false);
+
+  const unavailable = createFacebookReviewMotionHarness({ observerThrows: true });
+  assert.equal(unavailable.hasClass("facebook-review-motion-ready"), false);
 });
 
 const facebookReviewCarouselStart = html.indexOf("// Facebook review carousel");
