@@ -747,7 +747,7 @@ test("maps sections to the Balanced Premium rhythm", () => {
   assert.match(html, /<section[^>]*surface-results[^>]*section-space-dense/);
   assert.match(html, /<section[^>]*surface-universities[^>]*section-space-band/);
   assert.match(html, /<section[^>]*section-space-band[^>]*>[\s\S]*?Scrolling Track/);
-  assert.match(html, /<section[^>]*section-space-major[^>]*scroll-reveal[^>]*>/);
+  assert.match(html, /<section[^>]*id="closing-cta"[^>]*section-space-major[^>]*>/);
   assert.match(html.match(/<footer[^>]*>/)?.[0] ?? "", /section-space-dense/);
 
   const body = html.slice(html.indexOf("</style>"));
@@ -2320,4 +2320,110 @@ test("compacts methodology cards only below the tablet breakpoint", () => {
   assert.match(mobile, /\.methodology-icon\s*\{[\s\S]*width:\s*2\.75rem[\s\S]*height:\s*2\.75rem/);
   assert.match(mobile, /\.methodology-card-body\s*>\s*\.flex-1\s*\{\s*display:\s*contents/);
   assert.match(mobile, /\.methodology-description\s*\{[\s\S]*grid-column:\s*1\s*\/\s*-1/);
+});
+
+test("uses a functional premium closing CTA", () => {
+  const start = html.indexOf("<!-- ----------------- Final CTA");
+  const end = html.indexOf("<!-- ----------------- Footer", start);
+  const section = html.slice(start, end);
+
+  assert.match(section, /<section[^>]*id="closing-cta"/);
+  assert.doesNotMatch(section, /\bscroll-reveal\b/);
+  assert.match(section, /id="closing-cta-book"[^>]*onclick="toggleFloatingCTA\(\)"/);
+  assert.match(section, />\s*Book a Consultation\s*</);
+  assert.match(section, /id="closing-cta-programs"[^>]*href="#elite-programs"/);
+  assert.match(section, />\s*Explore Programs\s*</);
+  assert.match(html, /<section[^>]*id="elite-programs"[^>]*surface-programs/);
+  assert.equal((section.match(/class="closing-cta-stage\s/g) ?? []).length, 3);
+  assert.match(section, /closing-cta-stage-heading/);
+  assert.match(section, /closing-cta-stage-copy/);
+  assert.match(section, /closing-cta-stage-actions/);
+  assert.match(section, /focus-visible:ring-2[^"\n]*focus-visible:ring-indigo-300/);
+  assert.doesNotMatch(section, /shadow-\[0_0_20px|hover:shadow-\[0_0_30px|hover:-translate-y-1/);
+});
+
+test("defines restrained reduced-motion-safe closing CTA stages", () => {
+  const cssStart = html.indexOf("/* Closing CTA refinement */");
+  assert.notEqual(cssStart, -1, "Closing CTA CSS marker is missing");
+  const css = html.slice(cssStart, html.indexOf("</style>", cssStart));
+  const normalMotion = extractCssBlock(css, "@media (prefers-reduced-motion: no-preference)");
+  const hiddenStage = extractCssBlock(normalMotion, "#closing-cta.closing-cta-motion-ready .closing-cta-stage");
+  const visibleStage = extractCssBlock(normalMotion, "#closing-cta.closing-cta-motion-ready.is-visible .closing-cta-stage");
+  const reducedMotion = extractCssBlock(css, "@media (prefers-reduced-motion: reduce)");
+
+  assert.match(hiddenStage, /opacity:\s*0/);
+  assert.match(hiddenStage, /translateY\(18px\)/);
+  assert.match(hiddenStage, /560ms cubic-bezier\(0\.22,\s*1,\s*0\.36,\s*1\)/);
+  assert.match(visibleStage, /opacity:\s*1/);
+  assert.match(visibleStage, /transform:\s*none/);
+  assert.match(visibleStage, /will-change:\s*auto/);
+  assert.match(extractCssBlock(normalMotion, "#closing-cta.closing-cta-motion-ready .closing-cta-stage-heading"), /transition-delay:\s*0ms/);
+  assert.match(extractCssBlock(normalMotion, "#closing-cta.closing-cta-motion-ready .closing-cta-stage-copy"), /transition-delay:\s*70ms/);
+  assert.match(extractCssBlock(normalMotion, "#closing-cta.closing-cta-motion-ready .closing-cta-stage-actions"), /transition-delay:\s*140ms/);
+  assert.match(extractCssBlock(reducedMotion, "#closing-cta .closing-cta-stage"), /opacity:\s*1[\s\S]*transform:\s*none[\s\S]*transition:\s*none/);
+});
+
+const closingCtaMotionStart = html.indexOf("// Closing CTA staged reveal");
+const closingCtaMotionEnd = html.indexOf("</script>", closingCtaMotionStart);
+const closingCtaMotionSource = html.slice(closingCtaMotionStart, closingCtaMotionEnd);
+
+function createClosingCtaHarness({ reducedMotion = false, constructorThrows = false } = {}) {
+  const classes = new Set();
+  const section = {
+    classList: {
+      add: token => classes.add(token),
+      remove: token => classes.delete(token),
+      contains: token => classes.has(token),
+    },
+  };
+  let observerCallback = null;
+  let observed = false;
+  let unobserved = false;
+  class HarnessIntersectionObserver {
+    constructor(callback) {
+      if (constructorThrows) throw new Error("observer unavailable");
+      observerCallback = callback;
+    }
+    observe(target) { observed = target === section; }
+    unobserve(target) { unobserved = target === section; }
+  }
+  let error = null;
+  try {
+    runInNewContext(closingCtaMotionSource, {
+      document: { getElementById: id => id === "closing-cta" ? section : null },
+      window: {
+        IntersectionObserver: HarnessIntersectionObserver,
+        matchMedia: () => ({ matches: reducedMotion }),
+      },
+      IntersectionObserver: HarnessIntersectionObserver,
+    });
+  } catch (caught) {
+    error = caught;
+  }
+  return {
+    classes,
+    error,
+    observed: () => observed,
+    reveal() { observerCallback?.([{ isIntersecting: true, target: section }]); },
+    unobserved: () => unobserved,
+  };
+}
+
+test("reveals the closing CTA once and fails open", () => {
+  const normal = createClosingCtaHarness();
+  assert.equal(normal.error, null);
+  assert.equal(normal.classes.has("closing-cta-motion-ready"), true);
+  assert.equal(normal.observed(), true);
+  normal.reveal();
+  assert.equal(normal.classes.has("is-visible"), true);
+  assert.equal(normal.unobserved(), true);
+
+  const reduced = createClosingCtaHarness({ reducedMotion: true });
+  assert.equal(reduced.error, null);
+  assert.equal(reduced.classes.has("closing-cta-motion-ready"), false);
+  assert.equal(reduced.observed(), false);
+
+  const failed = createClosingCtaHarness({ constructorThrows: true });
+  assert.equal(failed.error, null);
+  assert.equal(failed.classes.has("closing-cta-motion-ready"), false);
 });

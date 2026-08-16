@@ -1421,6 +1421,46 @@
       .testimonial-media,
       .testimonial-story-content { transition: none; }
     }
+
+    /* Closing CTA refinement */
+    #closing-cta .closing-cta-action {
+      min-height: 3.5rem;
+      transition: background-color 220ms ease, border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+    }
+    #closing-cta .closing-cta-primary {
+      border: 1px solid rgb(129 140 248 / 0.35);
+      box-shadow: 0 12px 30px rgb(15 23 42 / 0.32);
+    }
+    #closing-cta .closing-cta-secondary {
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      #closing-cta .closing-cta-action:hover { transform: translateY(-2px); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      #closing-cta.closing-cta-motion-ready .closing-cta-stage {
+        opacity: 0;
+        transform: translateY(18px);
+        will-change: opacity, transform;
+        transition: opacity 560ms cubic-bezier(0.22, 1, 0.36, 1), transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      #closing-cta.closing-cta-motion-ready.is-visible .closing-cta-stage {
+        opacity: 1;
+        transform: none;
+        will-change: auto;
+      }
+      #closing-cta.closing-cta-motion-ready .closing-cta-stage-heading { transition-delay: 0ms; }
+      #closing-cta.closing-cta-motion-ready .closing-cta-stage-copy { transition-delay: 70ms; }
+      #closing-cta.closing-cta-motion-ready .closing-cta-stage-actions { transition-delay: 140ms; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #closing-cta .closing-cta-stage {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      #closing-cta .closing-cta-action { transition: none; }
+    }
   </style>
   <style>
     /* Scroll Reveal Animations */
@@ -1901,7 +1941,7 @@
 
   
     <!-- ----------------- Elite Programs ----------------- -->
-    <section class="surface-programs surface-full-bleed section-space-major max-w-7xl mx-auto px-6">
+    <section id="elite-programs" class="surface-programs surface-full-bleed section-space-major max-w-7xl mx-auto px-6">
       <div class="section-intro-gap">
         <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-4 font-display tracking-tighter">Elite Programs</h2>
         <p class="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">Choose the program that best fits your child's needs and goals.</p>
@@ -3152,7 +3192,7 @@
 
 
   <!-- ----------------- Final CTA ----------------- -->
-  <section class="section-space-major bg-zinc-950 relative overflow-hidden scroll-reveal border-t border-white/5">
+  <section id="closing-cta" class="section-space-major bg-zinc-950 relative overflow-hidden border-t border-white/5">
     <!-- Background Accents -->
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-full opacity-40 pointer-events-none">
       <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-emerald-500/20 blur-3xl rounded-[100%]"></div>
@@ -3163,20 +3203,21 @@
     <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-purple-500 rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
     <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
       <div class="flex flex-col items-center">
-        <h2 class="text-4xl sm:text-5xl md:text-6xl font-black text-white font-display tracking-tight leading-[1.1] mb-6">
+        <h2 class="closing-cta-stage closing-cta-stage-heading text-4xl sm:text-5xl md:text-6xl font-black text-white font-display tracking-tight leading-[1.1] mb-6">
           Ready to master your courses?
         </h2>
-        <p class="text-lg md:text-xl text-zinc-400 mb-10 max-w-2xl leading-relaxed">
-          Join thousands of top-performing students. Start your journey today with personalized strategies that drive real results.
+        <p class="closing-cta-stage closing-cta-stage-copy text-lg md:text-xl text-zinc-400 mb-10 max-w-2xl leading-relaxed">
+          Tell us where your student is now and where they want to go. We’ll recommend the clearest path forward.
         </p>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-          <button class="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-400 text-white px-10 py-4 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] hover:-translate-y-1 text-lg flex items-center justify-center gap-2">
-            Start Your Journey 
-            <svg class="lucide w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        <div class="closing-cta-stage closing-cta-stage-actions flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+          <button id="closing-cta-book" type="button" onclick="toggleFloatingCTA()" class="closing-cta-action closing-cta-primary w-full sm:w-auto bg-indigo-500 hover:bg-indigo-400 text-white px-10 py-4 rounded-full font-bold text-lg flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950">
+            Book a Consultation
+            <svg aria-hidden="true" class="lucide w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           </button>
-          <button class="w-full sm:w-auto bg-white/5 hover:bg-white/10 text-white border border-white/10 px-8 py-4 rounded-xl font-bold transition-all hover:-translate-y-1 text-lg backdrop-blur-sm">
-            Contact Admissions
-          </button>
+          <a id="closing-cta-programs" href="#elite-programs" class="closing-cta-action closing-cta-secondary w-full sm:w-auto bg-white/[0.04] hover:bg-white/[0.08] text-zinc-100 border border-white/15 px-8 py-4 rounded-full font-bold text-lg backdrop-blur-sm flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950">
+            Explore Programs
+            <svg aria-hidden="true" class="lucide w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
     </div>
@@ -3765,6 +3806,26 @@
         observer.observe(el);
       });
     });
+  </script>
+  <script>
+    // Closing CTA staged reveal
+    const closingCtaSection = document.getElementById('closing-cta');
+    const closingCtaReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (closingCtaSection && !closingCtaReducedMotion.matches && 'IntersectionObserver' in window) {
+      try {
+        const closingCtaObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            closingCtaObserver.unobserve(entry.target);
+          });
+        }, { threshold: 0.2, rootMargin: '0px 0px -32px 0px' });
+        closingCtaSection.classList.add('closing-cta-motion-ready');
+        closingCtaObserver.observe(closingCtaSection);
+      } catch {
+        closingCtaSection.classList.remove('closing-cta-motion-ready');
+      }
+    }
   </script>
 </body>
 </html>
