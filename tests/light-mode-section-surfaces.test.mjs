@@ -5,6 +5,43 @@ import { runInNewContext } from "node:vm";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 
+test("places a semantic four-review Facebook proof section before the closing CTA", () => {
+  const start = html.indexOf("<!-- Facebook Review Proof -->");
+  const end = html.indexOf("<!-- Facebook Review Proof End -->", start);
+  const section = html.slice(start, end);
+  assert.ok(start > html.indexOf("The Track Record"));
+  assert.ok(end < html.indexOf('id="closing-cta"'));
+  assert.match(section, /id="facebook-reviews-section"/);
+  assert.match(section, /Verified Family Feedback/);
+  assert.match(section, /Trusted by students and families/);
+  assert.match(section, /role="region"[^>]*aria-label="Facebook review excerpts"/);
+  assert.match(section, /<ul[^>]*id="facebook-reviews-track"/);
+  assert.match(section, /id="facebook-review-prev"[^>]*aria-label="Previous Facebook reviews"/);
+  assert.match(section, /id="facebook-review-next"[^>]*aria-label="Next Facebook reviews"/);
+  assert.match(section, /id="facebook-review-position"[^>]*aria-live="polite"/);
+  assert.doesNotMatch(section, /4\.9|234 reviews|View all Facebook|autoplay/);
+});
+
+test("keeps approved Facebook excerpts in one guarded data model", () => {
+  assert.match(html, /const FACEBOOK_REVIEWS = Object\.freeze\(\[/);
+  for (const name of ["Mauli Shah", "Shivam Maji", "Velma Burke", "Farhana Hanip"]) {
+    assert.match(html, new RegExp(`name:\\s*["']${name}["']`));
+  }
+  assert.equal((html.match(/avatar:\s*["']assets\/reviewer-placeholder\.svg["']/g) ?? []).length, 4);
+  assert.match(html, /Facebook review excerpt/);
+  const dataSource = html.match(/const FACEBOOK_REVIEWS = Object\.freeze\(\[[\s\S]*?\]\);/)?.[0] ?? "";
+  assert.doesNotMatch(dataSource, /https?:\/\//);
+});
+
+test("defines responsive Facebook proof card sizing with reusable track tokens", () => {
+  const cssStart = html.indexOf("/* Facebook review proof */");
+  const css = html.slice(cssStart, html.indexOf("</style>", cssStart));
+  assert.match(css, /#facebook-reviews-track\s*\{[\s\S]*--review-card-count:\s*1[\s\S]*--review-card-gap:\s*1rem/);
+  assert.match(css, /@media \(min-width:\s*768px\) and \(max-width:\s*1023px\)\s*\{[\s\S]*#facebook-reviews-track\s*\{\s*--review-card-count:\s*2/);
+  assert.match(css, /@media \(min-width:\s*1024px\)\s*\{[\s\S]*#facebook-reviews-track\s*\{\s*--review-card-count:\s*3/);
+  assert.match(css, /scroll-snap-type:\s*x mandatory/);
+});
+
 test("uses an accessible three-group university marquee with silent duplicates", () => {
   const start = html.indexOf('class="surface-universities');
   const end = html.indexOf('<!-- ----------------- Methodology', start);

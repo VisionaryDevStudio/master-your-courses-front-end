@@ -88,6 +88,49 @@
       }
     ];
 
+    const FACEBOOK_REVIEWS = Object.freeze([
+      {
+        name: "Mauli Shah",
+        initials: "MS",
+        date: "June 6, 2023",
+        dateTime: "2023-06-06",
+        tags: ["AP Physics", "Parent Review"],
+        excerpt: "I have enrolled my 11th grader for AP physics. I am very happy with the outcome. Masoud is a very soft spoken, dedicated and hardworking teacher. He works very closely with students and keeps them on track with learning.",
+        context: "Parent of 11th Grader · AP Physics Student",
+        avatar: "assets/reviewer-placeholder.svg"
+      },
+      {
+        name: "Shivam Maji",
+        initials: "SM",
+        date: "May 16, 2023",
+        dateTime: "2023-05-16",
+        tags: ["AP Chemistry", "AP Calculus BC", "Grade Boost"],
+        excerpt: "Enrolling in Master Your Courses' Grade Boost Program for AP Chemistry and AP Calculus BC was a game-changer for me. I experienced a remarkable improvement in my grades, going from a C to an A in AP Calculus BC and from a B to an A in AP Chemistry.",
+        context: "Student · Grade Improvement: C→A, B→A",
+        avatar: "assets/reviewer-placeholder.svg"
+      },
+      {
+        name: "Velma Burke",
+        initials: "VB",
+        date: "January 20, 2023",
+        dateTime: "2023-01-20",
+        tags: ["Math", "Self Empowerment"],
+        excerpt: "You guys have an AMAZING skill set as TEACHERS!! Your teaching methods for math makes understanding and solving math easy! I was never very good in math because I didn't understand it and thought I couldn't!",
+        context: "Adult Learner · Four Months Progress",
+        avatar: "assets/reviewer-placeholder.svg"
+      },
+      {
+        name: "Farhana Hanip",
+        initials: "FH",
+        date: "December 7, 2022",
+        dateTime: "2022-12-07",
+        tags: ["Math", "Chemistry", "10th Grade"],
+        excerpt: "My 10th grader was struggling with Math & Chemistry. I found MasterYourCourses. They've wonderful online platform, all tutors are knowledgeable & experienced. We'll definitely plan to keep working.",
+        context: "Parent of 10th Grader · Math & Chemistry",
+        avatar: "assets/reviewer-placeholder.svg"
+      }
+    ]);
+
     const MENTOR_CREDENTIAL_ICONS = {
       award: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 3h10v5a5 5 0 0 1-10 0V3Z"/><path d="M7 5H4a2 2 0 0 0 2 4h1"/><path d="M17 5h3a2 2 0 0 1-2 4h-1"/></svg>',
       education: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>',
@@ -1462,6 +1505,77 @@
         transition: none;
       }
       #closing-cta .closing-cta-action { transition: none; }
+    }
+
+    /* Facebook review proof */
+    .facebook-reviews-section {
+      background: #fffdf9;
+      border-block: 1px solid rgb(203 213 225 / 0.72);
+    }
+    .dark .facebook-reviews-section {
+      background: rgb(24 24 27);
+      border-color: rgb(63 63 70 / 0.9);
+    }
+    .facebook-reviews-intro { max-width: 44rem; margin-inline: auto; text-align: center; }
+    .facebook-source-badge {
+      display: inline-flex; align-items: center; gap: .5rem; padding: .45rem .7rem;
+      border: 1px solid rgb(24 119 242 / .24); border-radius: 999px;
+      color: #1877f2; background: rgb(24 119 242 / .08);
+      font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .facebook-source-badge-mark {
+      display: grid; place-items: end center; width: 1.125rem; height: 1.125rem;
+      border-radius: 50%; background: #1877f2; color: white; font: 900 1.05rem/1 Arial, sans-serif;
+    }
+    .facebook-reviews-intro h2 { margin-top: 1.25rem; font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; letter-spacing: -.045em; }
+    .facebook-reviews-intro .facebook-review-eyebrow { margin-top: 1rem; color: rgb(79 70 229); font-size: .72rem !important; font-weight: 800; letter-spacing: .12em; line-height: 1.3 !important; text-transform: uppercase; }
+    .dark .facebook-reviews-intro .facebook-review-eyebrow { color: rgb(165 180 252); }
+    .facebook-reviews-intro p { margin-top: .9rem; color: rgb(71 85 105); font-size: 1rem; line-height: 1.7; }
+    .dark .facebook-reviews-intro p { color: rgb(161 161 170); }
+    .facebook-reviews-shell { margin-top: 2.5rem; }
+    #facebook-reviews-viewport {
+      overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x mandatory;
+      scrollbar-width: none; touch-action: pan-y; padding: .25rem .25rem .75rem;
+      border-radius: 1.5rem;
+    }
+    #facebook-reviews-viewport::-webkit-scrollbar { display: none; }
+    #facebook-reviews-viewport:focus-visible { outline: 3px solid rgb(24 119 242 / .78); outline-offset: 4px; }
+    #facebook-reviews-track { --review-card-count: 1; --review-card-gap: 1rem; display: flex; align-items: stretch; gap: var(--review-card-gap); margin: 0; padding: 0; list-style: none; }
+    .facebook-review-card {
+      flex: 0 0 min(82vw, 20rem); display: flex; flex-direction: column; min-height: 100%;
+      scroll-snap-align: start; border: 1px solid rgb(203 213 225 / .9); border-radius: 1.25rem;
+      background: rgb(255 255 255); box-shadow: 0 12px 30px rgb(15 23 42 / .08); padding: 1.35rem;
+    }
+    .dark .facebook-review-card { border-color: rgb(82 82 91); background: rgb(39 39 42); box-shadow: 0 12px 30px rgb(0 0 0 / .2); }
+    .facebook-reviewer { display: flex; align-items: center; gap: .8rem; }
+    .facebook-review-avatar { position: relative; width: 3rem; height: 3rem; flex: none; overflow: hidden; border-radius: 50%; box-shadow: 0 0 0 3px rgb(24 119 242 / .12); }
+    .facebook-review-avatar img { display: block; width: 100%; height: 100%; }
+    .facebook-review-initials { position: absolute; inset: 0; display: grid; place-items: center; color: white; font-size: .72rem; font-weight: 900; letter-spacing: .04em; text-shadow: 0 1px 2px rgb(15 23 42 / .35); }
+    .facebook-reviewer-name { font-size: .95rem; font-weight: 800; color: rgb(15 23 42); }
+    .dark .facebook-reviewer-name { color: rgb(244 244 245); }
+    .facebook-reviewer time { display: block; margin-top: .18rem; color: rgb(100 116 139); font-size: .78rem; }
+    .dark .facebook-reviewer time { color: rgb(161 161 170); }
+    .facebook-review-stars { margin-top: 1.1rem; color: #d69e2e; letter-spacing: .1em; font-size: .95rem; }
+    .facebook-review-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .9rem; }
+    .facebook-review-tags span { border-radius: 999px; background: rgb(224 231 255); color: rgb(55 48 163); padding: .28rem .56rem; font-size: .68rem; font-weight: 800; }
+    .dark .facebook-review-tags span { background: rgb(49 46 129 / .48); color: rgb(199 210 254); }
+    .facebook-review-card blockquote { margin: 1rem 0 0; color: rgb(51 65 85); font-size: .94rem; line-height: 1.65; }
+    .dark .facebook-review-card blockquote { color: rgb(228 228 231); }
+    .facebook-review-context { margin-top: auto; padding-top: 1.1rem; color: rgb(100 116 139); font-size: .76rem; font-weight: 700; }
+    .dark .facebook-review-context { color: rgb(161 161 170); }
+    .facebook-review-controls { display: flex; align-items: center; justify-content: center; gap: .85rem; margin-top: 1rem; }
+    .facebook-review-controls button { display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid rgb(148 163 184 / .8); border-radius: 50%; color: rgb(30 41 59); background: rgb(255 255 255 / .8); }
+    .dark .facebook-review-controls button { border-color: rgb(113 113 122); color: rgb(244 244 245); background: rgb(39 39 42); }
+    .facebook-review-controls button:focus-visible { outline: 3px solid rgb(24 119 242 / .78); outline-offset: 3px; }
+    .facebook-review-position { min-width: 3rem; color: rgb(71 85 105); font-size: .8rem; font-weight: 800; text-align: center; font-variant-numeric: tabular-nums; }
+    .dark .facebook-review-position { color: rgb(212 212 216); }
+    @media (min-width: 768px) and (max-width: 1023px) {
+      #facebook-reviews-track { --review-card-count: 2; }
+      .facebook-review-card { flex-basis: calc((100% - var(--review-card-gap)) / var(--review-card-count)); }
+    }
+    @media (min-width: 1024px) {
+      #facebook-reviews-track { --review-card-count: 3; }
+      .facebook-review-card { flex-basis: calc((100% - (var(--review-card-gap) + var(--review-card-gap))) / var(--review-card-count)); }
     }
   </style>
   <style>
@@ -3187,6 +3301,51 @@
       }, { passive: true });
     </script>
   
+<!-- Facebook Review Proof -->
+<section id="facebook-reviews-section" class="facebook-reviews-section section-space-major" aria-labelledby="facebook-reviews-heading">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="facebook-reviews-intro facebook-review-stage">
+      <span class="facebook-source-badge"><span class="facebook-source-badge-mark" aria-hidden="true">f</span>Facebook review excerpts</span>
+      <p class="facebook-review-eyebrow">Verified Family Feedback</p>
+      <h2 id="facebook-reviews-heading">Trusted by students and families</h2>
+      <p>Public feedback from families and students who learned with MasterYourCourses.</p>
+    </div>
+    <div class="facebook-reviews-shell facebook-review-stage" role="region" aria-label="Facebook review excerpts">
+      <div id="facebook-reviews-viewport" tabindex="0">
+        <ul id="facebook-reviews-track"></ul>
+      </div>
+      <div class="facebook-review-controls">
+        <button id="facebook-review-prev" type="button" aria-label="Previous Facebook reviews" disabled><span aria-hidden="true">←</span></button>
+        <span id="facebook-review-position" class="facebook-review-position" aria-live="polite" aria-atomic="true">1 / 4</span>
+        <button id="facebook-review-next" type="button" aria-label="Next Facebook reviews"><span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Facebook Review Proof End -->
+<script>
+  function escapeReviewText(value) {
+    return String(value).replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+  }
+
+  function renderFacebookReviews() {
+    const track = document.getElementById("facebook-reviews-track");
+    if (!track) return;
+    track.innerHTML = FACEBOOK_REVIEWS.map(review => `
+      <li class="facebook-review-card">
+        <div class="facebook-reviewer">
+          <span class="facebook-review-avatar"><img src="${escapeReviewText(review.avatar)}" alt="" aria-hidden="true"><span class="facebook-review-initials" aria-hidden="true">${escapeReviewText(review.initials)}</span></span>
+          <div><span class="facebook-reviewer-name">${escapeReviewText(review.name)}</span><time datetime="${escapeReviewText(review.dateTime)}">${escapeReviewText(review.date)}</time></div>
+        </div>
+        <div class="facebook-review-stars" aria-label="5 out of 5 stars"><span aria-hidden="true">★★★★★</span></div>
+        <div class="facebook-review-tags">${review.tags.map(tag => `<span>${escapeReviewText(tag)}</span>`).join("")}</div>
+        <blockquote>“${escapeReviewText(review.excerpt)}”</blockquote>
+        <p class="facebook-review-context">${escapeReviewText(review.context)}</p>
+      </li>`).join("");
+  }
+
+  renderFacebookReviews();
+</script>
 <!-- MENTORS_AND_RESULTS_INSERTED -->
 </main>
 
