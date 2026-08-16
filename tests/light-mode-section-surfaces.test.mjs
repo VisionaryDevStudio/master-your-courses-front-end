@@ -1942,6 +1942,16 @@ test("scopes reduced concierge motion to mobile open and closing states", () => 
   assert.match(html, /transition-duration:\s*0\.01ms !important/);
 });
 
+test("keeps desktop consultation trigger ping positioning in the shared icon wrapper", () => {
+  const mobileStart = html.indexOf('@media (max-width: 767px)');
+  const nextMedia = html.indexOf('@media ', mobileStart + 1);
+  const sharedStyles = html.slice(0, mobileStart);
+  const mobileStyles = html.slice(mobileStart, nextMedia);
+
+  assert.match(sharedStyles, /\.advisor-trigger-icon\s*\{[^}]*position:\s*relative;/);
+  assert.match(mobileStyles, /\.advisor-trigger-icon\s*\{[^}]*display:\s*grid;[^}]*place-items:\s*center;/);
+});
+
 test("keeps the closed mobile consultation trigger circular while it transitions into the results-hidden state", () => {
   const triggerStart = html.indexOf('id="floating-cta-toggle"');
   const triggerEnd = html.indexOf('</button>', triggerStart);
