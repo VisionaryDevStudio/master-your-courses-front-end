@@ -2303,19 +2303,16 @@ test("constructs the methodology observer before enabling the hidden motion stat
   assert.match(methodologyMotionSource, /const methodologyObserver = new IntersectionObserver[\s\S]*methodologySection\.classList\.add\('methodology-motion-ready'\)/);
 });
 
-test("uses two mobile-only methodology group labels without hiding card content", () => {
+test("keeps methodology content complete without group labels", () => {
   const section = html.match(/<section[^>]*id="methodology-section"[\s\S]*?<\/section>/)?.[0] ?? "";
-  assert.equal((section.match(/methodology-mobile-group/g) ?? []).length, 2);
-  assert.match(section, /methodology-mobile-group[^>]*>Core Method</);
-  assert.match(section, /methodology-mobile-group[^>]*>Ongoing Support</);
   assert.equal((section.match(/methodology-description/g) ?? []).length, 6);
+  assert.doesNotMatch(section, /methodology-mobile-group|Core Method|Ongoing Support/);
+  assert.doesNotMatch(html, /\.methodology-mobile-group\s*\{/);
   assert.doesNotMatch(html, /methodology-description[^\n{]*(?:line-clamp|display:\s*none|visibility:\s*hidden)/);
 });
 
 test("compacts methodology cards only below the tablet breakpoint", () => {
   const mobile = extractCssBlock(html, "@media (max-width: 767px)");
-  assert.match(html, /\.methodology-mobile-group\s*\{\s*display:\s*none;/);
-  assert.match(mobile, /\.methodology-mobile-group\s*\{[\s\S]*display:\s*block/);
   assert.match(mobile, /\.methodology-card-body\s*\{[\s\S]*display:\s*grid[\s\S]*grid-template-columns:\s*2\.75rem\s+minmax\(0,\s*1fr\)[\s\S]*padding:\s*1\.25rem/);
   assert.match(mobile, /\.methodology-icon\s*\{[\s\S]*width:\s*2\.75rem[\s\S]*height:\s*2\.75rem/);
   assert.match(mobile, /\.methodology-card-body\s*>\s*\.flex-1\s*\{\s*display:\s*contents/);

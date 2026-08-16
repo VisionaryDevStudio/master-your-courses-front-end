@@ -406,8 +406,6 @@
     .icon-fuchsia { background: rgb(250 232 255 / .82); color: #a21caf; }
     .icon-violet { background: rgb(237 233 254 / .84); color: #6d28d9; }
 
-    .methodology-mobile-group { display: none; }
-
     html.dark .methodology-card {
       border-color: rgb(51 65 85 / .85);
       background: rgb(24 24 27 / .92);
@@ -1008,16 +1006,6 @@
         background: rgb(9 16 33 / .98);
         box-shadow: 0 14px 34px rgb(0 0 0 / .3);
       }
-      .methodology-mobile-group {
-        display: block;
-        margin: .375rem 0 -.25rem;
-        color: #4f46e5;
-        font-size: .6875rem;
-        font-weight: 800;
-        letter-spacing: .14em;
-        text-transform: uppercase;
-      }
-      html.dark .methodology-mobile-group { color: #a5b4fc; }
       .methodology-card-body {
         display: grid;
         grid-template-columns: 2.75rem minmax(0, 1fr);
@@ -1850,7 +1838,6 @@
         </div>
 
         <div class="methodology-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-           <p class="methodology-mobile-group" id="methodology-core-group">Core Method</p>
            <!-- Card 1: Elite Tutors -->
            <article class="methodology-card" data-methodology-index="0">
              <div class='methodology-card-accent accent-blue' aria-hidden="true"></div>
@@ -1894,7 +1881,6 @@
            </article>
            
            <!-- Card 4: Comprehensive Resources -->
-           <p class="methodology-mobile-group" id="methodology-support-group">Ongoing Support</p>
            <article class="methodology-card" data-methodology-index="3">
              <div class='methodology-card-accent accent-emerald' aria-hidden="true"></div>
              <div class='methodology-card-body'>
