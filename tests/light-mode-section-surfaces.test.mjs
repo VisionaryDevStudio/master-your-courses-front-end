@@ -390,6 +390,25 @@ test("keeps the cinematic and closing sections dark", () => {
   }
 });
 
+test("uses one semantic testimonial group with silent loop duplicates", () => {
+  const tickerStart = html.indexOf("Results & Quotes Ticker");
+  const tickerEnd = html.indexOf("Verified Impact & Video Testimonials", tickerStart);
+  const ticker = html.slice(tickerStart, tickerEnd);
+
+  assert.match(ticker, /class="[^"]*testimonial-marquee-section/);
+  assert.match(ticker, /class="[^"]*testimonial-marquee-viewport[^"]*"[^>]*tabindex="0"/);
+  assert.equal((ticker.match(/testimonial-marquee-group/g) ?? []).length, 4);
+  assert.equal((ticker.match(/testimonial-marquee-card/g) ?? []).length, 24);
+  assert.equal((ticker.match(/aria-label="Student outcomes"/g) ?? []).length, 1);
+  assert.equal((ticker.match(/aria-hidden="true"/g) ?? []).length, 3);
+  assert.equal((ticker.match(/role="list"/g) ?? []).length, 1);
+  assert.equal((ticker.match(/role="listitem"/g) ?? []).length, 6);
+
+  for (const name of ["Duncan", "Ari", "Kaitlyn", "Sakina", "David", "Emma"]) {
+    assert.equal((ticker.match(new RegExp(`>${name}<`, "g")) ?? []).length, 4);
+  }
+});
+
 test("keeps square grid textures out of methodology and the closing CTA", () => {
   const methodologyStart = html.indexOf("Methodology");
   const programsStart = html.indexOf("Elite Programs", methodologyStart);
