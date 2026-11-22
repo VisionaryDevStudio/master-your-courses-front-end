@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { runInNewContext } from "node:vm";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
@@ -12,8 +12,9 @@ test("places a semantic four-review Facebook proof section before the closing CT
   assert.ok(start > html.indexOf("The Track Record"));
   assert.ok(end < html.indexOf('id="closing-cta"'));
   assert.match(section, /id="facebook-reviews-section"/);
-  assert.match(section, /Verified Family Feedback/);
-  assert.match(section, /Trusted by students and families/);
+  assert.match(section, /Reviews on Facebook/);
+  assert.match(section, /Trusted by Parents &amp; Students/);
+  assert.doesNotMatch(section, /facebook-review-eyebrow/);
   assert.match(section, /role="region"[^>]*aria-label="Facebook review excerpts"/);
   assert.match(section, /<ul[^>]*id="facebook-reviews-track"/);
   assert.match(section, /id="facebook-review-prev"[^>]*aria-label="Previous Facebook reviews"/);
@@ -327,7 +328,7 @@ test("Facebook review carousel recovers synchronization when wheel input interru
 
 test("uses an accessible three-group university marquee with silent duplicates", () => {
   const start = html.indexOf('class="surface-universities');
-  const end = html.indexOf('<!-- ----------------- Methodology', start);
+  const end = html.indexOf('</section>', start);
   const section = html.slice(start, end);
   const groups = [...section.matchAll(/<div class="university-logo-group"([^>]*)>([\s\S]*?)<\/div>/g)];
 
@@ -379,7 +380,7 @@ test("preserves masked reduced-motion endpoints with inline clearance", () => {
 
 test("keeps every marquee group identical so one-third travel lands on the next group", () => {
   const start = html.indexOf('class="surface-universities');
-  const end = html.indexOf('<!-- ----------------- Methodology', start);
+  const end = html.indexOf('</section>', start);
   const section = html.slice(start, end);
   const groups = [...section.matchAll(/<div class="university-logo-group"([^>]*)>([\s\S]*?)<\/div>/g)];
   const sources = groups.map(([, , contents]) => [...contents.matchAll(/src="([^"]+)"/g)].map(([, source]) => source));
@@ -537,12 +538,12 @@ function createHeroMotionHarness({
 const expectedMentors = [
   {
     name: "Zoey",
-    role: "Certified Biology & Science Teacher",
+    role: "AP Biology & Science Specialist",
     cardImage: "mentors/zoey.png",
     profileImage: "mentors/zoey.png",
     cardObjectPosition: "center center",
     profileObjectPosition: "center 10%",
-    bio: "Zoey is one of the most decorated AP Biology teachers in the country. She has a rare gift for making difficult biology concepts feel manageable—breaking them down step-by-step and adapting her instruction to how each individual student learns best. Parents choose her because she doesn't just teach content; she builds the confidence and skills students need to earn top grades and score a 5. Her teacher mentorship has included coaching 39+ educators in mastery-based learning, and she was Teacher of the Year at U.S. Grant High School in 2020–21.",
+    bio: "Zoey is one of the most decorated AP Biology teachers in the country. She has a rare gift for making difficult biology concepts feel manageable—breaking them down step-by-step and adapting her instruction to how each individual student learns best. Parents choose her because she doesn't just teach content; she builds the confidence and analytical skills students need to earn top grades and score a 5. Her teacher mentorship has included coaching 39+ educators in mastery-based learning, and she was Teacher of the Year at U.S. Grant High School in 2020–21.",
     credentials: [
       { type: "award", title: "2025–26 National Virtual Teacher of the Year", detail: "", featured: true },
       { type: "education", title: "Master’s Degree, Johns Hopkins University", detail: "4.0 GPA", featured: false },
@@ -552,16 +553,16 @@ const expectedMentors = [
   },
   {
     name: "Dr. Hossein Piri",
-    role: "Healthcare Operations & AI Expert",
+    role: "Quantitative Sciences, Math & AI Mentor",
     cardImage: "mentors/Dr.piri.jpg",
     profileImage: "mentors/Dr.piri.jpg",
     cardObjectPosition: "center center",
     profileObjectPosition: "center 10%",
-    bio: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations. He focuses on practical systems that improve care delivery, including patient-centered warning systems and AI-driven approaches for addressing healthcare disparities.",
+    bio: "An award-winning educator at UBC and researcher at the intersection of operations research, machine learning, and quantitative modeling, Dr. Piri brings university-level clarity to ambitious students. Having earned UBC’s prestigious Killam Teaching Award and collaborated with researchers at Harvard Business School, he coaches students to break down complex math, calculus, statistics, and analytical problems from first principles rather than memorized steps.",
     credentials: [
-      { type: "award", title: "40 Under 40", detail: "2026", featured: true },
+      { type: "award", title: "Killam Teaching Award", detail: "University of British Columbia", featured: true },
+      { type: "award", title: "40 Under 40", detail: "2026", featured: false },
       { type: "research", title: "Dean’s Research Scholar", detail: "University of Calgary", featured: false },
-      { type: "award", title: "Killam Teaching Award", detail: "University of British Columbia", featured: false },
       { type: "research", title: "Collaborative Researcher", detail: "Harvard Business School", featured: false },
     ],
   },
@@ -572,7 +573,7 @@ const expectedMentors = [
     profileImage: "mentors/sherri.png",
     cardObjectPosition: "center center",
     profileObjectPosition: "center 10%",
-    bio: "Sherri is a dental graduate from UBC with a strong science and research foundation. Her combination of academic rigor, undergraduate mentorship through UBC's REX program, and real-world health service helps her coach students with clarity, structure, and high standards.",
+    bio: "Dr. Sadr is a Doctor of Dental Medicine graduate from UBC with a deep foundation in chemistry, biology, and clinical research. Drawing on years of mentoring undergraduates through UBC's Research Experience (REX) program, she helps high school and university students replace overwhelm with clear structure, disciplined study habits, and confident exam execution.",
     credentials: [
       { type: "education", title: "Doctor of Dental Medicine", detail: "UBC Faculty of Dentistry", featured: true },
       { type: "mentorship", title: "Research Experience (REX) Mentor", detail: "University of British Columbia", featured: false },
@@ -584,18 +585,18 @@ const expectedMentors = [
 
 const expectedVisibleMentorContent = [
   {
-    summary: "Zoey makes difficult biology concepts manageable through step-by-step, adaptive instruction that builds confidence and AP-level mastery.",
+    summary: "Zoey makes complex biology concepts manageable through step-by-step, adaptive instruction that builds lasting confidence and AP 5 mastery.",
     credentials: [
       "2025–26 National Virtual Teacher of the Year",
       "Master’s, Johns Hopkins University — 4.0 GPA",
     ],
   },
   {
-    summary: "Dr. Piri works at the intersection of healthcare operations research, machine learning, and behavioral operations.",
-    credentials: ["40 Under 40 (2026)", "Dean's Research Scholar, UCalgary"],
+    summary: "An award-winning UBC instructor and quantitative researcher, Dr. Piri trains students to break down challenging math, statistics, and analytical problems from first principles.",
+    credentials: ["Killam Teaching Award — UBC", "40 Under 40 (2026)"],
   },
   {
-    summary: "Sherri is a dental graduate from UBC with a strong science and research foundation.",
+    summary: "Combining rigorous clinical science training with years of UBC research mentorship, Dr. Sadr coaches students to master chemistry, biology, and high-stakes exam strategy.",
     credentials: ["Doctor of Dental Medicine — UBC", "Research Experience (REX) Mentor — UBC"],
   },
 ];
@@ -741,10 +742,10 @@ test("uses one semantic testimonial group with silent loop duplicates", () => {
   };
   const canonicalTestimonials = [
     { name: "Duncan", assessment: "SAT", before: "1280", after: "1500", quote: '"Got into my dream school because of the bootcamp."' },
-    { name: "Ari", assessment: "ACT", before: "33", after: "36", quote: '"The strategies they teach are next level."' },
+    { name: "Nabeel", assessment: "AP PHYS", before: "C", after: "A &bull; 5", quote: '"Went from a C to an A in five weeks—and scored a 5."' },
     { name: "Kaitlyn", assessment: "SAT", before: "1400", after: "1510", quote: '"Finally broke the 1500 barrier!"' },
     { name: "Sakina", assessment: "SAT", before: "1370", after: "1540", quote: '"My confidence went through the roof."' },
-    { name: "David", assessment: "AP BIO", before: "3", after: "5", quote: '"The mastery engines made studying actually fun."' },
+    { name: "David", assessment: "AP BIO", before: "3", after: "5", quote: '"The practice course made studying actually fun."' },
     { name: "Emma", assessment: "SAT", before: "1350", after: "1560", quote: '"Best investment my parents made for college."' },
   ];
 
@@ -814,7 +815,8 @@ test("uses a direct accessible YouTube embed in the Track Record player", () => 
   assert.doesNotMatch(section, /id="testimonial-play"|testimonial-poster|testimonial-play-icon/);
   assert.doesNotMatch(section, /[?&]autoplay=1/);
   assert.equal((section.match(/aria-pressed="(?:true|false)"/g) ?? []).length, 9);
-  assert.match(section, /href="#"[\s\S]*View All Testimonials/);
+  assert.match(section, /href="results\.html"[\s\S]*View All Results/);
+  assert.match(section, /onclick="openConsultationModal\(\)"[\s\S]*Book a Consultation/);
 });
 
 test("shows the Track Record position in the compact mobile controls", () => {
@@ -1034,9 +1036,9 @@ test("tightens only Track Record mobile story gaps", () => {
 });
 
 test("keeps square grid textures out of methodology and the closing CTA", () => {
-  const methodologyStart = html.indexOf("Methodology");
-  const programsStart = html.indexOf("Elite Programs", methodologyStart);
-  const methodology = html.slice(methodologyStart, programsStart);
+  const methodologyStart = html.indexOf("<!-- ----------------- Methodology");
+  const mentorsStart = html.indexOf("<!-- ----------------- Meet The Mentors", methodologyStart);
+  const methodology = html.slice(methodologyStart, mentorsStart);
   assert.doesNotMatch(methodology, /background-image:\s*linear-gradient/);
 
   const finalCtaStart = html.indexOf("Final CTA");
@@ -1085,8 +1087,8 @@ test("keeps the page from becoming a non-scrolling overflow ancestor of the stic
 });
 
 test("uses a compact accessible Elite Programs mobile selector", () => {
-  const programsStart = html.indexOf("Elite Programs");
-  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programsStart = html.indexOf("<!-- ----------------- Elite Programs");
+  const mentorsStart = html.indexOf("<!-- ----------------- Methodology", programsStart);
   const programs = html.slice(programsStart, mentorsStart);
 
   assert.match(programs, /role="tablist"[^>]*aria-label="Choose a program"/);
@@ -1099,10 +1101,10 @@ test("uses a compact accessible Elite Programs mobile selector", () => {
 });
 
 test("uses the approved four Elite Programs categories across mobile and desktop", () => {
-  const programsStart = html.indexOf("Elite Programs");
-  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programsStart = html.indexOf("<!-- ----------------- Elite Programs");
+  const mentorsStart = html.indexOf("<!-- ----------------- Methodology", programsStart);
   const programs = html.slice(programsStart, mentorsStart);
-  const approvedTitles = ["AP Prep", "1-on-1 Tutoring", "SAT Prep", "Competition Prep"];
+  const approvedTitles = ["AP Prep", "SAT Prep", "Competition Prep", "Course Tutoring"];
 
   assert.equal((programs.match(/class="program-mobile-tab\b/g) ?? []).length, 4);
   assert.equal((programs.match(/class="program-list-item\b/g) ?? []).length, 4);
@@ -1115,22 +1117,24 @@ test("uses the approved four Elite Programs categories across mobile and desktop
 
   assert.match(programs, /id="mobile-program-coverage"/);
   assert.match(programs, /id="stage-coverage"/);
+  assert.match(programs, /id="mobile-program-formats"/);
+  assert.match(programs, /id="stage-formats"/);
   assert.doesNotMatch(programs, /class="program-acc-item\b/);
-  assert.doesNotMatch(programs, />AP STEM<|>SAT Math<|>Mastery Engines<|>1-on-1 AP<|>University<|>Olympiad</);
+  assert.doesNotMatch(programs, />AP STEM<|>SAT Math<|>Mastery Engines<|>1-on-1 AP<|>Olympiad</);
 });
 
 test("drives Elite Programs from one guarded four-category data model", () => {
-  const programsStart = html.indexOf("Elite Programs");
-  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programsStart = html.indexOf("<!-- ----------------- Elite Programs");
+  const mentorsStart = html.indexOf("<!-- ----------------- Methodology", programsStart);
   const programs = html.slice(programsStart, mentorsStart);
 
   const dataSource = programs.match(/const PROGRAMS_DATA = (\[[\s\S]*?\n\s*\]);/)?.[1];
   assert.ok(dataSource, "PROGRAMS_DATA declaration is missing");
   assert.deepEqual(JSON.parse(dataSource), [
-    { title: "AP Prep", coverage: "All AP STEM courses", desc: "Self-paced Mastery Engines, live programs, and private AP tutoring.", iconColor: "text-emerald-600 dark:text-emerald-400", glowColor: "rgba(16, 185, 129, 0.12)", cta: "Explore AP Prep", proof: "Complete AP STEM Pathway" },
-    { title: "1-on-1 Tutoring", coverage: "High-school and university courses", desc: "Personalized tutoring matched to the student's exact course and goals.", iconColor: "text-violet-600 dark:text-violet-400", glowColor: "rgba(139, 92, 246, 0.12)", cta: "Find Your Tutor", proof: "Matched to Course and Goals" },
-    { title: "SAT Prep", coverage: "", desc: "Targeted instruction, practice, and score-improvement programs.", iconColor: "text-blue-600 dark:text-blue-400", glowColor: "rgba(59, 130, 246, 0.12)", cta: "Explore SAT Prep", proof: "Focused SAT Math Improvement" },
-    { title: "Competition Prep", coverage: "AMC, AIME, F=ma, Physics Olympiad, and more", desc: "Advanced preparation for competitive STEM exams.", iconColor: "text-rose-600 dark:text-rose-400", glowColor: "rgba(244, 63, 94, 0.12)", cta: "Explore Competition Prep", proof: "Advanced STEM Competition Training" },
+    { title: "AP Prep", coverage: "22 AP courses — Sciences, Math, CS, Econ, English & History", formats: ["1-on-1 Mentorship", "Live Group Cohort", "On-Demand Practice Course"], desc: "Unit-by-unit practice courses, live exam cohorts, and private 1-on-1 mentorship engineered to turn tough AP classes into 5s.", iconColor: "text-emerald-600 dark:text-emerald-400", glowColor: "rgba(16, 185, 129, 0.12)", cta: "Explore AP Prep", href: "programs/ap-prep.html", proof: "22 High-Demand AP Courses" },
+    { title: "SAT Prep", coverage: "Full Digital SAT — Reading & Writing + Math", formats: ["1-on-1 Mentorship", "Live Group Cohort", "On-Demand Practice Course"], desc: "Diagnostic-driven strategy, high-yield verbal and math drills, and full-length practice courses to break 1500+.", iconColor: "text-blue-600 dark:text-blue-400", glowColor: "rgba(59, 130, 246, 0.12)", cta: "Explore SAT Prep", href: "programs/sat-prep.html", proof: "Reading & Writing + Math" },
+    { title: "Competition Prep", coverage: "AMC 8/10/12, AIME, USAMO, F=ma & Olympiads", formats: ["1-on-1 Mentorship", "Live Group Cohort", "On-Demand Practice Course"], desc: "Proof-level problem sets, live Olympiad cohorts, and 1-on-1 coaching that teach students to crack unfamiliar competition questions.", iconColor: "text-rose-600 dark:text-rose-400", glowColor: "rgba(244, 63, 94, 0.12)", cta: "Explore Competition Prep", href: "programs/competition-prep.html", proof: "Olympiad & AMC Training" },
+    { title: "Course Tutoring", coverage: "High-school Honors/AP & university STEM courses", formats: ["1-on-1 Mentorship"], desc: "Private 1-on-1 mentorship matched to your exact school or university syllabus—turning Cs and Bs into confident As.", iconColor: "text-violet-600 dark:text-violet-400", glowColor: "rgba(139, 92, 246, 0.12)", cta: "Find Your Tutor", href: "programs/course-tutoring.html", proof: "High School & University" },
   ]);
   assert.match(programs, /if \(!Number\.isInteger\(idx\) \|\| idx < 0 \|\| idx >= PROGRAMS_DATA\.length\) return;/);
   assert.match(programs, /mobile-program-coverage['"]\)\.innerText = activeData\.coverage/);
@@ -1141,11 +1145,11 @@ test("drives Elite Programs from one guarded four-category data model", () => {
 });
 
 test("renders desktop Elite Program choices as named pressed buttons", () => {
-  const programsStart = html.indexOf("Elite Programs");
-  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programsStart = html.indexOf("<!-- ----------------- Elite Programs");
+  const mentorsStart = html.indexOf("<!-- ----------------- Methodology", programsStart);
   const programs = html.slice(programsStart, mentorsStart);
   const desktopSelector = programs.match(/<div class="hidden lg:grid[\s\S]*?<div class="lg:col-span-7/)?.[0] ?? "";
-  const approvedTitles = ["AP Prep", "1-on-1 Tutoring", "SAT Prep", "Competition Prep"];
+  const approvedTitles = ["AP Prep", "SAT Prep", "Competition Prep", "Course Tutoring"];
 
   assert.match(desktopSelector, /id="programs-list"[^>]*role="group"[^>]*aria-label="Choose a program"/);
   assert.equal((desktopSelector.match(/<button\b[^>]*class="program-list-item\b/g) ?? []).length, 4);
@@ -1193,8 +1197,8 @@ test("moves desktop Elite Program selection and focus with arrow keys", () => {
 });
 
 test("pauses desktop Elite Program auto-advance while selector focus is retained", () => {
-  const programsStart = html.indexOf("Elite Programs");
-  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programsStart = html.indexOf("<!-- ----------------- Elite Programs");
+  const mentorsStart = html.indexOf("<!-- ----------------- Methodology", programsStart);
   const programs = html.slice(programsStart, mentorsStart);
   const intervalBody = programs.match(/setInterval\(\(\) => \{([\s\S]*?)\n\s*\}, 50\);/)?.[1];
   assert.ok(intervalBody, "Elite Programs auto-advance interval is missing");
@@ -1420,7 +1424,7 @@ test("keeps mentor carousel labels aligned with the visible mentor order", () =>
 
 test("uses a theme-aware editorial authority profile dialog", () => {
   const modalStart = html.indexOf('id="mentor-modal"');
-  const modalEnd = html.indexOf("<!-- Floating Contact CTA -->", modalStart);
+  const modalEnd = html.indexOf("<!-- Native Qualifying Consultation Modal -->", modalStart);
   const modal = html.slice(modalStart, modalEnd);
 
   assert.match(modal, /mentor-modal-backdrop/);
@@ -1432,7 +1436,7 @@ test("uses a theme-aware editorial authority profile dialog", () => {
   assert.match(modal, /mentor-profile-footer/);
   assert.match(modal, /mentor-modal-primary/);
   assert.match(modal, /id="mentor-modal-close"[^>]*w-11 h-11/);
-  assert.match(modal, /<a href="#"[^>]*mentor-modal-primary[^>]*>\s*Book a Consultation/);
+  assert.match(modal, /<a href="book-consultation\.html"[^>]*mentor-modal-primary[^>]*>\s*Book a Consultation/);
   assert.match(html, /\.mentor-modal-surface\s*\{[^}]*width:\s*min\(1080px, calc\(100vw - 48px\)\);[^}]*max-height:\s*90vh;[^}]*background:\s*rgb\(255 253 249/s);
   assert.match(html, /\.dark \.mentor-modal-surface\s*\{[^}]*background:\s*rgb\(2 6 23/s);
   assert.match(html, /@media \(min-width:\s*1024px\)[\s\S]*\.mentor-profile-layout\s*\{[^}]*grid-template-columns:\s*42fr 58fr/s);
@@ -1791,8 +1795,8 @@ test("uses editorial mentor automatic scrolling for reduced-motion preferences",
 });
 
 test("keeps the Olympiad preview free of graph-paper squares", () => {
-  const programsStart = html.indexOf("Elite Programs");
-  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programsStart = html.indexOf("<!-- ----------------- Elite Programs");
+  const mentorsStart = html.indexOf("<!-- ----------------- Methodology", programsStart);
   const programs = html.slice(programsStart, mentorsStart);
 
   assert.equal((programs.match(/USAPhO Simulator/g) ?? []).length, 1);
@@ -1802,21 +1806,22 @@ test("keeps the Olympiad preview free of graph-paper squares", () => {
 });
 
 test("retains the approved Elite Program previews and AP pathway chips", () => {
-  const programsStart = html.indexOf("Elite Programs");
-  const mentorsStart = html.indexOf("Meet The Mentors", programsStart);
+  const programsStart = html.indexOf("<!-- ----------------- Elite Programs");
+  const mentorsStart = html.indexOf("<!-- ----------------- Methodology", programsStart);
   const programs = html.slice(programsStart, mentorsStart);
 
   for (const course of ["Biology", "Chemistry", "Physics", "Calculus", "Statistics", "Computer Science"]) {
     assert.match(programs, new RegExp(`<span[^>]*rounded-full[^>]*>${course}</span>`));
   }
-  for (const delivery of ["Mastery Engine", "Live Programs", "Private Tutoring"]) {
+  for (const delivery of ["1-on-1 Mentorship", "Live Group Cohort", "On-Demand Practice Course"]) {
     assert.match(programs, new RegExp(`>${delivery}<`));
   }
 
   for (const retainedMarker of [
     'object-[center_10%]',
     'Diagnostic to Current',
-    'Goal: 800',
+    'Goal: 1550+',
+    'Reading &amp; Writing',
     'fR = Iα = (1/2 MR²) (a/R)',
   ]) {
     assert.ok(programs.includes(retainedMarker), `missing retained preview detail: ${retainedMarker}`);
@@ -1938,10 +1943,10 @@ test("uses the approved optical typography only on the hero headlines", () => {
 
   assert.match(desktopHero, /<h1 class="[^"]*lg:text-\[68px\][^"]*xl:text-7xl[^"]*font-extrabold[^"]*leading-\[1\.02\][^"]*tracking-\[-0\.04em\][^"]*">/);
   assert.match(desktopHero, /<h1 class="[^"]*xl:leading-\[1\.02\][^"]*">/);
-  assert.match(desktopHero, /<span class="[^"]*font-black[^"]*">\s*Secure your/);
+  assert.match(desktopHero, /<span class="[^"]*font-black[^"]*">\s*Top AP, SAT &amp;/);
   assert.match(mobileHero, /<h1 class="[^"]*text-4xl[^"]*sm:text-5xl[^"]*font-extrabold[^"]*leading-\[1\.08\][^"]*tracking-\[-0\.035em\][^"]*">/);
   assert.match(mobileHero, /<h1 class="[^"]*sm:leading-\[1\.08\][^"]*">/);
-  assert.match(mobileHero, /<span class="[^"]*font-black[^"]*">\s*Secure your/);
+  assert.match(mobileHero, /<span class="[^"]*font-black[^"]*">\s*Top AP, SAT &amp;/);
   assert.equal((html.match(/lg:text-\[68px\]/g) ?? []).length, 1);
   assert.equal((html.match(/tracking-\[-0\.035em\]/g) ?? []).length, 1);
 });
@@ -1950,7 +1955,7 @@ test("keeps final results values and the approved qualifier in HTML", () => {
   const results = html.match(/<section id="results-section"[\s\S]*?<\/section>/)?.[0] ?? "";
   assert.match(results, /class="count-up" data-target="1200">1,200<\/span>/);
   assert.match(results, /class="count-up" data-target="77">77<\/span>/);
-  assert.match(results, /class="count-up" data-target="21">21<\/span>/);
+  assert.match(results, /class="count-up" data-target="98">98<\/span>/);
   assert.match(results, /Based on AP exam outcomes reported by participating students\./);
 });
 
@@ -1975,7 +1980,7 @@ function createResultsCountHarness({ reducedMotion = false } = {}) {
   let nextAnimationFrame = 1;
   let cancelledAnimationFrame = null;
   const mediaListeners = [];
-  const countElements = [1200, 77, 21].map(target => ({
+  const countElements = [1200, 77, 98].map(target => ({
     dataset: { target: String(target) },
     textContent: target.toLocaleString("en-US"),
   }));
@@ -2068,7 +2073,7 @@ function createResultsCountHarness({ reducedMotion = false } = {}) {
 
 test("keeps final results values until the results section intersects", () => {
   const harness = createResultsCountHarness();
-  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "21"]);
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "98"]);
 });
 
 test("observes only the results section at the approved threshold", () => {
@@ -2086,10 +2091,10 @@ test("counts all result metrics in one shared animation frame", () => {
 
   harness.runNextFrame(0);
   harness.runNextFrame(700);
-  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,050", "67", "18"]);
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,050", "67", "85"]);
 
   harness.runNextFrame(1400);
-  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "21"]);
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "98"]);
   assert.equal(harness.observer.unobserved.length, 1);
   assert.equal(harness.observer.unobserved[0].id, "results-section");
 });
@@ -2101,12 +2106,12 @@ test("does not replay the results count after its first intersection", () => {
   harness.runNextFrame(1400);
   harness.intersect();
   assert.equal(harness.scheduledFrameCount, 0);
-  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "21"]);
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "98"]);
 });
 
 test("shows final results without observing or animating when reduced motion is initial", () => {
   const harness = createResultsCountHarness({ reducedMotion: true });
-  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "21"]);
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "98"]);
   assert.equal(harness.observer, undefined);
   assert.equal(harness.scheduledFrameCount, 0);
 });
@@ -2120,7 +2125,7 @@ test("finishes the results count when reduced motion becomes active", () => {
   assert.equal(scheduledFrameCount, 1);
   assert.equal(harness.cancelledAnimationFrame, 2);
   assert.equal(harness.scheduledFrameCount, 0);
-  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "21"]);
+  assert.deepEqual(harness.countElements.map(element => element.textContent), ["1,200", "77", "98"]);
   assert.equal(harness.observer.unobserved.length, 2);
   assert.equal(harness.observer.unobserved.at(-1).id, "results-section");
 });
@@ -2151,7 +2156,7 @@ test("uses a booking-first advisor conversion panel in the open mobile sheet", (
   assert.match(html, /id="floating-cta-title"[^>]*>[\s\S]*class="md:hidden"[^>]*>How can we help\?<\/span>/);
   assert.match(html, /class="advisor-sheet-subtitle[^>]*>Connect with our academic team\.<\/p>/);
   assert.equal((advisorMenu.match(/id="advisor-booking-link"/g) ?? []).length, 1);
-  assert.match(advisorMenu, /id="advisor-booking-link"[^>]*href="https:\/\/cal\.com\/your-booking-link"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/);
+  assert.match(advisorMenu, /id="advisor-booking-link"[^>]*href="book-consultation\.html"[^>]*onclick="event\.preventDefault\(\); setFloatingCtaOpen\(false, \{ restoreFocus: false \}\); openConsultationModal\(\);"/);
   assert.match(bookingLink, /<span>Book a Consultation<\/span>/);
   assert.match(
     bookingLink,
@@ -2167,9 +2172,8 @@ test("uses a booking-first advisor conversion panel in the open mobile sheet", (
     advisorMenu,
     /<p class="advisor-booking-copy text-muted-foreground">Choose a convenient time to discuss your student’s goals\.<\/p>/
   );
-  assert.match(advisorMenu, /BOOKING_URL_PLACEHOLDER: replace this URL with the production scheduling link\./);
   assert.equal((advisorMenu.match(/id="advisor-whatsapp-link"/g) ?? []).length, 1);
-  assert.match(advisorMenu, /id="advisor-whatsapp-link"[^>]*href="https:\/\/wa\.me\/18001234567"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/);
+  assert.match(advisorMenu, /id="advisor-whatsapp-link"[^>]*href="whatsapp\.html"/);
   assert.match(whatsappLink, /<span>Prefer to message us\? <strong>Chat on WhatsApp<\/strong><\/span>/);
   assert.doesNotMatch(advisorMenu, /tel:\+18001234567|mailto:admissions@masteryourcourses\.com|Call an Advisor|Email Admissions/);
   assert.match(html, /@media \(max-width:\s*767px\)[\s\S]*border-radius:\s*1\.5rem/);
@@ -2657,9 +2661,9 @@ test("uses a functional premium closing CTA", () => {
 
   assert.match(section, /<section[^>]*id="closing-cta"/);
   assert.doesNotMatch(section, /\bscroll-reveal\b/);
-  assert.match(section, /id="closing-cta-book"[^>]*onclick="toggleFloatingCTA\(\)"/);
+  assert.match(section, /id="closing-cta-book"[^>]*onclick="openConsultationModal\(\)"/);
   assert.match(section, />\s*Book a Consultation\s*</);
-  assert.match(section, /id="closing-cta-programs"[^>]*href="#elite-programs"/);
+  assert.match(section, /id="closing-cta-programs"[^>]*href="programs\/index\.html"/);
   assert.match(section, />\s*Explore Programs\s*</);
   assert.match(html, /<section[^>]*id="elite-programs"[^>]*surface-programs/);
   assert.equal((section.match(/class="closing-cta-stage\s/g) ?? []).length, 3);
@@ -2754,4 +2758,130 @@ test("reveals the closing CTA once and fails open", () => {
   const failed = createClosingCtaHarness({ constructorThrows: true });
   assert.equal(failed.error, null);
   assert.equal(failed.classes.has("closing-cta-motion-ready"), false);
+});
+
+test("places a semantic non-exclusive five-item FAQ accordion before the closing CTA", () => {
+  const faqStart = html.indexOf('id="faq-section"');
+  const closingStart = html.indexOf('id="closing-cta"');
+  assert.notEqual(faqStart, -1, "FAQ section is missing");
+  assert.ok(faqStart > html.indexOf("<!-- Facebook Review Proof End -->"));
+  assert.ok(faqStart < closingStart);
+
+  const faq = html.slice(faqStart, closingStart);
+  assert.match(faq, /aria-labelledby="faq-heading"/);
+  assert.equal((faq.match(/<details\b/g) ?? []).length, 5);
+  assert.equal((faq.match(/<summary>/g) ?? []).length, 5);
+  assert.doesNotMatch(faq, /<details[^>]*\bname=/);
+  assert.doesNotMatch(faq, /<summary>[\s\S]*?<h[1-6]\b/);
+});
+
+test("includes SEO and OpenGraph share metadata and streamlined header navigation", () => {
+  const head = html.slice(0, html.indexOf("</head>"));
+  assert.match(head, /<meta name="description" content="[^"]+"/);
+  assert.match(head, /<meta property="og:title" content="[^"]+"/);
+  assert.match(head, /<meta property="og:description" content="[^"]+"/);
+
+  const header = html.slice(html.indexOf("<header"), html.indexOf("</header>"));
+  assert.doesNotMatch(header, /href="\/signup"/);
+  assert.doesNotMatch(header, /Student Login/);
+  const desktopHeader = header.slice(0, header.indexOf("<!-- Mobile Header -->"));
+  assert.doesNotMatch(desktopHeader, /How It Works|href="mentors\.html"/);
+  assert.doesNotMatch(desktopHeader, /grid-cols-\[1fr_auto_1fr\]/);
+  assert.match(desktopHeader, /items-center justify-between/);
+  assert.match(desktopHeader, /href="login\.html"[^>]*>\s*Sign In\s*<\/a>/);
+  assert.match(header, /href="signup\.html"/);
+  assert.match(header, /popovertarget="mobile-nav-menu"/);
+  assert.match(header, /id="mobile-nav-menu"[^>]*popover="auto"/);
+});
+
+test("exposes a two-level Programs mega-menu with all 22 AP courses, SAT formats, Olympiads, and tutoring levels", () => {
+  const header = html.slice(html.indexOf("<header"), html.indexOf("</header>"));
+  assert.equal((header.match(/data-mega-track="/g) ?? []).length, 5);
+  assert.equal((header.match(/data-mega-panel="/g) ?? []).length, 5);
+  assert.equal((header.match(/data-resource-track="/g) ?? []).length, 5);
+  assert.equal((header.match(/data-resource-panel="/g) ?? []).length, 5);
+  assert.match(html, /\.resources-mega-track\[aria-selected="true"\]/);
+  assert.match(html, /function setResourceTrack\(index\)/);
+
+  const expectedNestedRoutes = [
+    "programs/ap-biology.html", "programs/ap-chemistry.html", "programs/ap-physics-1.html", "programs/ap-physics-2.html",
+    "programs/ap-physics-c-mechanics.html", "programs/ap-physics-c-em.html", "programs/ap-environmental-science.html",
+    "programs/ap-precalculus.html", "programs/ap-calculus-ab.html", "programs/ap-calculus-bc.html", "programs/ap-statistics.html",
+    "programs/ap-computer-science-a.html", "programs/ap-computer-science-principles.html",
+    "programs/ap-microeconomics.html", "programs/ap-macroeconomics.html", "programs/ap-psychology.html",
+    "programs/ap-english-language.html", "programs/ap-english-literature.html", "programs/ap-us-history.html",
+    "programs/ap-world-history.html", "programs/ap-us-government.html", "programs/ap-human-geography.html",
+    "programs/sat-1-on-1.html", "programs/sat-cohort.html", "programs/sat-practice-course.html", "programs/act-prep.html",
+    "programs/mcat-dat-prep.html", "programs/mcat-prep.html", "programs/mcat-1-on-1.html", "programs/mcat-cohort.html", "programs/mcat-practice-course.html", "programs/dat-prep.html",
+    "programs/amc-8-mathcounts.html", "programs/amc-10.html", "programs/amc-12.html", "programs/aime-usamo.html",
+    "programs/waterloo-cemc-contests.html", "programs/fma-usapho.html", "programs/usnco-chemistry-olympiad.html",
+    "programs/usabo-biology-olympiad.html", "programs/usaco-computing-olympiad.html",
+    "programs/high-school-tutoring.html", "programs/university-tutoring.html",
+    "programs/1-on-1-mentorship.html", "programs/live-cohorts.html", "programs/practice-courses.html",
+  ];
+  for (const route of expectedNestedRoutes) {
+    assert.ok(header.includes(`href="${route}"`), `Header mega-menu missing ${route}`);
+  }
+  assert.doesNotMatch(header, /href="books\//, "Low-ticket textbooks should only be in the bottom footer, not the top header");
+  const footer = html.slice(html.indexOf("<footer"), html.indexOf("</footer>"));
+  assert.match(footer, /href="books\/index\.html"/, "Footer should include Textbooks & Workbooks");
+
+  for (const companyRoute of ["about.html", "methodology.html", "mentors.html", "results.html", "pricing.html", "schools.html", "faq.html", "contact.html", "careers.html", "login.html", "signup.html", "refund-policy.html"]) {
+    assert.ok(html.includes(`href="${companyRoute}"`), `Homepage missing company/support route ${companyRoute}`);
+  }
+
+  for (const seoRoute of [
+    "resources/index.html",
+    "practice/index.html", "practice/ap-practice-questions.html", "practice/ap-flashcards.html", "practice/university-stem-problems.html",
+    "mock-exams/index.html", "mock-exams/digital-sat-diagnostic.html", "mock-exams/ap-diagnostics.html",
+    "solutions/index.html", "solutions/ap-frq-solutions.html", "solutions/amc-aime-solutions.html", "solutions/waterloo-euclid-solutions.html", "solutions/olympiad-solutions.html",
+    "tools/index.html", "tools/ap-score-calculators.html", "tools/digital-sat-score-calculator.html",
+    "tools/amc-aime-cutoff-calculator.html", "tools/gpa-calculator.html", "tools/study-schedule-planner.html",
+    "guides/index.html", "guides/parent-academic-guides.html", "guides/university-stem-guides.html", "guides/video-lessons.html",
+    "workshops/index.html", "blog/index.html",
+  ]) {
+    assert.ok(header.includes(`href="${seoRoute}"`), `Free Resources header menu missing ${seoRoute}`);
+  }
+
+  assert.match(html, /<script type="application\/ld\+json">[\s\S]*"@type":\s*"EducationalOrganization"[\s\S]*"@type":\s*"FAQPage"/);
+  assert.equal(existsSync(new URL("../sitemap.xml", import.meta.url)), true, "sitemap.xml should be generated on disk");
+
+  assert.equal((html.match(/href="sitemap\.html"/g) ?? []).length, 1, "sitemap.html should only appear once in the bottom footer bar");
+  assert.doesNotMatch(header, /href="sitemap\.html"/);
+});
+
+test("opens a native accessible qualifying consultation dialog with structured form controls", () => {
+  const dialogMatch = html.match(/<dialog id="consultation-modal"[^>]*>([\s\S]*?)<\/dialog>/);
+  assert.ok(dialogMatch, "consultation-modal <dialog> is missing");
+  const [fullDialog, innerDialog] = dialogMatch;
+
+  assert.match(fullDialog, /closedby="any"/);
+  assert.match(fullDialog, /aria-labelledby="consultation-modal-title"/);
+  assert.doesNotMatch(fullDialog.slice(0, fullDialog.indexOf(">") + 1), /role="dialog"|aria-modal/);
+  assert.match(innerDialog, /<form id="consultation-qualifier-form" action="book-consultation\.html" method="GET"/);
+  assert.equal((innerDialog.match(/<fieldset\b/g) ?? []).length, 3);
+  assert.equal((innerDialog.match(/<legend\b/g) ?? []).length, 3);
+  assert.match(innerDialog, /<select id="qual-grade" name="grade" required/);
+  assert.match(innerDialog, /<select id="qual-goal" name="goal" required/);
+  assert.match(innerDialog, /<input type="email" id="qual-email" name="email"[^>]*autocomplete="email"[^>]*required/);
+  assert.match(html, /dialog:modal\s*\{\s*overscroll-behavior:\s*contain;\s*\}/);
+  assert.match(html, /dialog::backdrop\s*\{[\s\S]*overflow:\s*hidden;[\s\S]*overscroll-behavior:\s*contain;/);
+});
+
+test("wires every homepage navigation and Coming Soon link to an existing file on disk", () => {
+  const hrefMatches = [...html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].map(([, href]) => href);
+  assert.ok(hrefMatches.length >= 80, "Expected full header/body/footer sitemap links");
+
+  for (const href of hrefMatches) {
+    assert.notEqual(href, "#", "Found unwired '#' link on homepage");
+    if (href.startsWith("#")) {
+      const id = href.slice(1);
+      assert.ok(html.includes(`id="${id}"`), `Missing in-page anchor #${id}`);
+      continue;
+    }
+    if (/^https?:\/\//.test(href)) continue;
+    const cleanPath = href.split("?")[0].split("#")[0];
+    const targetUrl = new URL(`../${cleanPath}`, import.meta.url);
+    assert.equal(existsSync(targetUrl), true, `Missing target page on disk for href="${href}"`);
+  }
 });

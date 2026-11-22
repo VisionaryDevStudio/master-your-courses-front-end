@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — Master Your Courses</title>
+  <meta name="description" content="Enrollment terms, session scheduling policies, cohort guidelines, and platform usage terms." />
+  <link rel="icon" href="./logo/logo.svg" type="image/svg+xml" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://masteryourcourses.com/"},{"@type":"ListItem","position":2,"name":"Legal"},{"@type":"ListItem","position":3,"name":"Terms of Service","item":"https://masteryourcourses.com/terms.html"}]}</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    (function () {
+      const saved = localStorage.getItem("theme");
+      const theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.classList.toggle("dark", theme === "dark");
+    })();
+    function toggleTheme() {
+      const nextDark = !document.documentElement.classList.contains("dark");
+      document.documentElement.classList.toggle("dark", nextDark);
+      localStorage.setItem("theme", nextDark ? "dark" : "light");
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            display: ["Outfit", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-950 dark:bg-zinc-950 dark:text-zinc-50 antialiased font-sans">
+  <header class="sticky top-0 z-50 border-b border-slate-200/80 dark:border-white/10 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between gap-4">
+      <a href="./index.html" class="flex items-center gap-2 min-w-0">
+        <img src="./logo/logo.svg" alt="Master Your Courses Logo" class="w-7 h-7 md:w-8 md:h-8 object-contain dark:brightness-0 dark:invert shrink-0" />
+        <span class="text-lg md:text-2xl font-black font-display tracking-tight truncate">
+          Master<span class="text-indigo-500">Your</span>Courses
+        </span>
+      </a>
+      <nav aria-label="Primary" class="flex items-center gap-3 sm:gap-5 lg:gap-6">
+        <a href="./programs/index.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Programs</a>
+        <a href="./resources/index.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Free Resources</a>
+        <a href="./results.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Results</a>
+        <span aria-hidden="true" class="hidden md:block h-4 w-px bg-slate-200 dark:bg-white/15"></span>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle theme" class="p-2 rounded-full hover:bg-slate-200/70 dark:hover:bg-white/10 transition-colors">
+          <svg aria-hidden="true" class="w-5 h-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2m-7.07-15.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <svg aria-hidden="true" class="w-5 h-5 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </button>
+        <a href="./login.html" class="text-xs sm:text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors whitespace-nowrap">Sign In</a>
+        <a href="./book-consultation.html" class="px-4 sm:px-5 py-2 rounded-full bg-slate-950 text-white dark:bg-white dark:text-slate-950 text-xs sm:text-sm font-bold hover:opacity-90 transition-opacity whitespace-nowrap">Book a Consultation</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1">
+
+    <section class="relative overflow-hidden py-16 sm:py-24 px-6">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[42rem] h-[24rem] bg-indigo-500/15 dark:bg-indigo-500/20 rounded-full blur-[110px] pointer-events-none"></div>
+      <div class="max-w-3xl mx-auto relative z-10 text-center">
+        <nav aria-label="Breadcrumb" class="text-xs sm:text-sm font-medium text-slate-500 dark:text-zinc-400 mb-6 flex flex-wrap items-center justify-center gap-2">
+          <a href="./index.html" class="hover:text-indigo-500 transition-colors">Home</a> <span aria-hidden="true" class="text-slate-400">/</span> <span class="text-slate-900 dark:text-white font-bold">Legal</span> <span aria-hidden="true" class="text-slate-400">/</span> <span class="text-slate-900 dark:text-white font-bold">Terms of Service</span>
+        </nav>
+
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-700 dark:text-indigo-300 text-xs font-extrabold uppercase tracking-widest font-display mb-6">
+          <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" aria-hidden="true"></span>
+          Coming Soon
+        </div>
+
+        <h1 id="page-main-heading" class="text-3xl sm:text-5xl md:text-6xl font-black font-display tracking-tight leading-[1.08]">
+          Terms of Service
+        </h1>
+
+        <p class="mt-5 text-base sm:text-xl text-slate-600 dark:text-zinc-300 max-w-2xl mx-auto leading-relaxed">
+          Enrollment terms, session scheduling policies, cohort guidelines, and platform usage terms.
+        </p>
+
+        
+        
+
+        <div class="mt-10 text-left rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white/90 dark:bg-zinc-900/90 shadow-xl p-6 sm:p-8">
+          <div class="border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+            <h2 class="text-sm sm:text-base font-extrabold uppercase tracking-wider font-display text-indigo-600 dark:text-indigo-400">
+              What You’ll Find on This Page
+            </h2>
+          </div>
+          <ul class="space-y-3">
+            
+              <li class="flex items-start gap-3 text-sm sm:text-base text-slate-700 dark:text-zinc-300">
+                <svg aria-hidden="true" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <span>1-on-1 rescheduling, cohort access &amp; practice course license terms</span>
+              </li>
+              <li class="flex items-start gap-3 text-sm sm:text-base text-slate-700 dark:text-zinc-300">
+                <svg aria-hidden="true" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <span>Academic integrity &amp; account policies</span>
+              </li>
+          </ul>
+        </div>
+
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="./index.html" class="w-full sm:w-auto px-8 py-4 rounded-full bg-slate-950 text-white dark:bg-white dark:text-slate-950 font-bold text-sm sm:text-base hover:scale-[1.02] transition-transform shadow-lg text-center">
+            &larr; Back to Homepage
+          </a>
+          <a href="./programs/index.html" class="w-full sm:w-auto px-8 py-4 rounded-full border border-slate-300 dark:border-white/15 bg-white/70 dark:bg-white/5 font-bold text-sm sm:text-base hover:bg-slate-100 dark:hover:bg-white/10 transition-colors text-center">Explore All Programs &rarr;</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 dark:border-white/10 bg-white dark:bg-black py-8">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-500 dark:text-zinc-400">
+      <p>&copy; 2026 Master Your Courses Inc. All rights reserved.</p>
+      <div class="flex flex-wrap items-center justify-center gap-5 font-semibold">
+        <a href="./privacy.html" class="hover:text-indigo-500 transition-colors">Privacy Policy</a>
+        <a href="./terms.html" class="hover:text-indigo-500 transition-colors">Terms of Service</a>
+        <a href="./refund-policy.html" class="hover:text-indigo-500 transition-colors">Returns &amp; Refunds</a>
+        <a href="./cookies.html" class="hover:text-indigo-500 transition-colors">Cookie Policy</a>
+        <a href="./sitemap.html" class="hover:text-indigo-500 transition-colors">Site Map</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

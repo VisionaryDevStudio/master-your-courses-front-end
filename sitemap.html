@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complete Visual Site Map — Master Your Courses</title>
+  <link rel="icon" href="./logo/logo.svg" type="image/svg+xml" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    (function () {
+      const saved = localStorage.getItem("theme");
+      const theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.classList.toggle("dark", theme === "dark");
+    })();
+    function toggleTheme() {
+      const nextDark = !document.documentElement.classList.contains("dark");
+      document.documentElement.classList.toggle("dark", nextDark);
+      localStorage.setItem("theme", nextDark ? "dark" : "light");
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            display: ["Outfit", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-950 dark:bg-zinc-950 dark:text-zinc-50 antialiased font-sans">
+  <header class="sticky top-0 z-50 border-b border-slate-200/80 dark:border-white/10 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between gap-4">
+      <a href="./index.html" class="flex items-center gap-2 min-w-0">
+        <img src="./logo/logo.svg" alt="Master Your Courses Logo" class="w-7 h-7 md:w-8 md:h-8 object-contain dark:brightness-0 dark:invert shrink-0" />
+        <span class="text-lg md:text-2xl font-black font-display tracking-tight truncate">
+          Master<span class="text-indigo-500">Your</span>Courses
+        </span>
+      </a>
+      <nav aria-label="Primary" class="flex items-center gap-3 sm:gap-5 lg:gap-6">
+        <a href="./programs/index.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Programs</a>
+        <a href="./resources/index.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Free Resources</a>
+        <a href="./results.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Results</a>
+        <span aria-hidden="true" class="hidden md:block h-4 w-px bg-slate-200 dark:bg-white/15"></span>
+        <button type="button" onclick="toggleTheme()" aria-label="Toggle theme" class="p-2 rounded-full hover:bg-slate-200/70 dark:hover:bg-white/10 transition-colors">
+          <svg aria-hidden="true" class="w-5 h-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2m-7.07-15.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <svg aria-hidden="true" class="w-5 h-5 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </button>
+        <a href="./login.html" class="text-xs sm:text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors whitespace-nowrap">Sign In</a>
+        <a href="./book-consultation.html" class="px-4 sm:px-5 py-2 rounded-full bg-slate-950 text-white dark:bg-white dark:text-slate-950 text-xs sm:text-sm font-bold hover:opacity-90 transition-opacity whitespace-nowrap">Book a Consultation</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1">
+
+    <section class="py-14 sm:py-20 px-6 max-w-7xl mx-auto">
+      <div class="max-w-3xl mb-12">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs font-extrabold uppercase tracking-widest font-display mb-4">
+          Architecture Overview
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-black font-display tracking-tight mb-4">
+          Master Your Courses — Complete Site Map
+        </h1>
+        <p class="text-base sm:text-lg text-slate-600 dark:text-zinc-300 leading-relaxed">
+          Every page in the Master Your Courses platform (113 routes total). Click any card below to inspect its Coming Soon route, breadcrumb hierarchy, and planned page structure before we build each page one by one.
+        </p>
+      </div>
+
+      <div class="space-y-8">
+        <section class="rounded-3xl border-2 border-emerald-500/30 bg-emerald-500/[0.06] p-6 sm:p-8">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2.5 mb-1">
+                <span class="text-xs font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">Live &bull; Completed</span>
+                <span class="text-xs font-mono text-slate-500 dark:text-zinc-400">/index.html</span>
+              </div>
+              <h2 class="text-xl sm:text-2xl font-black font-display">Homepage — Master Your Courses</h2>
+              <p class="text-sm text-slate-600 dark:text-zinc-300 mt-1">Hero, By The Numbers, University Ribbon, 4-Track Interactive Programs, 6-Step Methodology, Mentors, Video Track Record, Facebook Reviews, FAQ, Qualifying Consultation Modal &amp; Footer.</p>
+            </div>
+            <a href="./index.html" class="shrink-0 px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-colors text-center">Open Homepage &rarr;</a>
+          </div>
+        </section>
+
+        
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Programs Hub</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">1 page</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./programs/index.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">All Programs Directory</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Explore every AP exam, Digital SAT track, Math/Science Olympiad, and 1-on-1 course tutoring pathway.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/index.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Goal Track Hubs</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">4 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./programs/ap-prep.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Prep Overview</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">First-principles preparation across 22 high-demand AP courses in Sciences, Math, Computer Science, Economics, English, and History.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-prep.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/sat-prep.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Digital SAT Prep Overview</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Diagnostic-driven preparation for both Reading &amp; Writing and Math—built to push ambitious students past 1500+.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/sat-prep.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/competition-prep.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Competition &amp; Olympiad Prep Overview</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Deep proof-based and multi-step problem-solving for AMC, AIME, USAMO, Waterloo/CEMC, F=ma, USAPhO, USNCO, USABO, and USACO.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/competition-prep.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/course-tutoring.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">1-on-1 Course Tutoring Overview</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Private mentorship matched directly to your student’s exact high school, Honors, AP, or university syllabus.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/course-tutoring.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Learning Format Hubs</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">3 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./programs/1-on-1-mentorship.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">1-on-1 Private Mentorship</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Bespoke diagnostic pacing, custom problem sets, and deliberate mentor matching across APs, the Digital SAT, Olympiads, and university STEM.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/1-on-1-mentorship.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/live-cohorts.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Live Group Cohorts &amp; Exam Bootcamps</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Small, interactive weekly cohorts led by top instructors—combining structured pacing, peer momentum, and proctored mock exams.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/live-cohorts.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/practice-courses.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">On-Demand Practice Courses</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Self-serve, exam-calibrated problem banks, concise concept breakdowns, and full-length mock tests—available 24/7 with instant enrollment.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/practice-courses.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">AP Prep — Sciences</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">7 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./programs/ap-biology.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Biology Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Master cellular energetics, genetics, gene expression, ecology, and data-heavy AP Bio FRQs without rote memorization.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-biology.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-chemistry.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Chemistry Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Build deep chemical intuition across thermodynamics, kinetics, equilibrium, acids/bases, and electrochemistry.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-chemistry.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-physics-1.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Physics 1 Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Conquer algebra-based mechanics, rotational dynamics, energy, momentum, oscillations, and fluids from first principles.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-physics-1.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-physics-2.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Physics 2 Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Master thermodynamics, electric circuits, electromagnetism, optics, waves, and modern physics with total clarity.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-physics-2.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-physics-c-mechanics.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Physics C: Mechanics Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Calculus-based kinematics, Newton’s laws, differential equations of motion, rotation, and gravitation engineered for a 5.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-physics-c-mechanics.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-physics-c-em.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Physics C: Electricity &amp; Magnetism Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Turn Gauss’s Law, electric potential, RC/RL circuits, magnetic induction, and Maxwell’s equations into strengths.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-physics-c-em.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-environmental-science.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Environmental Science (APES) Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Connect ecosystems, earth systems, energy math, pollution models, and solution-design FRQs for a confident 5.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-environmental-science.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">AP Prep — Math &amp; Computer Science</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">6 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./programs/ap-precalculus.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Precalculus Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Build rock-solid function modeling across polynomial, rational, exponential, logarithmic, trigonometric, and polar functions.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-precalculus.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-calculus-ab.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Calculus AB Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Understand limits, derivatives, optimization, accumulation integrals, and differential equations visually and analytically.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-calculus-ab.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-calculus-bc.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Calculus BC Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Excel in integration techniques, parametric/polar/vector calculus, Euler’s method, and Taylor/Maclaurin series.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-calculus-bc.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-statistics.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Statistics Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Master probability distributions, experimental design, confidence intervals, hypothesis tests, and Investigative Task FRQ6.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-statistics.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-computer-science-a.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Computer Science A (Java) Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Write clean, bug-free Java across object-oriented design, arrays, ArrayLists, 2D arrays, inheritance, and recursion.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-computer-science-a.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-computer-science-principles.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Computer Science Principles (CSP) Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Ace algorithmic logic, pseudocode tracing, networks, data systems, and your Create Performance Task written responses.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-computer-science-principles.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">AP Prep — Economics, English &amp; Humanities</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">9 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./programs/ap-microeconomics.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Microeconomics Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Master supply &amp; demand elasticity, cost curves, perfect competition, monopoly, game theory, and factor markets.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-microeconomics.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-macroeconomics.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Macroeconomics Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Connect AD-AS, fiscal &amp; monetary policy, reserve banking, Phillips curves, and foreign exchange markets with precision.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-macroeconomics.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-psychology.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Psychology Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Master biological bases of behavior, cognition, development, clinical psychology, and the updated research-design FRQs.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-psychology.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-english-language.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP English Language &amp; Composition Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Write sophisticated Synthesis, Rhetorical Analysis, and Argument essays while sharpening timed reading comprehension.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-english-language.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-english-literature.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP English Literature &amp; Composition Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Analyze complex poetry, prose fiction, and literary argument under timed exam pressure with clear analytical structure.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-english-literature.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-us-history.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP U.S. History (APUSH) Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Connect Periods 1–9 through causal historical reasoning and master Stimulus MCQs, SAQs, DBQs, and LEQs.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-us-history.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-world-history.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP World History: Modern Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Synthesize global networks, empires, revolutions, and 20th-century shifts from 1200 CE to the present.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-world-history.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-us-government.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP U.S. Government &amp; Politics Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Command foundational documents, landmark Supreme Court cases, quantitative data analysis, and Argument Essays.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-us-government.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/ap-human-geography.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Human Geography Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Build top-tier AP exam habits across population, culture, political geography, agriculture, and urban spatial models.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/ap-human-geography.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">SAT &amp; ACT Prep</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">4 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./programs/sat-1-on-1.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">1-on-1 Digital SAT Mentorship</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Custom diagnostic roadmap, private Reading &amp; Writing + Math coaching, and error-log accountability built for 1500–1580+.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/sat-1-on-1.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/sat-cohort.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Live Digital SAT Group Cohort</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Structured weekly small-group instruction covering high-yield Digital SAT Reading &amp; Writing and Math strategies.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/sat-cohort.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/sat-practice-course.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">On-Demand Digital SAT Practice Course</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">24/7 access to concept breakdowns, skill-tagged verbal &amp; math drills, and realistic adaptive mock exams.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/sat-practice-course.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/act-prep.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">ACT Prep — English, Math, Reading &amp; Science</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Structured preparation for the updated ACT through 1-on-1 mentorship, live group cohorts, and self-paced practice sets.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/act-prep.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Competition Prep — Math</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">5 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./programs/amc-8-mathcounts.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AMC 8 &amp; MATHCOUNTS Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Build creative counting, number theory, geometry, and algebraic intuition for middle school competition standouts.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/amc-8-mathcounts.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/amc-10.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AMC 10 Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Master non-routine algebra, Euclidean geometry, combinatorics, and number theory to qualify for the AIME in 9th or 10th grade.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/amc-10.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/amc-12.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AMC 12 Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Command complex numbers, trigonometry, logarithms, 3D geometry, and advanced combinatorics for AIME &amp; Honor Roll Distinction.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/amc-12.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/aime-usamo.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AIME &amp; USA(J)MO / USAMO Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Bridge from multi-step AIME integer problems (000–999) to rigorous Olympiad proof writing for USAJMO and USAMO.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/aime-usamo.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/waterloo-cemc-contests.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Waterloo / CEMC Math Contests Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Targeted preparation for University of Waterloo’s Gauss, Pascal, Cayley, Fermat, Fryer, Galois, Hypatia, and Euclid contests.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/waterloo-cemc-contests.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Competition Prep — Science &amp; CS Olympiads</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">4 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./programs/fma-usapho.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">F=ma &amp; USAPhO Physics Olympiad Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Advance from tricky F=ma mechanics problems to calculus-based USAPhO Olympiad derivations across all physics domains.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/fma-usapho.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/usnco-chemistry-olympiad.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">USNCO Chemistry Olympiad Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Excel on USNCO Local and National exams across physical, inorganic, organic, analytical, and laboratory chemistry.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/usnco-chemistry-olympiad.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/usabo-biology-olympiad.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">USABO Biology Olympiad Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Go beyond Campbell Biology into university-level physiology, biochemistry, genetics, plant biology, and biosystematics.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/usabo-biology-olympiad.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/usaco-computing-olympiad.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">USACO Computing Olympiad Prep</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Promote cleanly from Bronze to Silver, Gold, and Platinum with algorithmic problem-solving in C++, Java, or Python.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/usaco-computing-olympiad.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">MCAT &amp; DAT Prep</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">6 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./programs/mcat-dat-prep.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">MCAT &amp; DAT Prep Overview</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">First-principles pre-med and pre-dental exam preparation led by doctors, researchers, and top science instructors.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/mcat-dat-prep.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/mcat-prep.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">MCAT Prep — Full 4-Section Mastery</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Deep conceptual review and passage reasoning across Chem/Phys, CARS, Bio/Biochem, and Psych/Soc.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/mcat-prep.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/mcat-1-on-1.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">1-on-1 MCAT Mentorship</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Private coaching customized to your diagnostic baseline, target medical school score, and full-length practice exam reviews.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/mcat-1-on-1.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/mcat-cohort.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Live MCAT Group Cohort</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Structured weekly small-group classes covering all four MCAT sections, CARS workshops, and timed full-length checkpoints.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/mcat-cohort.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/mcat-practice-course.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">On-Demand MCAT Practice Course</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Self-paced passage banks, discrete science drills, CARS practice, and detailed explanations available 24/7.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/mcat-practice-course.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/dat-prep.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">DAT Prep — Dental Admission Test</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Comprehensive preparation for Survey of Natural Sciences, Perceptual Ability (PAT), Reading Comprehension, and Quantitative Reasoning.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/dat-prep.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Textbooks &amp; Workbooks Store</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">5 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./books/index.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Textbooks &amp; Exam Workbooks</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Clear, concept-first textbooks and problem workbooks written by Master Your Courses educators across AP, SAT, ACT, Competitions, MCAT, and DAT.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/books/index.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./books/ap-prep-books.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Textbooks &amp; Unit Workbooks</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Structured textbooks and exam-level MCQ/FRQ workbooks for AP Sciences, Calculus, Statistics, Computer Science, and Humanities.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/books/ap-prep-books.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./books/sat-act-books.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Digital SAT &amp; ACT Prep Books</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Focused strategy guides and realistic practice problem books for Digital SAT Reading &amp; Writing, Math, and the ACT.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/books/sat-act-books.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./books/competition-math-books.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AMC, AIME &amp; Olympiad Problem Books</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Problem-solving books teaching counting, number theory, geometry, algebra, and physics competition intuition from the ground up.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/books/competition-math-books.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./books/mcat-dat-books.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">MCAT &amp; DAT Review Books</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">High-clarity review textbooks and passage workbooks for Biology, Biochemistry, General &amp; Organic Chemistry, Physics, CARS, and PAT.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/books/mcat-dat-books.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">1-on-1 Course Tutoring</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">2 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./programs/high-school-tutoring.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">High School &amp; Honors 1-on-1 Tutoring</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Private mentorship aligned to your school’s exact pacing across Algebra, Geometry, Precalculus, Biology, Chemistry, Physics, and English.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/high-school-tutoring.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./programs/university-tutoring.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">University &amp; Pre-Med 1-on-1 STEM Tutoring</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Rigorous 1-on-1 support from graduate-level researchers and doctors across Calculus I–III, Linear Algebra, Gen Chem, Organic Chem, Physics, and Stats.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/programs/university-tutoring.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Company &amp; Proof</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">8 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./about.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">About Master Your Courses</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Our academic mission, founder story, and why we built a first-principles alternative to formula-memorization tutoring.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/about.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./methodology.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">How It Works — Our 6-Step Mastery System</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Inside our diagnostic-first pedagogy, exam-calibrated practice platform, between-session Q&amp;A, and parent progress tracking.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/methodology.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./mentors.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Meet Our Mentors</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Explore our selective faculty of National Virtual Teachers of the Year, Killam Award-winning university instructors, researchers, and doctors.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/mentors.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./results.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Student Results &amp; Case Studies</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Verified AP 5s, 200+ point Digital SAT jumps, C-to-A grade turnarounds, Olympiad qualifiers, and top university admissions.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/results.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./pricing.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Plans, Formats &amp; Tuition Overview</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Clear options across self-serve Textbooks, On-Demand Practice Courses, Live Group Cohorts, and custom 1-on-1 Mentorship.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/pricing.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./schools.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">For Schools, Districts &amp; Classroom Educators</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Bring Master Your Courses textbooks, exam-calibrated practice banks, and specialist review clinics to your classroom or school.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/schools.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./faq.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Frequently Asked Questions</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Complete answers for parents and students on formats, mentor matching, timelines, scheduling, mock exams, and academic consultations.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/faq.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./careers.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Become a Mentor at Master Your Courses</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">We partner with award-winning educators, PhD/MSc researchers, Olympiad medalists, and doctors who love making hard concepts click.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/careers.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Free Resources — Hub</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">1 page</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./resources/index.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free Learning Hub — Practice, Mock Exams, Calculators &amp; Guides</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Explore free exam-calibrated practice questions, diagnostic mock tests, score calculators, and study roadmaps built by our mentors.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/resources/index.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Free Resources — Calculators &amp; Study Tools</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">8 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./tools/index.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Interactive Score Calculators &amp; Academic Tools</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Instant, curve-calibrated score calculators for all 22 AP exams, the adaptive Digital SAT, AMC/AIME cutoffs, and weighted high school GPA.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/tools/index.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./tools/ap-score-calculators.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Score Calculators (All 22 AP Exams)</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Calculate your projected 1–5 AP score using official section weights and updated College Board rubric curves across every major AP course.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/tools/ap-score-calculators.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./tools/digital-sat-score-calculator.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Digital SAT Score Calculator</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Estimate your scaled Reading &amp; Writing (200–800) and Math (200–800) scores across adaptive Module 1 and Module 2 routing.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/tools/digital-sat-score-calculator.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./tools/amc-aime-cutoff-calculator.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AMC 10 / 12 &amp; AIME Qualification Calculator</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Model answered vs. blank strategy (+6 correct, +1.5 blank, 0 wrong) and compare against historical AIME, Honor Roll, and USAMO index cutoffs.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/tools/amc-aime-cutoff-calculator.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./tools/gpa-calculator.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">High School Weighted &amp; AP GPA Calculator</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Calculate both unweighted (4.0) and weighted Honors/AP/IB GPA across semesters to plan an ambitious, balanced course load.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/tools/gpa-calculator.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./tools/act-score-calculator.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">ACT Composite Score Calculator (1–36)</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Convert raw section scores across English, Math, Reading, and Science into scaled 1–36 section and composite ACT scores.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/tools/act-score-calculator.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./tools/mcat-score-calculator.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">MCAT Score Calculator (472–528)</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Estimate your scaled 118–132 section scores and 472–528 total MCAT score across Chem/Phys, CARS, Bio/Biochem, and Psych/Soc.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/tools/mcat-score-calculator.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./tools/study-schedule-planner.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Exam Date Countdown &amp; Study Schedule Generator</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Track official AP, Digital SAT, AMC, AIME, and Olympiad exam dates and generate a custom week-by-week review schedule.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/tools/study-schedule-planner.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Free Resources — Practice, Quizzes &amp; Flashcards</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">8 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./practice/index.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free Practice Questions, Quizzes &amp; Flashcards</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Sharpen your intuition on application-heavy AP MCQs &amp; FRQs, hard Digital SAT Module 2 problems, Olympiad drills, and active-recall decks.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/practice/index.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./practice/ap-practice-questions.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free AP Practice Questions &amp; Unit Quizzes</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Unit-by-unit practice questions and rubric-scored FRQ walkthroughs across AP Sciences, Math, Computer Science, Economics, English, and History.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/practice/ap-practice-questions.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./practice/sat-practice-questions.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free Digital SAT Practice Questions &amp; Skill Quizzes</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">High-difficulty Reading &amp; Writing craft/inference passages and Module 2 Math problems with Desmos and algebraic walkthroughs.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/practice/sat-practice-questions.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./practice/competition-problems.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free AMC, AIME, F=ma &amp; Olympiad Worked Problems</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Curated competition problems in algebra, number theory, geometry, combinatorics, mechanics, and algorithms—solved from first principles.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/practice/competition-problems.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./practice/ap-flashcards.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free Active-Recall AP Flashcards &amp; Key-Term Decks</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Spaced, concept-driven flashcard decks for high-volume AP exams including AP Biology, Psychology, U.S. History, World History, Gov, Human Geo, and Chemistry.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/practice/ap-flashcards.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./practice/act-practice-questions.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free ACT Practice Questions &amp; Section Quizzes</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Timed practice passages and math drills across ACT English, Math, Reading, and Science with clear explanations.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/practice/act-practice-questions.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./practice/mcat-dat-practice-questions.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free MCAT &amp; DAT Practice Passages &amp; Questions</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Experimental science passages, CARS practice, discrete questions, and DAT Perceptual Ability drills with worked explanations.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/practice/mcat-dat-practice-questions.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./practice/university-stem-problems.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free University &amp; Pre-Med STEM Worked Problems</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Midterm- and final-caliber worked problems across Calculus I–III, Linear Algebra, Differential Equations, General &amp; Organic Chemistry, and Physics.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/practice/university-stem-problems.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Free Resources — Past Exam &amp; FRQ Solutions</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">5 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./solutions/index.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Past Exam &amp; Official FRQ Solutions Archive</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Year-by-year step-by-step written and video walkthroughs for past AP Free-Response Questions, AMC, AIME, Waterloo CEMC, F=ma, USAPhO, and Olympiads.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/solutions/index.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./solutions/ap-frq-solutions.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Past AP Free-Response (FRQ) Solutions &amp; Rubric Walkthroughs</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Clear, first-principles solutions and scoring-guideline commentary for recent AP Free-Response exams across all 22 AP subjects.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/solutions/ap-frq-solutions.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./solutions/amc-aime-solutions.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Past AMC 8, AMC 10, AMC 12 &amp; AIME Worked Solutions</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Intuitive, multi-method solutions for past AMC 8, AMC 10A/10B, AMC 12A/12B, and AIME I/II contest problems.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/solutions/amc-aime-solutions.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./solutions/waterloo-euclid-solutions.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Past Waterloo Euclid, Fermat, Cayley &amp; Pascal Solutions</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Model written-proof and short-answer solutions for University of Waterloo CEMC mathematics competitions.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/solutions/waterloo-euclid-solutions.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./solutions/olympiad-solutions.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Past F=ma, USAPhO, USNCO, USABO &amp; USACO Solutions</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Rigorous derivations, chemical mechanisms, experimental breakdowns, and C++/Java/Python code walkthroughs for national Olympiads.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/solutions/olympiad-solutions.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Free Resources — Diagnostic &amp; Mock Exams</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">6 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./mock-exams/index.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free Diagnostic &amp; Sample Mock Exams</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Benchmark your current score under realistic timed conditions and receive a personalized topic-by-topic gap report.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/mock-exams/index.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./mock-exams/digital-sat-diagnostic.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free Adaptive Digital SAT Diagnostic Exam</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Take a timed, adaptive Digital SAT Reading &amp; Writing + Math diagnostic to pinpoint your baseline score and fastest path past 1500+.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/mock-exams/digital-sat-diagnostic.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./mock-exams/ap-diagnostics.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free AP Readiness &amp; Mid-Year Diagnostic Exams</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Assess where you stand on a 1–5 scale weeks or months before May so you can close unit gaps early.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/mock-exams/ap-diagnostics.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./mock-exams/amc-placement-test.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free AMC 8 / 10 / 12 Placement Diagnostic</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Identify your competition baseline across algebra, geometry, counting, and number theory before starting AIME-track training.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/mock-exams/amc-placement-test.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./mock-exams/act-diagnostic.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free ACT Diagnostic Practice Test</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Take a realistic timed ACT diagnostic to benchmark your 1–36 composite score and compare SAT vs. ACT strengths.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/mock-exams/act-diagnostic.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./mock-exams/mcat-dat-diagnostics.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free MCAT &amp; DAT Baseline Diagnostic Tests</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Establish your starting score across core pre-med or pre-dental sections before mapping out your multi-month study schedule.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/mock-exams/mcat-dat-diagnostics.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Free Resources — Guides, Videos &amp; Workshops</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">10 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./guides/index.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Study Guides, Formula Sheets &amp; Exam Roadmaps</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">In-depth exam guides, printable formula sheets, FRQ rubrics, and STEM planning articles written by our educators and researchers.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/guides/index.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./guides/ap-study-guides.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AP Study Guides, Formula Sheets &amp; FRQ Rubrics</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Clear, concept-first unit summaries, annotated equation sheets, and FRQ scoring checklists across all 22 AP courses.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/guides/ap-study-guides.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./guides/sat-prep-guides.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Digital SAT 1500+ Strategy &amp; Desmos Guides</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Complete playbooks on mastering Digital SAT grammar rules, dense reading passages, Desmos shortcuts, and hard Module 2 pacing.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/guides/sat-prep-guides.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./guides/olympiad-roadmaps.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">AMC, AIME, F=ma &amp; Olympiad Preparation Roadmaps</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">How ambitious students progress from school STEM classes to national distinction in Math, Physics, Chemistry, Biology, and Computing Olympiads.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/guides/olympiad-roadmaps.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./guides/parent-academic-guides.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Parent Guides — AP Course Loads &amp; STEM Admissions Strategy</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Practical, candid advice for parents navigating Honors vs. AP placement, SAT timing, STEM competitions, and balanced student schedules.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/guides/parent-academic-guides.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./guides/university-stem-guides.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">University &amp; Pre-Med STEM Formula &amp; Summary Sheets</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Concise reference sheets and exam study guides for Calculus I–III, Linear Algebra, Organic Chemistry reactions, General Chemistry, and Physics.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/guides/university-stem-guides.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./guides/mcat-dat-study-guides.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">MCAT &amp; DAT Study Guides, Equations &amp; Schedules</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">High-yield amino acid, biochemistry, organic chemistry, physics equation sheets, and 3-to-6 month study schedules.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/guides/mcat-dat-study-guides.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./guides/video-lessons.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free Concept Video Lessons &amp; Exam Crash Courses</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Short, high-clarity video breakdowns teaching notoriously tough AP, Digital SAT, and Olympiad topics from first principles.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/guides/video-lessons.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./workshops/index.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Free Live Workshops &amp; Parent Strategy Seminars</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Seasonal live exam-strategy clinics for students and academic planning Q&amp;As for parents—hosted by our lead mentors.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/workshops/index.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./blog/index.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Exam Updates, Score Analysis &amp; Admissions Articles</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Timely analysis on AP score distributions, Digital SAT &amp; ACT updates, Olympiad cutoffs, and university STEM admissions.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/blog/index.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Conversion &amp; Portal</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">5 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./contact.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Contact &amp; Family Support</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Reach our academic support team for enrolled family assistance, school counseling partnerships, or general inquiries.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/contact.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./book-consultation.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Schedule Your Academic Consultation</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Select a time with our Academic Advisory Team to review your student’s goals, coursework, and recommended roadmap.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/book-consultation.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./whatsapp.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Message Our Academic Team on WhatsApp</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Direct messaging channel for quick parent questions before scheduling an Academic Consultation.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/whatsapp.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./login.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Sign In to Master Your Courses</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Sign in as a student or parent to access your On-Demand Practice Courses, saved quiz &amp; diagnostic scores, cohort replays, and 1-on-1 session schedule.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/login.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./signup.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Create Your Free Account</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Join as a student or parent—save diagnostic and quiz progress, access self-serve practice courses, or follow your student’s weekly mastery and session notes.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/signup.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+
+    <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
+        <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">Legal &amp; Social</h2>
+        <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">5 pages</span>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        
+          <li>
+            <a href="./privacy.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Privacy Policy</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">How Master Your Courses protects student and family information across our mentorship and learning platform.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/privacy.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./terms.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Terms of Service</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Enrollment terms, session scheduling policies, cohort guidelines, and platform usage terms.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/terms.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./refund-policy.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Shipping, Returns &amp; Refund Policy</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Clear return, shipping, and refund terms for physical textbooks, digital practice courses, live group cohorts, and 1-on-1 mentorship.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/refund-policy.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./cookies.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Cookie Policy</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Details on essential session cookies, theme preferences, and analytics controls.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/cookies.html &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="./social.html" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Master Your Courses — Official Social Channels</span>
+                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">Follow our exam-strategy breakdowns, AP/SAT study tips, and student spotlights across Facebook, Instagram, YouTube, TikTok, and X.</p>
+              </div>
+              <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/social.html &rarr;</span>
+            </a>
+          </li>
+      </ul>
+    </section>
+  
+      </div>
+    </section>
+  
+  </main>
+
+  <footer class="border-t border-slate-200 dark:border-white/10 bg-white dark:bg-black py-8">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-500 dark:text-zinc-400">
+      <p>&copy; 2026 Master Your Courses Inc. All rights reserved.</p>
+      <div class="flex flex-wrap items-center justify-center gap-5 font-semibold">
+        <a href="./privacy.html" class="hover:text-indigo-500 transition-colors">Privacy Policy</a>
+        <a href="./terms.html" class="hover:text-indigo-500 transition-colors">Terms of Service</a>
+        <a href="./refund-policy.html" class="hover:text-indigo-500 transition-colors">Returns &amp; Refunds</a>
+        <a href="./cookies.html" class="hover:text-indigo-500 transition-colors">Cookie Policy</a>
+        <a href="./sitemap.html" class="hover:text-indigo-500 transition-colors">Site Map</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
