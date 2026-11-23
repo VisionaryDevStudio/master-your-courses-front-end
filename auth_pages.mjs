@@ -1,0 +1,951 @@
+import { escapeHtml } from "./site_shell.mjs";
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  DEFAULT_SOCIAL_IMAGE_ALT,
+  buildBreadcrumbSchema,
+  toCanonicalUrl
+} from "./seo_schemas.mjs";
+
+function renderMinimalAuthShell({
+  title,
+  description,
+  canonicalPath,
+  jsonLd,
+  formColumnHtml
+}) {
+  const fullTitle = `${title} — Master Your Courses`;
+  const canonicalUrl = toCanonicalUrl(canonicalPath);
+
+  return `<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${escapeHtml(fullTitle)}</title>
+  <meta name="robots" content="noindex, follow" />
+  <meta name="description" content="${escapeHtml(description)}" />
+  <link rel="canonical" href="${escapeHtml(canonicalUrl)}" />
+  <meta property="og:site_name" content="Master Your Courses" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="${escapeHtml(fullTitle)}" />
+  <meta property="og:description" content="${escapeHtml(description)}" />
+  <meta property="og:url" content="${escapeHtml(canonicalUrl)}" />
+  <meta property="og:image" content="${escapeHtml(DEFAULT_SOCIAL_IMAGE)}" />
+  <meta property="og:image:alt" content="${escapeHtml(DEFAULT_SOCIAL_IMAGE_ALT)}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${escapeHtml(fullTitle)}" />
+  <meta name="twitter:description" content="${escapeHtml(description)}" />
+  <meta name="twitter:image" content="${escapeHtml(DEFAULT_SOCIAL_IMAGE)}" />
+  <link rel="icon" href="./logo/logo.svg" type="image/svg+xml" />
+  <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            display: ["Outfit", "sans-serif"]
+          },
+          colors: {
+            background: "hsl(var(--background) / <alpha-value>)",
+            foreground: "hsl(var(--foreground) / <alpha-value>)",
+            border: "hsl(var(--border) / <alpha-value>)",
+            muted: {
+              DEFAULT: "hsl(var(--muted) / <alpha-value>)",
+              foreground: "hsl(var(--muted-foreground) / <alpha-value>)"
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <script>
+    function getInitialTheme() {
+      let savedTheme = null;
+      try { savedTheme = localStorage.getItem("theme"); } catch (_) {}
+      if (savedTheme) return savedTheme;
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    function setTheme(theme) {
+      document.documentElement.classList.toggle("dark", theme === "dark");
+      try { localStorage.setItem("theme", theme); } catch (_) {}
+    }
+    function toggleTheme() {
+      setTheme(document.documentElement.classList.contains("dark") ? "light" : "dark");
+    }
+    setTheme(getInitialTheme());
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --background: 220 33% 96%;
+      --foreground: 222.2 84% 4.9%;
+      --border: 216 26% 88%;
+      --muted: 216 32% 93%;
+      --muted-foreground: 215.4 16.3% 43%;
+    }
+    .dark {
+      --background: 224 50% 5%;
+      --foreground: 210 40% 98%;
+      --border: 217.2 28% 18%;
+      --muted: 217.2 32.6% 14%;
+      --muted-foreground: 215 20.2% 65.1%;
+    }
+    body {
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+    }
+    /* Keep visually-hidden permanently hidden on inputs/live-regions; only .skip-link reveals on focus */
+    .visually-hidden:not(.skip-link),
+    .skip-link:where(:not(:focus-within, :active)) {
+      position: absolute !important;
+      clip-path: inset(50%) !important;
+      overflow: hidden !important;
+      width: 1px !important;
+      height: 1px !important;
+      margin: -1px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      white-space: nowrap !important;
+    }
+    .skip-link:is(:focus-within, :active) {
+      position: fixed;
+      inset-block-start: 0.75rem;
+      inset-inline-start: 0.75rem;
+      z-index: 100;
+      padding: 0.625rem 1.125rem;
+      border-radius: 9999px;
+      background: hsl(var(--foreground));
+      color: hsl(var(--background));
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+    .lucide {
+      width: 1em;
+      height: 1em;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    /* Soft atmospheric right-side canvas so light mode has depth and warmth */
+    html:not(.dark) .auth-right-canvas {
+      background:
+        radial-gradient(circle at 82% 14%, rgb(99 102 241 / 0.09), transparent 30rem),
+        radial-gradient(circle at 18% 88%, rgb(16 185 129 / 0.05), transparent 26rem),
+        linear-gradient(180deg, #f5f7fd 0%, #edf1fa 100%);
+    }
+    .dark .auth-right-canvas {
+      background:
+        radial-gradient(circle at 76% 18%, rgb(99 102 241 / 0.11), transparent 30rem),
+        #09090b;
+    }
+
+    /* Deep obsidian/indigo left showcase panel */
+    .auth-showcase-panel {
+      background:
+        radial-gradient(circle at 14% 18%, rgb(99 102 241 / 0.28), transparent 30rem),
+        radial-gradient(circle at 88% 84%, rgb(16 185 129 / 0.13), transparent 28rem),
+        linear-gradient(160deg, #070914 0%, #0d1126 52%, #080a14 100%);
+    }
+
+    /* Tactile form controls */
+    .auth-control {
+      font: inherit;
+      font-size: max(1rem, 1em);
+      min-height: 48px;
+      box-sizing: border-box;
+    }
+    @media (pointer: coarse) {
+      .auth-control {
+        min-height: 52px;
+      }
+    }
+
+    /* Deferred validation styles */
+    .auth-field .error-msg {
+      display: none;
+    }
+    .auth-field :is(:user-invalid, .user-invalid-fallback) {
+      border-color: #ef4444 !important;
+      background-color: rgb(239 68 68 / 0.05);
+    }
+    .auth-field:has(:is(:user-invalid, .user-invalid-fallback)) .error-msg {
+      display: flex;
+    }
+    .auth-field:has(:is(:user-invalid, .user-invalid-fallback)) .rules-list {
+      color: #ef4444;
+    }
+
+    /* Zero-glitch Student / Parent Radio Cards */
+    .role-card-option {
+      position: relative;
+    }
+    .role-card-radio {
+      position: absolute;
+      inset: 0;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+      margin: 0;
+    }
+    .role-card-label {
+      user-select: none;
+      -webkit-user-select: none;
+      cursor: pointer;
+      border: 1.5px solid hsl(var(--border));
+      background: rgb(248 250 252 / 0.7);
+      transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+    }
+    .dark .role-card-label {
+      background: rgb(24 24 27 / 0.55);
+    }
+    .role-card-label:hover {
+      border-color: rgb(99 102 241 / 0.45);
+    }
+    .role-card-indicator {
+      width: 1.125rem;
+      height: 1.125rem;
+      border-radius: 9999px;
+      border: 1.5px solid hsl(var(--muted-foreground) / 0.45);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 150ms ease, border-color 150ms ease;
+      flex-shrink: 0;
+    }
+    .role-card-indicator svg {
+      opacity: 0;
+      transform: scale(0.75);
+      transition: opacity 140ms ease, transform 140ms ease;
+    }
+    .role-card-radio:checked + .role-card-label {
+      border-color: #6366f1;
+      background: rgb(99 102 241 / 0.07);
+      box-shadow: 0 4px 14px -4px rgb(99 102 241 / 0.18);
+    }
+    .dark .role-card-radio:checked + .role-card-label {
+      border-color: #818cf8;
+      background: rgb(99 102 241 / 0.16);
+      box-shadow: 0 6px 18px -4px rgb(0 0 0 / 0.45);
+    }
+    .role-card-radio:checked + .role-card-label .role-card-indicator {
+      background-color: #4f46e5;
+      border-color: #4f46e5;
+      color: #ffffff;
+    }
+    .dark .role-card-radio:checked + .role-card-label .role-card-indicator {
+      background-color: #6366f1;
+      border-color: #6366f1;
+    }
+    .role-card-radio:checked + .role-card-label .role-card-indicator svg {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .role-card-radio:focus-visible + .role-card-label {
+      outline: 2px solid #6366f1;
+      outline-offset: 2px;
+    }
+
+    /* Live password rule pill state on Sign Up */
+    .pwd-rule[data-met="true"] {
+      color: #059669;
+      font-weight: 600;
+    }
+    .dark .pwd-rule[data-met="true"] {
+      color: #34d399;
+    }
+  </style>
+</head>
+<body class="antialiased min-h-dvh flex flex-col font-sans text-foreground">
+  <a href="#main-heading" class="skip-link visually-hidden">Skip to main content</a>
+
+  <div class="flex-1 grid grid-cols-1 md:grid-cols-12 min-h-dvh">
+    <!-- Left Column (md+): Rich Dark Obsidian/Indigo Editorial Showcase -->
+    <aside
+      aria-label="Student testimonial"
+      class="hidden md:flex md:col-span-5 lg:col-span-5 xl:col-span-5 auth-showcase-panel text-white px-8 lg:px-12 xl:px-16 py-7 lg:py-9 flex-col justify-between border-r border-white/10 relative overflow-hidden"
+    >
+      <!-- Top Brand Bar (Aligned with Right Column Top Bar) -->
+      <div class="relative z-10 flex items-center h-9">
+        <a href="./index.html" class="inline-flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-lg">
+          <img src="./logo/logo.svg" alt="Master Your Courses Logo" width="30" height="30" class="w-7 h-7 object-contain brightness-0 invert" />
+          <span class="text-xl font-black font-display tracking-tight text-white">
+            Master<span class="text-indigo-400">Your</span>Courses
+          </span>
+        </a>
+      </div>
+
+      <!-- Centerpiece: Masumeh Rajaie Testimonial -->
+      <figure class="relative z-10 my-auto py-10 max-w-md">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="flex gap-1" role="img" aria-label="5 out of 5 stars">
+            ${Array.from({ length: 5 }).map(() => `<svg aria-hidden="true" class="lucide w-4 h-4 fill-amber-400 text-amber-400" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`).join("")}
+          </div>
+          <span class="h-3.5 w-px bg-white/15" aria-hidden="true"></span>
+          <span class="text-[11px] font-bold uppercase tracking-widest text-indigo-300/90 font-display">Student Review</span>
+        </div>
+
+        <blockquote class="text-[1.125rem] lg:text-[1.25rem] leading-[1.68] font-normal text-zinc-100 tracking-[-0.01em]">
+          <p>&ldquo;I highly recommend MasterYourCourses. Very friendly staff. Very fast responds. Sumit one of the tutors helped me a lot with my work. Thank you so much to everyone for this amazing opportunity to get help and learn better.&rdquo;</p>
+        </blockquote>
+
+        <figcaption class="mt-8 pt-6 border-t border-white/10 flex items-center gap-3.5">
+          <div class="w-13 h-13 w-[52px] h-[52px] rounded-full bg-gradient-to-br from-indigo-400 via-purple-500 to-emerald-400 p-[2px] shrink-0 shadow-lg">
+            <div class="w-full h-full rounded-full bg-zinc-950 flex items-center justify-center overflow-hidden relative">
+              <img
+                src="./testimonies/masumeh.png"
+                alt="Portrait of Masumeh Rajaie"
+                width="52"
+                height="52"
+                class="w-full h-full object-cover object-center"
+                onerror="this.hidden=true; this.nextElementSibling.hidden=false;"
+              />
+              <span hidden aria-hidden="true" class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-xs font-black font-display tracking-wider">MR</span>
+            </div>
+          </div>
+          <div class="min-w-0">
+            <p class="font-bold font-display text-[15px] text-white leading-snug">Masumeh Rajaie</p>
+            <p class="text-xs font-semibold text-emerald-400 mt-0.5">U of T &bull; Astronomy and Astrophysics Student</p>
+          </div>
+        </figcaption>
+      </figure>
+
+      <!-- Bottom Proof Line (Aligned with Right Column Footer) -->
+      <div class="relative z-10 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-400">
+        <span class="inline-flex items-center gap-1.5 font-semibold text-zinc-300">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+          98% AP 4–5 Rate
+        </span>
+        <span aria-hidden="true" class="text-white/20">&bull;</span>
+        <span>1,200+ Students Mentored</span>
+      </div>
+    </aside>
+
+    <!-- Right Column (md+): Soft Mist-Indigo Canvas + Centered Form Card -->
+    <div class="md:col-span-7 lg:col-span-7 xl:col-span-7 auth-right-canvas flex flex-col justify-between px-4 sm:px-8 lg:px-14 py-6 lg:py-9">
+      <!-- Minimal Top Bar -->
+      <header class="w-full max-w-[28rem] md:max-w-none mx-auto flex items-center justify-between md:justify-end gap-3 h-9">
+        <a href="./index.html" class="md:hidden inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg">
+          <img src="./logo/logo.svg" alt="Master Your Courses Logo" width="26" height="26" class="w-6 h-6 object-contain dark:brightness-0 dark:invert" />
+          <span class="text-base font-black font-display tracking-tight text-foreground">
+            Master<span class="text-indigo-500">Your</span>Courses
+          </span>
+        </a>
+
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            onclick="toggleTheme()"
+            aria-label="Toggle theme"
+            class="w-9 h-9 rounded-full border border-slate-200/90 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 hover:bg-white dark:hover:bg-zinc-800 transition-colors text-muted-foreground hover:text-foreground inline-flex items-center justify-center shadow-sm"
+          >
+            <svg aria-hidden="true" class="lucide w-4 h-4 dark:hidden" viewBox="0 0 24 24"><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/><circle cx="12" cy="12" r="4"/></svg>
+            <svg aria-hidden="true" class="lucide w-4 h-4 hidden dark:block" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </button>
+          <a
+            href="./index.html"
+            class="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full border border-slate-200/90 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 hover:bg-white dark:hover:bg-zinc-800 text-xs font-bold text-slate-700 dark:text-zinc-300 hover:text-slate-950 dark:hover:text-white transition-colors shadow-sm"
+          >
+            <span aria-hidden="true">&larr;</span>
+            <span>Back to Home</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Centered Form Card -->
+      <main class="w-full max-w-[27.5rem] mx-auto my-6 md:my-auto py-2">
+        ${formColumnHtml}
+      </main>
+
+      <!-- Mobile-Only Masumeh Testimonial Card (< 768px) -->
+      <figure class="md:hidden w-full max-w-[27.5rem] mx-auto auth-showcase-panel text-white rounded-3xl p-6 mb-5 border border-white/10 shadow-lg">
+        <div class="flex gap-1 mb-3.5" role="img" aria-label="5 out of 5 stars">
+          ${Array.from({ length: 5 }).map(() => `<svg aria-hidden="true" class="lucide w-4 h-4 fill-amber-400 text-amber-400" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`).join("")}
+        </div>
+        <blockquote class="text-sm leading-relaxed text-zinc-100">
+          <p>&ldquo;I highly recommend MasterYourCourses. Very friendly staff. Very fast responds. Sumit one of the tutors helped me a lot with my work. Thank you so much to everyone for this amazing opportunity to get help and learn better.&rdquo;</p>
+        </blockquote>
+        <figcaption class="mt-4 pt-4 border-t border-white/10 flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 p-[2px] shrink-0">
+            <div class="w-full h-full rounded-full bg-zinc-950 flex items-center justify-center overflow-hidden">
+              <img src="./testimonies/masumeh.png" alt="Portrait of Masumeh Rajaie" width="44" height="44" class="w-full h-full object-cover object-center" onerror="this.hidden=true; this.nextElementSibling.hidden=false;" />
+              <span hidden aria-hidden="true" class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-xs font-black font-display">MR</span>
+            </div>
+          </div>
+          <div>
+            <p class="font-bold font-display text-sm text-white">Masumeh Rajaie</p>
+            <p class="text-[11px] font-semibold text-emerald-400">U of T &bull; Astronomy &amp; Astrophysics</p>
+          </div>
+        </figcaption>
+      </figure>
+
+      <!-- Slim Legal Bar -->
+      <footer class="w-full max-w-[27.5rem] md:max-w-none mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
+        <p>&copy; 2026 Master Your Courses Inc.</p>
+        <div class="flex flex-wrap items-center justify-center gap-4 font-semibold">
+          <a href="./privacy.html" class="hover:text-foreground transition-colors">Privacy</a>
+          <a href="./terms.html" class="hover:text-foreground transition-colors">Terms</a>
+          <a href="./schools.html" class="hover:text-foreground transition-colors">Schools &amp; Educators</a>
+          <a href="./contact.html" class="hover:text-foreground transition-colors">Help</a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const form = document.querySelector("[data-auth-form]");
+      if (!form) return;
+
+      // Password visibility toggle with eye / eye-off icon swap
+      form.querySelectorAll("[data-toggle-password]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const targetId = btn.getAttribute("data-toggle-password");
+          const input = targetId ? document.getElementById(targetId) : null;
+          if (!input) return;
+          const willShow = input.type === "password";
+          input.type = willShow ? "text" : "password";
+          btn.setAttribute("aria-pressed", String(willShow));
+          btn.setAttribute("aria-label", willShow ? "Hide password" : "Show password");
+          const labelSpan = btn.querySelector("[data-toggle-password-text]");
+          if (labelSpan) labelSpan.textContent = willShow ? "Hide" : "Show";
+          const eyeOpen = btn.querySelector("[data-eye-open]");
+          const eyeClosed = btn.querySelector("[data-eye-closed]");
+          if (eyeOpen && eyeClosed) {
+            eyeOpen.classList.toggle("hidden", willShow);
+            eyeClosed.classList.toggle("hidden", !willShow);
+          }
+        });
+      });
+
+      // Live password checklist highlights on Sign Up (zero layout shift)
+      const signupPwd = document.getElementById("signup-password");
+      if (signupPwd) {
+        const ruleLength = document.getElementById("pwd-rule-length");
+        const ruleCase = document.getElementById("pwd-rule-case");
+        const ruleNum = document.getElementById("pwd-rule-num");
+        signupPwd.addEventListener("input", () => {
+          const val = signupPwd.value || "";
+          if (ruleLength) ruleLength.dataset.met = String(val.length >= 8);
+          if (ruleCase) ruleCase.dataset.met = String(/[a-z]/.test(val) && /[A-Z]/.test(val));
+          if (ruleNum) ruleNum.dataset.met = String(/\\d/.test(val));
+        });
+      }
+
+      // Deferred validation (:user-invalid + fallback + ARIA error linking + single polite announcer)
+      const supportsUserInvalid = typeof CSS !== "undefined" && CSS.supports && CSS.supports("selector(:user-invalid)");
+      const dirtyState = new WeakMap();
+      const flagged = new WeakSet();
+      const announced = new WeakSet();
+      const announcer = document.getElementById("auth-live-announcer");
+      let announceTimer = 0;
+      let announcedField = null;
+
+      function linkError(el, shown) {
+        const errorId = el.dataset?.error;
+        if (!errorId) return;
+        const ids = (el.getAttribute("aria-describedby") || "")
+          .split(/\\s+/)
+          .filter(id => id && id !== errorId);
+        if (shown) ids.push(errorId);
+        if (ids.length) el.setAttribute("aria-describedby", ids.join(" "));
+        else el.removeAttribute("aria-describedby");
+      }
+
+      function spokenText(node) {
+        const copy = node.cloneNode(true);
+        copy.querySelectorAll('[aria-hidden="true"]').forEach(n => n.remove());
+        copy.querySelectorAll('[role="img"][aria-label]').forEach(n => {
+          n.replaceWith((n.getAttribute("aria-label") || "") + ": ");
+        });
+        return (copy.textContent || "").replace(/\\s+/g, " ").trim();
+      }
+
+      function announceError(el) {
+        if (!announcer || !el.dataset?.error) return;
+        const errorNode = document.getElementById(el.dataset.error);
+        if (!errorNode) return;
+        const label = el.labels?.[0] ? spokenText(el.labels[0]) + ": " : "";
+        clearTimeout(announceTimer);
+        announcer.textContent = "";
+        announcedField = el;
+        announceTimer = window.setTimeout(() => {
+          announcer.textContent = label + spokenText(errorNode);
+        }, 500);
+      }
+
+      function isFieldInvalidAfterInteraction(el) {
+        if (supportsUserInvalid) {
+          return el.matches(":user-invalid");
+        }
+        const state = dirtyState.get(el);
+        if (!state || !(state.hasInteracted && state.hasBlurred)) return false;
+        const valid = el.validity.valid;
+        el.classList.toggle("user-invalid-fallback", !valid);
+        return !valid;
+      }
+
+      function syncAria(el, announce = false) {
+        if (!el || !el.matches?.('input:not([type="radio"]), select, textarea')) return;
+        const invalid = isFieldInvalidAfterInteraction(el);
+        if (invalid) {
+          if (announce && !announced.has(el)) {
+            announceError(el);
+            announced.add(el);
+          }
+          el.setAttribute("aria-invalid", "true");
+          linkError(el, true);
+          flagged.add(el);
+        } else if (flagged.has(el) || el.getAttribute("aria-invalid") !== "true") {
+          el.setAttribute("aria-invalid", "false");
+          linkError(el, false);
+          flagged.delete(el);
+          announced.delete(el);
+          if (announcedField === el && announcer) {
+            clearTimeout(announceTimer);
+            announcer.textContent = "";
+          }
+        }
+      }
+
+      form.querySelectorAll('input:not([type="radio"]), select, textarea').forEach(el => syncAria(el));
+
+      form.addEventListener("blur", event => {
+        const el = event.target;
+        if (!el.matches?.('input:not([type="radio"]), select, textarea')) return;
+        const state = dirtyState.get(el) || { hasInteracted: false, hasBlurred: false };
+        state.hasBlurred = true;
+        dirtyState.set(el, state);
+        syncAria(el, true);
+      }, true);
+
+      form.addEventListener("input", event => {
+        const el = event.target;
+        if (!el.matches?.('input:not([type="radio"]), select, textarea')) return;
+        const state = dirtyState.get(el) || { hasInteracted: false, hasBlurred: false };
+        state.hasInteracted = true;
+        dirtyState.set(el, state);
+        if (el.hasAttribute("aria-invalid")) syncAria(el, false);
+      });
+
+      form.addEventListener("invalid", event => {
+        const el = event.target;
+        dirtyState.set(el, { hasInteracted: true, hasBlurred: true });
+        announced.add(el);
+        syncAria(el, false);
+      }, true);
+
+      // URL param role pre-selection + subtle placeholder update on Sign Up (?role=parent)
+      const nameInput = document.getElementById("signup-name");
+      function syncSelectedRoleUI() {
+        const selected = form.querySelector('input[name="account_role"]:checked')?.value;
+        if (nameInput && selected) {
+          nameInput.placeholder = selected === "parent" ? "Parent full name" : "Student full name";
+        }
+      }
+
+      const roleParam = new URLSearchParams(window.location.search).get("role");
+      if (roleParam) {
+        const matchingRadio = form.querySelector(\`input[name="account_role"][value="\${CSS.escape(roleParam.toLowerCase())}"]\`);
+        if (matchingRadio) matchingRadio.checked = true;
+      }
+      syncSelectedRoleUI();
+      form.querySelectorAll('input[name="account_role"]').forEach(radio => {
+        radio.addEventListener("change", syncSelectedRoleUI);
+      });
+
+      // Forgot-password inline panel on Sign In
+      const forgotBtn = document.getElementById("forgot-password-trigger");
+      const forgotBox = document.getElementById("forgot-password-panel");
+      forgotBtn?.addEventListener("click", () => {
+        if (!forgotBox) return;
+        const willOpen = forgotBox.hidden;
+        forgotBox.hidden = !willOpen;
+        forgotBtn.setAttribute("aria-expanded", String(willOpen));
+      });
+
+      // Federated Google button & form submission preview state for front-end handoff
+      const statusBanner = document.getElementById("auth-submit-feedback");
+      const googleBtn = document.getElementById("auth-google-btn");
+
+      googleBtn?.addEventListener("click", () => {
+        if (!statusBanner) return;
+        const selectedRole = form.elements.namedItem("account_role")?.value;
+        const roleText = selectedRole ? \` (\${selectedRole === "parent" ? "Parent" : "Student"} account)\` : "";
+        statusBanner.textContent = \`Google Single Sign-On\${roleText} connects to your authentication provider in production.\`;
+        statusBanner.hidden = false;
+        statusBanner.focus();
+      });
+
+      form.addEventListener("submit", event => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          const firstInvalid = [...form.elements].find(el => el.checkValidity && !el.checkValidity());
+          firstInvalid?.focus();
+          return;
+        }
+        event.preventDefault();
+        if (!statusBanner) return;
+        const mode = form.getAttribute("data-auth-form");
+        const selectedRole = form.elements.namedItem("account_role")?.value;
+        statusBanner.textContent = mode === "signup"
+          ? \`Account details verified! In production, this creates your free \${selectedRole === "parent" ? "Parent" : "Student"} account and opens your dashboard.\`
+          : "Credentials verified! In production, this signs you into your Student or linked Parent dashboard.";
+        statusBanner.hidden = false;
+        statusBanner.focus();
+      });
+    })();
+  </script>
+</body>
+</html>
+`;
+}
+
+const INPUT_SURFACE_CLASSES =
+  "auth-control w-full rounded-xl border border-slate-200/95 dark:border-white/12 bg-slate-50/75 dark:bg-zinc-950/60 hover:border-slate-300 dark:hover:border-white/20 focus:bg-white dark:focus:bg-zinc-950 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/15 focus:outline-none px-4 py-3 text-foreground placeholder:text-slate-400 dark:placeholder:text-zinc-500 transition-all";
+
+const CARD_SURFACE_CLASSES =
+  "rounded-[1.75rem] border border-slate-200/90 dark:border-white/[0.09] bg-white dark:bg-zinc-900/90 p-6 sm:p-9 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_24px_54px_-14px_rgba(15,23,42,0.09)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_64px_-16px_rgba(0,0,0,0.65)]";
+
+const PASSWORD_TOGGLE_ICONS = `
+  <svg data-eye-open aria-hidden="true" class="lucide w-4 h-4" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+  <svg data-eye-closed aria-hidden="true" class="lucide w-4 h-4 hidden" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>
+`;
+
+export function renderLoginPage() {
+  const formColumnHtml = `
+    <div class="${CARD_SURFACE_CLASSES}">
+      <div class="mb-6">
+        <span class="inline-block text-[11px] font-extrabold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-display mb-1.5">Student &amp; Parent Portal</span>
+        <h1 id="main-heading" tabindex="-1" class="text-2xl sm:text-[1.85rem] font-black font-display tracking-tight text-foreground leading-tight">
+          Sign in to your account
+        </h1>
+        <p class="text-sm text-muted-foreground mt-1.5">
+          Sign in as a student or parent to open your dashboard.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        id="auth-google-btn"
+        class="auth-control w-full rounded-xl border border-slate-200/95 dark:border-white/12 bg-white dark:bg-zinc-800/75 hover:bg-slate-50 dark:hover:bg-zinc-800 active:scale-[0.995] px-4 py-3 text-sm font-bold text-foreground transition-all flex items-center justify-center gap-3 shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
+      >
+        <svg aria-hidden="true" class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82Z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24Z"/>
+          <path fill="#FBBC05" d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.62H1.29a11.99 11.99 0 0 0 0 10.76l3.98-3.09Z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96Z"/>
+        </svg>
+        <span>Continue with Google</span>
+      </button>
+
+      <div class="relative my-5 flex items-center justify-center">
+        <div class="absolute inset-0 flex items-center" aria-hidden="true"><div class="w-full border-t border-slate-200 dark:border-white/10"></div></div>
+        <span class="relative bg-white dark:bg-zinc-900 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">or continue with email</span>
+      </div>
+
+      <form id="signin-form" data-auth-form="signin" action="./login.html" method="POST" novalidate class="space-y-4">
+        <div class="auth-field flex flex-col gap-1.5">
+          <label for="signin-email" class="text-xs font-bold text-slate-700 dark:text-zinc-200">Email address</label>
+          <input
+            type="email"
+            id="signin-email"
+            name="email"
+            autocomplete="username"
+            spellcheck="false"
+            enterkeyhint="next"
+            required
+            data-error="signin-email-error"
+            placeholder="you@example.com"
+            class="${INPUT_SURFACE_CLASSES}"
+          />
+          <div id="signin-email-error" class="error-msg items-center gap-1.5 text-xs font-semibold text-rose-600 dark:text-rose-400 mt-0.5">
+            <span role="img" aria-label="Error">&#9888;</span>
+            <span>Enter a valid email address (for example, you@example.com).</span>
+          </div>
+        </div>
+
+        <div class="auth-field flex flex-col gap-1.5">
+          <div class="flex items-center justify-between gap-2">
+            <label for="signin-password" class="text-xs font-bold text-slate-700 dark:text-zinc-200">Password</label>
+            <button
+              type="button"
+              id="forgot-password-trigger"
+              aria-expanded="false"
+              aria-controls="forgot-password-panel"
+              class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 hover:underline"
+            >
+              Forgot password?
+            </button>
+          </div>
+
+          <div class="relative">
+            <input
+              type="password"
+              id="signin-password"
+              name="password"
+              autocomplete="current-password"
+              enterkeyhint="done"
+              required
+              data-error="signin-password-error"
+              placeholder="Enter your password"
+              class="${INPUT_SURFACE_CLASSES} pr-24"
+            />
+            <button
+              type="button"
+              data-toggle-password="signin-password"
+              aria-label="Show password"
+              aria-pressed="false"
+              class="select-none absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-slate-200/60 dark:hover:bg-white/10 transition-colors"
+            >
+              ${PASSWORD_TOGGLE_ICONS}
+              <span data-toggle-password-text>Show</span>
+            </button>
+          </div>
+          <div id="signin-password-error" class="error-msg items-center gap-1.5 text-xs font-semibold text-rose-600 dark:text-rose-400 mt-0.5">
+            <span role="img" aria-label="Error">&#9888;</span>
+            <span>Please enter your password to sign in.</span>
+          </div>
+        </div>
+
+        <div id="forgot-password-panel" hidden class="rounded-xl border border-indigo-500/25 bg-indigo-500/[0.06] p-3.5 text-xs text-muted-foreground leading-relaxed">
+          <p class="font-bold text-foreground mb-0.5">Need a password reset?</p>
+          <p>Reset emails connect directly to your auth provider in production—or <a href="./contact.html" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">contact support</a> for immediate help.</p>
+        </div>
+
+        <div
+          id="auth-submit-feedback"
+          hidden
+          tabindex="-1"
+          role="status"
+          class="rounded-xl border border-emerald-500/35 bg-emerald-500/10 px-4 py-3 text-xs sm:text-sm font-semibold text-emerald-800 dark:text-emerald-200"
+        ></div>
+
+        <button
+          type="submit"
+          class="auth-control w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 active:scale-[0.995] text-white font-bold font-display text-sm sm:text-base py-3.5 px-6 transition-all shadow-[0_10px_24px_-6px_rgba(79,70,229,0.45)] mt-1 flex items-center justify-center gap-2"
+        >
+          <span>Sign In</span>
+          <svg aria-hidden="true" class="lucide w-4 h-4" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </form>
+
+      <p id="auth-live-announcer" class="visually-hidden" aria-live="polite"></p>
+
+      <div class="mt-6 pt-5 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between gap-3 text-sm">
+        <span class="text-muted-foreground">New here?</span>
+        <a href="./signup.html" class="font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 hover:underline">
+          Create a free account &rarr;
+        </a>
+      </div>
+    </div>
+  `;
+
+  return renderMinimalAuthShell({
+    title: "Sign In — Student & Parent Portal",
+    description: "Sign in to your Master Your Courses Student or Parent account to access diagnostics, practice courses, flashcards, and progress reports.",
+    canonicalPath: "login.html",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [buildBreadcrumbSchema("login.html", ["Sign In"])]
+    },
+    formColumnHtml
+  });
+}
+
+export function renderSignupPage() {
+  const formColumnHtml = `
+    <div class="${CARD_SURFACE_CLASSES}">
+      <div class="mb-5">
+        <span class="inline-block text-[11px] font-extrabold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 font-display mb-1">Free Student &amp; Parent Access</span>
+        <h1 id="main-heading" tabindex="-1" class="text-2xl sm:text-[1.85rem] font-black font-display tracking-tight text-foreground leading-tight">
+          Create your free account
+        </h1>
+      </div>
+
+      <form id="signup-form" data-auth-form="signup" action="./signup.html" method="POST" novalidate class="space-y-4">
+        <!-- Zero-glitch Student / Parent Role Selector -->
+        <fieldset class="space-y-1.5">
+          <legend class="text-xs font-bold text-slate-700 dark:text-zinc-200">I am joining as</legend>
+          <div class="grid grid-cols-2 gap-2.5 pt-0.5">
+            <div class="role-card-option">
+              <input type="radio" id="role-student" name="account_role" value="student" checked class="role-card-radio" />
+              <label for="role-student" class="role-card-label rounded-xl p-3.5 flex flex-col gap-1 h-full">
+                <span class="flex items-center justify-between gap-2">
+                  <span class="text-sm font-bold font-display text-foreground">Student</span>
+                  <span class="role-card-indicator" aria-hidden="true">
+                    <svg class="lucide w-3 h-3 stroke-[3]" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                </span>
+                <span class="text-[11px] text-muted-foreground leading-snug">Practice, tools &amp; courses</span>
+              </label>
+            </div>
+
+            <div class="role-card-option">
+              <input type="radio" id="role-parent" name="account_role" value="parent" class="role-card-radio" />
+              <label for="role-parent" class="role-card-label rounded-xl p-3.5 flex flex-col gap-1 h-full">
+                <span class="flex items-center justify-between gap-2">
+                  <span class="text-sm font-bold font-display text-foreground">Parent</span>
+                  <span class="role-card-indicator" aria-hidden="true">
+                    <svg class="lucide w-3 h-3 stroke-[3]" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                </span>
+                <span class="text-[11px] text-muted-foreground leading-snug">Follow child’s progress</span>
+              </label>
+            </div>
+          </div>
+        </fieldset>
+
+        <button
+          type="button"
+          id="auth-google-btn"
+          class="auth-control w-full rounded-xl border border-slate-200/95 dark:border-white/12 bg-white dark:bg-zinc-800/75 hover:bg-slate-50 dark:hover:bg-zinc-800 active:scale-[0.995] px-4 py-3 text-sm font-bold text-foreground transition-all flex items-center justify-center gap-3 shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
+        >
+          <svg aria-hidden="true" class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82Z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24Z"/>
+            <path fill="#FBBC05" d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.62H1.29a11.99 11.99 0 0 0 0 10.76l3.98-3.09Z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96Z"/>
+          </svg>
+          <span>Sign up with Google</span>
+        </button>
+
+        <div class="relative my-1 flex items-center justify-center">
+          <div class="absolute inset-0 flex items-center" aria-hidden="true"><div class="w-full border-t border-slate-200 dark:border-white/10"></div></div>
+          <span class="relative bg-white dark:bg-zinc-900 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">or sign up with email</span>
+        </div>
+
+        <div class="auth-field flex flex-col gap-1">
+          <label for="signup-name" class="text-xs font-bold text-slate-700 dark:text-zinc-200">Full name</label>
+          <input
+            type="text"
+            id="signup-name"
+            name="fullname"
+            autocomplete="name"
+            enterkeyhint="next"
+            required
+            data-error="signup-name-error"
+            placeholder="Student full name"
+            class="${INPUT_SURFACE_CLASSES}"
+          />
+          <div id="signup-name-error" class="error-msg items-center gap-1.5 text-xs font-semibold text-rose-600 dark:text-rose-400 mt-0.5">
+            <span role="img" aria-label="Error">&#9888;</span>
+            <span>Please enter your full name.</span>
+          </div>
+        </div>
+
+        <div class="auth-field flex flex-col gap-1">
+          <div class="flex items-baseline justify-between gap-2">
+            <label for="signup-email" class="text-xs font-bold text-slate-700 dark:text-zinc-200">Email address</label>
+            <span id="signup-email-hint" class="text-[11px] text-muted-foreground">you@example.com</span>
+          </div>
+          <input
+            type="email"
+            id="signup-email"
+            name="email"
+            autocomplete="username"
+            spellcheck="false"
+            enterkeyhint="next"
+            required
+            aria-describedby="signup-email-hint"
+            data-error="signup-email-error"
+            placeholder="you@example.com"
+            class="${INPUT_SURFACE_CLASSES}"
+          />
+          <div id="signup-email-error" class="error-msg items-center gap-1.5 text-xs font-semibold text-rose-600 dark:text-rose-400 mt-0.5">
+            <span role="img" aria-label="Error">&#9888;</span>
+            <span>Enter a valid email address (for example, you@example.com).</span>
+          </div>
+        </div>
+
+        <div class="auth-field flex flex-col gap-1">
+          <label for="signup-password" class="text-xs font-bold text-slate-700 dark:text-zinc-200">Create password</label>
+          <ul id="signup-password-rules" role="list" class="rules-list text-[11px] text-muted-foreground flex flex-wrap gap-x-3 gap-y-0.5 mb-0.5">
+            <li id="pwd-rule-length" class="pwd-rule transition-colors">&bull; 8+ characters</li>
+            <li id="pwd-rule-case" class="pwd-rule transition-colors">&bull; Upper &amp; lowercase</li>
+            <li id="pwd-rule-num" class="pwd-rule transition-colors">&bull; 1+ number</li>
+          </ul>
+          <div class="relative">
+            <input
+              type="password"
+              id="signup-password"
+              name="new-password"
+              autocomplete="new-password"
+              minlength="8"
+              pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              enterkeyhint="done"
+              required
+              aria-describedby="signup-password-rules"
+              data-error="signup-password-error"
+              placeholder="Create a strong password"
+              class="${INPUT_SURFACE_CLASSES} pr-24"
+            />
+            <button
+              type="button"
+              data-toggle-password="signup-password"
+              aria-label="Show password"
+              aria-pressed="false"
+              class="select-none absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-slate-200/60 dark:hover:bg-white/10 transition-colors"
+            >
+              ${PASSWORD_TOGGLE_ICONS}
+              <span data-toggle-password-text>Show</span>
+            </button>
+          </div>
+          <div id="signup-password-error" class="error-msg items-center gap-1.5 text-xs font-semibold text-rose-600 dark:text-rose-400 mt-0.5">
+            <span role="img" aria-label="Error">&#9888;</span>
+            <span>Include 8+ characters, uppercase &amp; lowercase letters, and a number.</span>
+          </div>
+        </div>
+
+        <div
+          id="auth-submit-feedback"
+          hidden
+          tabindex="-1"
+          role="status"
+          class="rounded-xl border border-emerald-500/35 bg-emerald-500/10 px-4 py-3 text-xs sm:text-sm font-semibold text-emerald-800 dark:text-emerald-200"
+        ></div>
+
+        <button
+          type="submit"
+          class="auth-control w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 active:scale-[0.995] text-white font-bold font-display text-sm sm:text-base py-3.5 px-6 transition-all shadow-[0_10px_24px_-6px_rgba(79,70,229,0.45)] flex items-center justify-center gap-2"
+        >
+          <span>Create Free Account</span>
+          <svg aria-hidden="true" class="lucide w-4 h-4" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+
+        <p class="text-[11px] text-muted-foreground text-center leading-relaxed pt-0.5">
+          By creating an account, you agree to our <a href="./terms.html" class="underline hover:text-foreground">Terms</a> and <a href="./privacy.html" class="underline hover:text-foreground">Privacy Policy</a>.
+        </p>
+      </form>
+
+      <p id="auth-live-announcer" class="visually-hidden" aria-live="polite"></p>
+
+      <div class="mt-5 pt-4 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between gap-3 text-sm">
+        <span class="text-muted-foreground">Already have an account?</span>
+        <a href="./login.html" class="font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 hover:underline">
+          Sign in &rarr;
+        </a>
+      </div>
+    </div>
+  `;
+
+  return renderMinimalAuthShell({
+    title: "Create Free Account — Student & Parent Portal",
+    description: "Create a free Master Your Courses Student or Parent account to save diagnostic scores, flashcards, study schedules, and course progress.",
+    canonicalPath: "signup.html",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [buildBreadcrumbSchema("signup.html", ["Sign In", "Create Account"])]
+    },
+    formColumnHtml
+  });
+}

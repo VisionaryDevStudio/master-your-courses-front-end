@@ -2796,12 +2796,20 @@ test("includes SEO and OpenGraph share metadata and streamlined header navigatio
 
 test("exposes a two-level Programs mega-menu with all 22 AP courses, SAT formats, Olympiads, and tutoring levels", () => {
   const header = html.slice(html.indexOf("<header"), html.indexOf("</header>"));
-  assert.equal((header.match(/data-mega-track="/g) ?? []).length, 5);
-  assert.equal((header.match(/data-mega-panel="/g) ?? []).length, 5);
-  assert.equal((header.match(/data-resource-track="/g) ?? []).length, 5);
-  assert.equal((header.match(/data-resource-panel="/g) ?? []).length, 5);
+  assert.equal((header.match(/data-mega-track="/g) ?? []).length, 6);
+  assert.equal((header.match(/data-mega-panel="/g) ?? []).length, 6);
+  assert.equal((header.match(/data-resource-track="/g) ?? []).length, 6);
+  assert.equal((header.match(/data-resource-panel="/g) ?? []).length, 6);
   assert.match(html, /\.resources-mega-track\[aria-selected="true"\]/);
   assert.match(html, /function setResourceTrack\(index\)/);
+  assert.match(html, /function queueMegaTrack\(index\)/, "Mega-menu should buffer diagonal hover intent");
+  assert.match(html, /function queueResourceTrack\(index\)/, "Free Resources menu should buffer diagonal hover intent");
+  assert.match(html, /\.mega-rail-surface\b/, "Mega-menu should use recessed rail surface");
+  assert.match(html, /\.mega-footer-bar\b/, "Mega-menu should use full-width bottom utility bar");
+  assert.equal((header.match(/class="mega-stage /g) ?? []).length, 2, "Both mega-menu stages should stack panels so switching tabs does not jump");
+  assert.match(html, /\.mega-stage\s*\{\s*display:\s*grid;/, "Mega stage should be a grid");
+  assert.match(html, /\.mega-stage > \[role="tabpanel"\]\s*\{\s*grid-area:\s*1 \/ 1;/, "Tab panels should share one grid cell so the stage takes the tallest panel's height");
+  assert.match(html, /\.mega-stage > \[role="tabpanel"\]\[hidden\]\s*\{\s*display:\s*block;\s*visibility:\s*hidden;/, "Hidden panels should keep layout but stay invisible and unfocusable");
 
   const expectedNestedRoutes = [
     "programs/ap-biology.html", "programs/ap-chemistry.html", "programs/ap-physics-1.html", "programs/ap-physics-2.html",
@@ -2811,12 +2819,13 @@ test("exposes a two-level Programs mega-menu with all 22 AP courses, SAT formats
     "programs/ap-microeconomics.html", "programs/ap-macroeconomics.html", "programs/ap-psychology.html",
     "programs/ap-english-language.html", "programs/ap-english-literature.html", "programs/ap-us-history.html",
     "programs/ap-world-history.html", "programs/ap-us-government.html", "programs/ap-human-geography.html",
-    "programs/sat-1-on-1.html", "programs/sat-cohort.html", "programs/sat-practice-course.html", "programs/act-prep.html",
+    "programs/sat-1-on-1.html", "programs/sat-cohort.html", "programs/sat-practice-course.html", "programs/psat-national-merit.html", "programs/act-prep.html",
     "programs/mcat-dat-prep.html", "programs/mcat-prep.html", "programs/mcat-1-on-1.html", "programs/mcat-cohort.html", "programs/mcat-practice-course.html", "programs/dat-prep.html",
     "programs/amc-8-mathcounts.html", "programs/amc-10.html", "programs/amc-12.html", "programs/aime-usamo.html",
     "programs/waterloo-cemc-contests.html", "programs/fma-usapho.html", "programs/usnco-chemistry-olympiad.html",
     "programs/usabo-biology-olympiad.html", "programs/usaco-computing-olympiad.html",
-    "programs/high-school-tutoring.html", "programs/university-tutoring.html",
+    "programs/high-school-tutoring.html", "programs/ib-diploma-prep.html", "programs/university-tutoring.html",
+    "programs/stem-research-mentorship.html", "programs/college-admissions-counseling.html",
     "programs/1-on-1-mentorship.html", "programs/live-cohorts.html", "programs/practice-courses.html",
   ];
   for (const route of expectedNestedRoutes) {
@@ -2837,7 +2846,7 @@ test("exposes a two-level Programs mega-menu with all 22 AP courses, SAT formats
     "solutions/index.html", "solutions/ap-frq-solutions.html", "solutions/amc-aime-solutions.html", "solutions/waterloo-euclid-solutions.html", "solutions/olympiad-solutions.html",
     "tools/index.html", "tools/ap-score-calculators.html", "tools/digital-sat-score-calculator.html",
     "tools/amc-aime-cutoff-calculator.html", "tools/gpa-calculator.html", "tools/study-schedule-planner.html",
-    "guides/index.html", "guides/parent-academic-guides.html", "guides/university-stem-guides.html", "guides/video-lessons.html",
+    "guides/index.html", "guides/stem-summer-programs.html", "guides/scholarships-and-merit-aid.html", "guides/college-admissions-roadmaps.html", "guides/parent-academic-guides.html", "guides/university-stem-guides.html", "guides/video-lessons.html",
     "workshops/index.html", "blog/index.html",
   ]) {
     assert.ok(header.includes(`href="${seoRoute}"`), `Free Resources header menu missing ${seoRoute}`);
@@ -2884,4 +2893,172 @@ test("wires every homepage navigation and Coming Soon link to an existing file o
     const targetUrl = new URL(`../${cleanPath}`, import.meta.url);
     assert.equal(existsSync(targetUrl), true, `Missing target page on disk for href="${href}"`);
   }
+});
+
+test("renders live interactive All Programs Directory at programs/index.html with shared shell", () => {
+  const programsDirUrl = new URL("../programs/index.html", import.meta.url);
+  assert.equal(existsSync(programsDirUrl), true, "programs/index.html should exist on disk");
+  const programsHtml = readFileSync(programsDirUrl, "utf8");
+
+  assert.doesNotMatch(programsHtml, /Coming Soon/, "programs/index.html should be a live page, not Coming Soon");
+  assert.match(programsHtml, /<a href="#main-heading" class="skip-link visually-hidden">Skip to main content<\/a>/);
+  assert.match(programsHtml, /<h1 id="main-heading" tabindex="-1"/);
+  assert.match(programsHtml, /<search aria-label="Filter programs by subject, track, or learning format">/);
+  assert.match(programsHtml, /<input[\s\S]*type="search"[\s\S]*id="program-search"/);
+  assert.match(programsHtml, /id="programs-live-announcer"[^>]*role="status"[^>]*aria-live="polite"/);
+  assert.equal((programsHtml.match(/data-directory-section="/g) ?? []).length, 6, "Expected 6 program directory sections");
+  assert.equal((programsHtml.match(/class="program-card-item"/g) ?? []).length, 47, "Expected all 47 program cards");
+  assert.match(programsHtml, /<table\b[\s\S]*<caption class="sr-only">[\s\S]*<th scope="col"[\s\S]*<th scope="row"/);
+  assert.match(programsHtml, /"@type":"CollectionPage"[\s\S]*"@type":"ItemList"/);
+
+  // Shared interactive site shell checks on nested and root inner routes
+  const nestedHeader = programsHtml.slice(programsHtml.indexOf("<header"), programsHtml.indexOf("</header>"));
+  assert.equal((nestedHeader.match(/data-mega-track="/g) ?? []).length, 6);
+  assert.equal((nestedHeader.match(/data-resource-track="/g) ?? []).length, 6);
+  assert.doesNotMatch(nestedHeader, /href="\.\.\/books\//, "Low-ticket textbooks must stay out of shared header");
+  assert.match(programsHtml, /<dialog id="consultation-modal" closedby="any"/);
+
+  for (const [pageRel, baseDir] of [
+    ["../programs/index.html", "../programs/"],
+    ["../programs/ap-biology.html", "../programs/"],
+    ["../pricing.html", "../"],
+    ["../sitemap.html", "../"]
+  ]) {
+    const pageHtml = readFileSync(new URL(pageRel, import.meta.url), "utf8");
+    const hrefs = [...pageHtml.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].map(([, h]) => h);
+    assert.ok(hrefs.length >= 60, `Expected full shared header/footer links in ${pageRel}`);
+    for (const href of hrefs) {
+      if (href.startsWith("#")) {
+        const anchorId = href.slice(1);
+        assert.ok(pageHtml.includes(`id="${anchorId}"`), `Missing #${anchorId} in ${pageRel}`);
+        continue;
+      }
+      if (/^https?:\/\/|^mailto:|^tel:/.test(href)) continue;
+      const cleanRel = href.split("?")[0].split("#")[0];
+      const resolvedUrl = new URL(cleanRel, new URL(baseDir, import.meta.url));
+      assert.equal(existsSync(resolvedUrl), true, `Broken relative href="${href}" in ${pageRel}`);
+    }
+  }
+});
+
+test("enforces EdTech SEO metadata, connected Schema.org graphs, and Coming Soon noindex gating", async () => {
+  const head = html.slice(0, html.indexOf("</head>"));
+  assert.match(head, /<link rel="canonical" href="https:\/\/masteryourcourses\.com\/"\s*\/?>/);
+  assert.match(head, /<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"\s*\/?>/);
+  assert.match(head, /<meta property="og:url" content="https:\/\/masteryourcourses\.com\/"\s*\/?>/);
+  assert.match(head, /<meta property="og:image" content="https:\/\/masteryourcourses\.com\/[^"]+"\s*\/?>/);
+  assert.match(head, /<meta name="twitter:image" content="https:\/\/masteryourcourses\.com\/[^"]+"\s*\/?>/);
+
+  // Parse and validate Homepage JSON-LD @graph
+  const ldMatch = head.match(/<script type="application\/ld\+json">\s*([\s\S]*?)\s*<\/script>/);
+  assert.ok(ldMatch, "Homepage must contain JSON-LD structured data");
+  const homeLd = JSON.parse(ldMatch[1]);
+  assert.equal(homeLd["@context"], "https://schema.org");
+  assert.ok(Array.isArray(homeLd["@graph"]), "Homepage JSON-LD should use @graph");
+
+  const types = new Set(homeLd["@graph"].map(node => node["@type"]));
+  for (const requiredType of ["EducationalOrganization", "WebSite", "WebPage", "ItemList", "Person", "VideoObject", "FAQPage"]) {
+    assert.equal(types.has(requiredType), true, `Homepage @graph missing ${requiredType}`);
+  }
+
+  const orgNode = homeLd["@graph"].find(n => n["@type"] === "EducationalOrganization");
+  assert.equal(orgNode["@id"], "https://masteryourcourses.com/#organization");
+  const siteNode = homeLd["@graph"].find(n => n["@type"] === "WebSite");
+  assert.equal(siteNode.potentialAction?.["@type"], "SearchAction");
+  assert.equal(siteNode.potentialAction?.target?.urlTemplate, "https://masteryourcourses.com/programs/?q={search_term_string}");
+
+  const faqNode = homeLd["@graph"].find(n => n["@type"] === "FAQPage");
+  const visibleFaqCount = (html.slice(html.indexOf('id="faq-section"'), html.indexOf('id="closing-cta"')).match(/<details\b/g) ?? []).length;
+  assert.equal(faqNode.mainEntity.length, visibleFaqCount, "FAQPage JSON-LD must match all visible homepage FAQs");
+
+  // Validate live vs. Coming Soon robots directives and BreadcrumbList item URLs
+  const programsHtml = readFileSync(new URL("../programs/index.html", import.meta.url), "utf8");
+  assert.match(programsHtml, /<meta name="robots" content="index, follow/);
+  assert.match(programsHtml, /<link rel="canonical" href="https:\/\/masteryourcourses\.com\/programs\/"\s*\/?>/);
+  assert.match(programsHtml, /<meta property="og:image" content="https:\/\/masteryourcourses\.com\/[^"]+"/);
+
+  const apBioHtml = readFileSync(new URL("../programs/ap-biology.html", import.meta.url), "utf8");
+  assert.match(apBioHtml, /<meta name="robots" content="noindex, follow"\s*\/?>/, "Coming Soon pages must be noindex, follow");
+  const apBioLdMatch = apBioHtml.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  assert.ok(apBioLdMatch, "Nested route should include BreadcrumbList JSON-LD");
+  const apBioLd = JSON.parse(apBioLdMatch[1]);
+  const crumbItems = apBioLd["@graph"].find(n => n["@type"] === "BreadcrumbList").itemListElement;
+  assert.equal(crumbItems.length, 4);
+  for (const crumb of crumbItems) {
+    assert.match(crumb.item, /^https:\/\/masteryourcourses\.com\//, `Breadcrumb item "${crumb.name}" must have an absolute URL`);
+  }
+
+  // Validate sitemap.xml excludes unfinished Coming Soon placeholders
+  const sitemapXml = readFileSync(new URL("../sitemap.xml", import.meta.url), "utf8");
+  assert.match(sitemapXml, /<loc>https:\/\/masteryourcourses\.com\/<\/loc>/);
+  assert.match(sitemapXml, /<loc>https:\/\/masteryourcourses\.com\/programs\/<\/loc>/);
+  assert.doesNotMatch(sitemapXml, /ap-biology\.html/, "Unfinished Coming Soon pages must not bloat sitemap.xml");
+
+  // Validate reusable EdTech schema builders for upcoming Course, Book, Tool, Guide & Event pages
+  const schemas = await import("../seo_schemas.mjs");
+  const courseGraph = schemas.buildCoursePageGraph({
+    routePath: "programs/ap-biology.html",
+    breadcrumb: ["Programs", "AP Prep", "AP Biology"],
+    title: "AP Biology Tutoring & Exam Prep",
+    description: "First-principles AP Biology prep.",
+    courseCode: "AP-BIO",
+    instructorIds: ["https://masteryourcourses.com/#mentor-zoey"],
+    faqs: [{ question: "When does AP Bio start?", answer: "Fall, winter, and spring." }]
+  });
+  assert.ok(courseGraph["@graph"].some(n => n["@type"] === "Course" && n.hasCourseInstance.length === 3));
+  assert.ok(schemas.buildBookProductGraph({ routePath: "books/ap-prep-books.html", breadcrumb: ["Textbooks & Workbooks", "AP Books"], title: "AP Bio Workbook", description: "Workbook", price: "39.00" })["@graph"].some(n => Array.isArray(n["@type"]) && n["@type"].includes("Book")));
+  assert.ok(schemas.buildToolAppGraph({ routePath: "tools/ap-score-calculators.html", breadcrumb: ["Free Resources", "Tools & Calculators", "AP Score Calculators"], title: "AP Score Calculator", description: "Calculator" })["@graph"].some(n => n["@type"] === "WebApplication"));
+  assert.ok(schemas.buildLearningResourceGraph({ routePath: "solutions/ap-frq-solutions.html", breadcrumb: ["Free Resources", "Past Exam Solutions", "AP FRQs"], title: "AP FRQ Solutions", description: "Solutions" })["@graph"].some(n => Array.isArray(n["@type"]) && n["@type"].includes("LearningResource")));
+  assert.ok(schemas.buildEducationEventGraph({ routePath: "workshops/index.html", breadcrumb: ["Free Resources", "Workshops"], title: "AP Bio Review", description: "Live review" })["@graph"].some(n => n["@type"] === "EducationEvent"));
+});
+
+test("renders live Student & Parent Sign In and Create Account pages with Masumeh Rajaie testimonial", () => {
+  const loginHtml = readFileSync(new URL("../login.html", import.meta.url), "utf8");
+  const signupHtml = readFileSync(new URL("../signup.html", import.meta.url), "utf8");
+
+  for (const [name, pageHtml] of [["login.html", loginHtml], ["signup.html", signupHtml]]) {
+    assert.doesNotMatch(pageHtml, /Coming Soon/, `${name} should be a live page`);
+    assert.match(pageHtml, /<meta name="robots" content="noindex, follow"\s*\/?>/, `${name} should stay noindex, follow`);
+    assert.match(pageHtml, /grid grid-cols-1 md:grid-cols-12/, `${name} must use side-by-side grid with dark showcase first on the left and form on the right`);
+    assert.ok(pageHtml.indexOf("<aside") < pageHtml.indexOf("<main"), `${name} must place left showcase <aside> before right <main> form`);
+    assert.doesNotMatch(pageHtml, /auth-showcase-grid/, `${name} should keep the dark navy showcase smooth and free of dot-grid textures`);
+    assert.doesNotMatch(pageHtml, /id="programs-mega-menu"/, `${name} should use distraction-free auth header without marketing mega-menus`);
+    assert.doesNotMatch(pageHtml, /Pick up right where you left off/, `${name} should omit redundant marketing copy`);
+    assert.match(pageHtml, /Masumeh Rajaie/, `${name} must feature Masumeh Rajaie`);
+    assert.match(pageHtml, /U of T &bull; Astronomy and Astrophysics Student/, `${name} must show U of T attribution`);
+    assert.match(pageHtml, /Sumit one of the tutors helped me a lot with my work/, `${name} must include Masumeh quote`);
+    assert.match(pageHtml, /src="\.\/testimonies\/masumeh\.png"/, `${name} must wire Masumeh portrait slot`);
+    assert.match(pageHtml, /data-toggle-password=/, `${name} must include Show/Hide password toggle`);
+    assert.match(pageHtml, /:is\(:user-invalid, \.user-invalid-fallback\)/, `${name} must defer validation until interaction`);
+  }
+
+  // Sign-In specific autofill semantics
+  assert.match(loginHtml, /<input[\s\S]*id="signin-email"[\s\S]*type="email"|\btype="email"[\s\S]*id="signin-email"/);
+  assert.match(loginHtml, /id="signin-email"[\s\S]*autocomplete="username"/);
+  assert.match(loginHtml, /id="signin-password"[\s\S]*autocomplete="current-password"/);
+  assert.match(loginHtml, /href="\.\/signup\.html"/);
+
+  // Sign-Up specific autofill, Student/Parent role radios, and non-duplicated password rules
+  assert.doesNotMatch(signupHtml, /role-card-radio[^>]*visually-hidden/, "Role radio inputs must stay permanently hidden without un-clipping on :focus-within/:active");
+  assert.match(signupHtml, /\.role-card-radio\s*\{[\s\S]*opacity:\s*0;[\s\S]*pointer-events:\s*none;/);
+  assert.match(signupHtml, /name="account_role" value="student"/);
+  assert.match(signupHtml, /name="account_role" value="parent"/);
+  assert.match(signupHtml, /id="signup-name"[\s\S]*autocomplete="name"/);
+  assert.match(signupHtml, /id="signup-email"[\s\S]*autocomplete="username"/);
+  assert.match(signupHtml, /id="signup-password"[\s\S]*autocomplete="new-password"/);
+  assert.doesNotMatch(signupHtml, /confirm-password/i, "Sign-up should not double up password inputs");
+});
+
+test("polishes Outlier Results section with tabular numerals, fluid clamp sizing, dark-mode centerpiece contrast, and proof link", () => {
+  const results = html.match(/<section id="results-section"[\s\S]*?<\/section>/)?.[0] ?? "";
+  assert.ok(results, "results-section must exist");
+  assert.doesNotMatch(results, /dark:bg-zinc-900/, "Results cards should use distinct secondary and featured surfaces");
+  assert.equal((results.match(/class="results-stat-value\b/g) ?? []).length, 3);
+  assert.equal((results.match(/class="results-card-secondary\b/g) ?? []).length, 2);
+  assert.equal((results.match(/class="results-card-featured\b/g) ?? []).length, 1);
+  assert.match(results, /rounded-2xl sm:rounded-full/);
+  assert.match(results, /href="results\.html"[^>]*>Explore student score jumps &amp; stories &rarr;<\/a>/);
+
+  assert.match(html, /\.results-stat-value\s*\{[\s\S]*font-size:\s*clamp\(2\.75rem,\s*1\.5rem \+ 3\.4vw,\s*4\.5rem\);[\s\S]*font-variant-numeric:\s*tabular-nums;/);
+  assert.match(html, /html\.dark \.results-card-featured\s*\{[\s\S]*#132142[\s\S]*rgb\(52 211 153 \/ 0\.42\)/);
 });
