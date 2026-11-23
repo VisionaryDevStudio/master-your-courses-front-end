@@ -349,6 +349,21 @@ export function renderSharedShell({
     [data-resource-panel]:not([hidden]) {
       display: block;
     }
+    /* Stack every tab panel in one grid cell so the stage always takes the
+       tallest panel's height: switching tabs never resizes the menu or
+       shifts rail items under the cursor. Hidden panels keep layout only. */
+    .mega-stage {
+      display: grid;
+    }
+    .mega-stage > [role="tabpanel"] {
+      grid-area: 1 / 1;
+      min-width: 0;
+    }
+    .mega-stage > [role="tabpanel"][hidden] {
+      display: block;
+      visibility: hidden;
+      pointer-events: none;
+    }
     .mega-dropdown-layer {
       opacity: 0;
       visibility: hidden;

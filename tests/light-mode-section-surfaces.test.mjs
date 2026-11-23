@@ -2806,7 +2806,10 @@ test("exposes a two-level Programs mega-menu with all 22 AP courses, SAT formats
   assert.match(html, /function queueResourceTrack\(index\)/, "Free Resources menu should buffer diagonal hover intent");
   assert.match(html, /\.mega-rail-surface\b/, "Mega-menu should use recessed rail surface");
   assert.match(html, /\.mega-footer-bar\b/, "Mega-menu should use full-width bottom utility bar");
-  assert.match(header, /min-h-\[21\.5rem\]/, "Mega-menu right stage should lock min-height so switching tabs does not jump");
+  assert.equal((header.match(/class="mega-stage /g) ?? []).length, 2, "Both mega-menu stages should stack panels so switching tabs does not jump");
+  assert.match(html, /\.mega-stage\s*\{\s*display:\s*grid;/, "Mega stage should be a grid");
+  assert.match(html, /\.mega-stage > \[role="tabpanel"\]\s*\{\s*grid-area:\s*1 \/ 1;/, "Tab panels should share one grid cell so the stage takes the tallest panel's height");
+  assert.match(html, /\.mega-stage > \[role="tabpanel"\]\[hidden\]\s*\{\s*display:\s*block;\s*visibility:\s*hidden;/, "Hidden panels should keep layout but stay invisible and unfocusable");
 
   const expectedNestedRoutes = [
     "programs/ap-biology.html", "programs/ap-chemistry.html", "programs/ap-physics-1.html", "programs/ap-physics-2.html",
