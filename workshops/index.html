@@ -1,28 +1,46 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark overflow-x-hidden">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Free Live Workshops &amp; Parent Strategy Seminars — Master Your Courses</title>
+  <meta name="robots" content="noindex, follow" />
   <meta name="description" content="Seasonal live exam-strategy clinics for students and academic planning Q&amp;As for parents—hosted by our lead mentors." />
+  <link rel="canonical" href="https://masteryourcourses.com/workshops/" />
+  <meta property="og:site_name" content="Master Your Courses" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Free Live Workshops &amp; Parent Strategy Seminars — Master Your Courses" />
+  <meta property="og:description" content="Seasonal live exam-strategy clinics for students and academic planning Q&amp;As for parents—hosted by our lead mentors." />
+  <meta property="og:url" content="https://masteryourcourses.com/workshops/" />
+  <meta property="og:image" content="https://masteryourcourses.com/mentors/zoey.png" />
+  <meta property="og:image:alt" content="Master Your Courses — 1-on-1 Mentorship, Live Group Cohorts &amp; Practice Courses" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Free Live Workshops &amp; Parent Strategy Seminars — Master Your Courses" />
+  <meta name="twitter:description" content="Seasonal live exam-strategy clinics for students and academic planning Q&amp;As for parents—hosted by our lead mentors." />
+  <meta name="twitter:image" content="https://masteryourcourses.com/mentors/zoey.png" />
   <link rel="icon" href="../logo/logo.svg" type="image/svg+xml" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://masteryourcourses.com/"},{"@type":"ListItem","position":2,"name":"Free Resources"},{"@type":"ListItem","position":3,"name":"Live Workshops & Seminars","item":"https://masteryourcourses.com/workshops/index.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","@id":"https://masteryourcourses.com/workshops/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://masteryourcourses.com/"},{"@type":"ListItem","position":2,"name":"Free Resources","item":"https://masteryourcourses.com/resources/"},{"@type":"ListItem","position":3,"name":"Live Workshops & Seminars","item":"https://masteryourcourses.com/workshops/"}]}]}</script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    (function () {
-      const saved = localStorage.getItem("theme");
-      const theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-      document.documentElement.classList.toggle("dark", theme === "dark");
-    })();
-    function toggleTheme() {
-      const nextDark = !document.documentElement.classList.contains("dark");
-      document.documentElement.classList.toggle("dark", nextDark);
-      localStorage.setItem("theme", nextDark ? "dark" : "light");
+    function getInitialTheme() {
+      let savedTheme = null;
+      try { savedTheme = localStorage.getItem("theme"); } catch (_) {}
+      if (savedTheme) return savedTheme;
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
+    function setTheme(theme) {
+      document.documentElement.classList.toggle("dark", theme === "dark");
+      try { localStorage.setItem("theme", theme); } catch (_) {}
+    }
+    function toggleTheme() {
+      setTheme(document.documentElement.classList.contains("dark") ? "light" : "dark");
+    }
+    setTheme(getInitialTheme());
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       darkMode: "class",
@@ -31,43 +49,1313 @@
           fontFamily: {
             sans: ["Inter", "sans-serif"],
             display: ["Outfit", "sans-serif"]
+          },
+          colors: {
+            background: "hsl(var(--background) / <alpha-value>)",
+            foreground: "hsl(var(--foreground) / <alpha-value>)",
+            border: "hsl(var(--border) / <alpha-value>)",
+            muted: {
+              DEFAULT: "hsl(var(--muted) / <alpha-value>)",
+              foreground: "hsl(var(--muted-foreground) / <alpha-value>)"
+            }
           }
         }
       }
     };
   </script>
+  <style>
+    :root {
+      --background: 210 20% 98%;
+      --foreground: 222.2 84% 4.9%;
+      --border: 214.3 31.8% 91.4%;
+      --muted: 210 40% 96.1%;
+      --muted-foreground: 215.4 16.3% 46.9%;
+      --surface-paper: 0 0% 100%;
+      --surface-mist: 214 38% 93%;
+      --surface-indigo: 235 42% 93%;
+      --surface-warm: 32 30% 94%;
+    }
+    .dark {
+      --background: 222.2 84% 4.9%;
+      --foreground: 210 40% 98%;
+      --border: 217.2 32.6% 17.5%;
+      --muted: 217.2 32.6% 17.5%;
+      --muted-foreground: 215 20.2% 65.1%;
+    }
+    body {
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
+    .visually-hidden:not(.skip-link),
+    .skip-link:where(:not(:focus-within, :active)) {
+      position: absolute !important;
+      clip-path: inset(50%) !important;
+      overflow: hidden !important;
+      width: 1px !important;
+      height: 1px !important;
+      margin: -1px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      white-space: nowrap !important;
+    }
+    .skip-link:is(:focus-within, :active) {
+      position: fixed;
+      inset-block-start: 0.75rem;
+      inset-inline-start: 0.75rem;
+      z-index: 100;
+      padding: 0.625rem 1.125rem;
+      border-radius: 9999px;
+      background: hsl(var(--foreground));
+      color: hsl(var(--background));
+      font-weight: 700;
+      font-size: 0.875rem;
+      box-shadow: 0 12px 30px rgb(15 23 42 / 0.25);
+    }
+    .lucide {
+      width: 1em;
+      height: 1em;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+    .section-space-major { padding-block: 4rem; }
+    .section-space-dense { padding-block: 3.5rem; }
+    @media (min-width: 768px) {
+      .section-space-major { padding-block: 5.5rem; }
+      .section-space-dense { padding-block: 4.5rem; }
+    }
+    @media (min-width: 1024px) {
+      .section-space-major { padding-block: 7rem; }
+      .section-space-dense { padding-block: 5.5rem; }
+    }
+    html:not(.dark) .surface-hero {
+      background:
+        radial-gradient(circle at 82% 24%, rgb(99 102 241 / 0.11), transparent 32rem),
+        radial-gradient(circle at 18% 76%, rgb(16 185 129 / 0.06), transparent 28rem),
+        hsl(var(--surface-paper));
+    }
+    html:not(.dark) .surface-mist {
+      background:
+        linear-gradient(180deg, rgb(255 255 255 / 0.35), transparent 18rem),
+        hsl(var(--surface-mist));
+    }
+    html:not(.dark) .surface-indigo {
+      background:
+        radial-gradient(circle at 50% 0%, rgb(99 102 241 / 0.09), transparent 34rem),
+        hsl(var(--surface-indigo));
+    }
+
+    /* Shared Mega-Menu & Mobile Popover */
+    .programs-mega-panel {
+      width: min(94dvw, 66rem);
+      max-height: calc(100dvh - 5.5rem);
+      overflow-y: auto;
+      background: #ffffff;
+      border: 1px solid rgb(203 213 225 / 0.9);
+      box-shadow:
+        0 4px 12px -2px rgb(15 23 42 / 0.05),
+        0 28px 68px -12px rgb(15 23 42 / 0.19);
+    }
+    .dark .programs-mega-panel {
+      background: #060b17;
+      border-color: rgb(148 163 184 / 0.14);
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.06),
+        0 32px 76px -10px rgb(0 0 0 / 0.82);
+    }
+    .mega-rail-surface {
+      background: #f4f7fc;
+      border-inline-end: 1px solid rgb(226 232 240 / 0.95);
+    }
+    .dark .mega-rail-surface {
+      background: #0b1222;
+      border-inline-end-color: rgb(148 163 184 / 0.11);
+    }
+    .mega-footer-bar {
+      background: #f6f8fc;
+      border-block-start: 1px solid rgb(226 232 240 / 0.95);
+    }
+    .dark .mega-footer-bar {
+      background: #09101f;
+      border-block-start-color: rgb(148 163 184 / 0.11);
+    }
+    .programs-mega-track[aria-selected="true"],
+    .resources-mega-track[aria-selected="true"] {
+      background: #ffffff;
+      border-color: rgb(99 102 241 / 0.34);
+      color: hsl(var(--foreground));
+      box-shadow: -2px 0 0 0 #6366f1, 0 3px 10px -2px rgb(15 23 42 / 0.08);
+    }
+    .dark .programs-mega-track[aria-selected="true"],
+    .dark .resources-mega-track[aria-selected="true"] {
+      background: #111a30;
+      border-color: rgb(129 140 248 / 0.42);
+      box-shadow: -2px 0 0 0 #818cf8, 0 6px 16px -4px rgb(0 0 0 / 0.55);
+    }
+    .programs-mega-track[aria-selected="true"] .mega-track-chevron,
+    .resources-mega-track[aria-selected="true"] .mega-track-chevron {
+      color: #6366f1;
+      transform: translateX(2px);
+    }
+    .dark .programs-mega-track[aria-selected="true"] .mega-track-chevron,
+    .dark .resources-mega-track[aria-selected="true"] .mega-track-chevron {
+      color: #818cf8;
+    }
+    .mega-item-card {
+      border: 1px solid rgb(226 232 240 / 0.9);
+      background: rgb(248 250 252 / 0.65);
+      transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+    }
+    .dark .mega-item-card {
+      border-color: rgb(148 163 184 / 0.11);
+      background: #0c1426;
+    }
+    .mega-item-card:hover {
+      border-color: rgb(99 102 241 / 0.45);
+      background: rgb(99 102 241 / 0.045);
+      box-shadow: 0 6px 16px -6px rgb(99 102 241 / 0.14);
+    }
+    .dark .mega-item-card:hover {
+      border-color: rgb(129 140 248 / 0.45);
+      background: #121d38;
+      box-shadow: 0 8px 20px -6px rgb(0 0 0 / 0.5);
+    }
+    .mega-list-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.375rem;
+      border: 1px solid transparent;
+      transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+    }
+    .mega-list-link::after {
+      content: "\2192";
+      content: "\2192" / "";
+      font-size: 0.75rem;
+      line-height: 1;
+      font-weight: 700;
+      color: #6366f1;
+      opacity: 0;
+      transform: translateX(-3px);
+      transition: opacity 140ms ease, transform 140ms ease;
+      flex-shrink: 0;
+    }
+    .dark .mega-list-link::after {
+      color: #818cf8;
+    }
+    .mega-list-link:hover,
+    .mega-list-link:focus-visible {
+      background: rgb(99 102 241 / 0.075);
+      border-color: rgb(99 102 241 / 0.36);
+      color: #4f46e5;
+    }
+    .dark .mega-list-link:hover,
+    .dark .mega-list-link:focus-visible {
+      background: #121d38;
+      border-color: rgb(129 140 248 / 0.45);
+      color: #818cf8;
+    }
+    .mega-list-link:hover .mega-list-title,
+    .mega-list-link:focus-visible .mega-list-title {
+      color: #4f46e5;
+    }
+    .dark .mega-list-link:hover .mega-list-title,
+    .dark .mega-list-link:focus-visible .mega-list-title {
+      color: #818cf8;
+    }
+    .mega-list-link:hover::after,
+    .mega-list-link:focus-visible::after {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    [data-mega-panel]:not([hidden]),
+    [data-resource-panel]:not([hidden]) {
+      display: block;
+    }
+    .mega-dropdown-layer {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translate(-50%, 6px) scale(0.99);
+    }
+    .mega-dropdown-layer::before {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: -0.875rem;
+      height: 1.375rem;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .mega-dropdown-layer {
+        transition:
+          opacity 170ms cubic-bezier(0.16, 1, 0.3, 1),
+          transform 170ms cubic-bezier(0.16, 1, 0.3, 1),
+          visibility 170ms;
+      }
+      @keyframes megaStageFade {
+        from {
+          opacity: 0;
+          transform: translateY(3px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      [data-mega-panel]:not([hidden]),
+      [data-resource-panel]:not([hidden]) {
+        animation: megaStageFade 140ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+    }
+    .mega-wrapper:not(.mega-force-closed):is(:hover, :focus-within, .is-hovered, .is-pinned) .mega-dropdown-layer {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate(-50%, 0) scale(1);
+    }
+    .mega-wrapper:not(.mega-force-closed):is(:hover, :focus-within, .is-hovered, .is-pinned) .mega-trigger-chevron {
+      transform: rotate(180deg);
+      opacity: 1;
+    }
+    .mega-wrapper:not(.mega-force-closed):is(:hover, :focus-within, .is-hovered, .is-pinned) .mega-trigger-btn {
+      background: hsl(var(--muted));
+      color: hsl(var(--foreground));
+    }
+    .mega-wrapper.mega-force-closed .mega-dropdown-layer {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+    .mobile-submenu-trigger[aria-expanded="true"] .mobile-submenu-chevron {
+      transform: rotate(180deg);
+    }
+    .mobile-menu-trigger {
+      anchor-name: --mobile-menu-button;
+    }
+    .mobile-nav-popover {
+      position: fixed;
+      inset: auto;
+      inset-block-start: 4.5rem;
+      inset-block-start: anchor(--mobile-menu-button bottom);
+      inset-inline-end: 1rem;
+      inline-size: min(86dvw, 20rem);
+      max-inline-size: calc(100dvw - 2rem);
+      block-size: fit-content;
+      max-block-size: calc(100dvh - 5.5rem);
+      margin: 0.5rem 0 0;
+      padding: 0.625rem;
+      list-style: none;
+      overflow-y: auto;
+      border: 1px solid hsl(var(--border));
+      border-radius: 1.25rem;
+      background: hsl(var(--background) / 0.98);
+      color: hsl(var(--foreground));
+      backdrop-filter: blur(18px);
+      box-shadow: 0 24px 60px rgb(15 23 42 / 0.18);
+    }
+    .dark .mobile-nav-popover {
+      box-shadow: 0 24px 60px rgb(0 0 0 / 0.5);
+    }
+    .mobile-nav-popover:not(:is(:popover-open, .\:popover-open)) {
+      display: none;
+    }
+    .mobile-nav-popover:is(:popover-open, .\:popover-open) {
+      display: grid;
+      gap: 0.25rem;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .mobile-nav-popover {
+        opacity: 0;
+        translate: 0 -0.375rem;
+        transition: opacity 180ms ease, translate 180ms ease, display 180ms ease, overlay 180ms ease;
+        transition-behavior: allow-discrete;
+      }
+      .mobile-nav-popover:is(:popover-open, .\:popover-open) {
+        opacity: 1;
+        translate: 0 0;
+      }
+      @starting-style {
+        .mobile-nav-popover:is(:popover-open, .\:popover-open) {
+          opacity: 0;
+          translate: 0 -0.375rem;
+        }
+      }
+    }
+
+    /* Native Qualifying Consultation Dialog */
+    dialog:modal {
+      overscroll-behavior: contain;
+    }
+    dialog::backdrop {
+      overflow: hidden;
+      overscroll-behavior: contain;
+      background: rgb(2 6 23 / 0.68);
+      backdrop-filter: blur(8px);
+    }
+    #consultation-modal {
+      padding: 0;
+      border: 1px solid hsl(var(--border));
+      border-radius: 1.75rem;
+      background: hsl(var(--background));
+      color: hsl(var(--foreground));
+      width: min(94vw, 38rem);
+      max-height: min(90dvh, 48rem);
+      box-shadow: 0 32px 90px rgb(15 23 42 / 0.35);
+    }
+    #consultation-modal[open] {
+      display: flex;
+      flex-direction: column;
+    }
+    #consultation-modal input:not([type="radio"]),
+    #consultation-modal select {
+      font: inherit;
+      font-size: max(1rem, 1em);
+      min-height: 48px;
+      box-sizing: border-box;
+    }
+    @media (pointer: coarse) {
+      #consultation-modal input:not([type="radio"]),
+      #consultation-modal select {
+        min-height: 52px;
+      }
+    }
+    #consultation-modal input[type="radio"] {
+      accent-color: #4f46e5;
+    }
+    #consultation-modal input:user-invalid,
+    #consultation-modal select:user-invalid {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 2px rgb(239 68 68 / 0.2);
+    }
+
+  </style>
 </head>
-<body class="min-h-screen flex flex-col bg-slate-50 text-slate-950 dark:bg-zinc-950 dark:text-zinc-50 antialiased font-sans">
-  <header class="sticky top-0 z-50 border-b border-slate-200/80 dark:border-white/10 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-xl">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between gap-4">
-      <a href="../index.html" class="flex items-center gap-2 min-w-0">
-        <img src="../logo/logo.svg" alt="Master Your Courses Logo" class="w-7 h-7 md:w-8 md:h-8 object-contain dark:brightness-0 dark:invert shrink-0" />
-        <span class="text-lg md:text-2xl font-black font-display tracking-tight truncate">
+<body class="antialiased min-h-screen flex flex-col font-sans text-foreground overflow-x-clip">
+  <a href="#main-heading" class="skip-link visually-hidden">Skip to main content</a>
+  <header class="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/80 text-foreground backdrop-blur-xl">
+    <!-- Desktop Header: Clean Left & Right Layout -->
+    <div class="hidden md:flex max-w-7xl mx-auto px-4 lg:px-6 h-20 items-center justify-between gap-2 lg:gap-4">
+      <a href="../index.html" class="flex items-center gap-2 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg">
+        <img src="../logo/logo.svg" alt="Master Your Courses Logo" width="32" height="32" class="w-7 h-7 lg:w-8 lg:h-8 object-contain dark:brightness-0 dark:invert" onerror="this.style.display='none'" />
+        <span class="text-lg lg:text-2xl font-black font-display tracking-tight text-foreground">
           Master<span class="text-indigo-500">Your</span>Courses
         </span>
       </a>
-      <nav aria-label="Primary" class="flex items-center gap-3 sm:gap-5 lg:gap-6">
-        <a href="../programs/index.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Programs</a>
-        <a href="../resources/index.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Free Resources</a>
-        <a href="../results.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Results</a>
-        <span aria-hidden="true" class="hidden md:block h-4 w-px bg-slate-200 dark:bg-white/15"></span>
-        <button type="button" onclick="toggleTheme()" aria-label="Toggle theme" class="p-2 rounded-full hover:bg-slate-200/70 dark:hover:bg-white/10 transition-colors">
-          <svg aria-hidden="true" class="w-5 h-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2m-7.07-15.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-          <svg aria-hidden="true" class="w-5 h-5 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      <nav aria-label="Primary" class="flex items-center gap-1.5 lg:gap-5">
+        <div id="programs-mega-wrapper" class="mega-wrapper relative group h-20 flex items-center">
+          <button id="programs-mega-trigger" type="button" aria-expanded="false" aria-controls="programs-mega-menu" onclick="toggleProgramsMegaMenu()" class="mega-trigger-btn text-sm font-bold text-muted-foreground transition-all flex items-center gap-1 lg:gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-full px-2.5 lg:px-3.5 py-1.5 whitespace-nowrap">
+            Programs
+            <svg aria-hidden="true" class="lucide mega-trigger-chevron w-3.5 h-3.5 opacity-60 transition-transform duration-200" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+
+          <!-- Two-Level Programs Mega-Menu (pt-2 creates seamless hover bridge from header) -->
+          <div id="programs-mega-menu" class="mega-dropdown-layer fixed left-1/2 top-20 pt-2 z-50">
+          <div class="programs-mega-panel rounded-[1.75rem] overflow-hidden">
+            <div class="grid grid-cols-12">
+              <!-- Level 1: 6 Goal Tracks Recessed Rail -->
+              <div class="col-span-4 mega-rail-surface p-3 flex flex-col justify-center" onmouseleave="cancelMegaTrackIntent()">
+                <div class="flex flex-col gap-1" role="tablist" aria-orientation="vertical" aria-label="Program categories">
+                  <a id="mega-tab-0" href="../programs/ap-prep.html" role="tab" aria-selected="true" aria-controls="mega-panel-0" data-mega-track="0" onmouseenter="queueMegaTrack(0)" onfocus="setMegaTrack(0)" class="programs-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-sm font-bold font-display text-foreground">AP Prep</span>
+                      <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                    <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">22 AP subjects across Science, Math, CS &amp; Humanities</span>
+                  </a>
+                  <a id="mega-tab-1" href="../programs/sat-prep.html" role="tab" aria-selected="false" aria-controls="mega-panel-1" data-mega-track="1" onmouseenter="queueMegaTrack(1)" onfocus="setMegaTrack(1)" class="programs-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-sm font-bold font-display text-foreground">SAT, PSAT &amp; ACT</span>
+                      <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                    <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">Digital SAT, National Merit &amp; ACT prep</span>
+                  </a>
+                  <a id="mega-tab-2" href="../programs/competition-prep.html" role="tab" aria-selected="false" aria-controls="mega-panel-2" data-mega-track="2" onmouseenter="queueMegaTrack(2)" onfocus="setMegaTrack(2)" class="programs-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-sm font-bold font-display text-foreground">Competition Prep</span>
+                      <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                    <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">AMC, AIME, USAMO, Waterloo, F=ma &amp; Olympiads</span>
+                  </a>
+                  <a id="mega-tab-3" href="../programs/mcat-dat-prep.html" role="tab" aria-selected="false" aria-controls="mega-panel-3" data-mega-track="3" onmouseenter="queueMegaTrack(3)" onfocus="setMegaTrack(3)" class="programs-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-sm font-bold font-display text-foreground">MCAT &amp; DAT Prep</span>
+                      <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                    <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">Pre-med &amp; pre-dental prep with doctors &amp; faculty</span>
+                  </a>
+                  <a id="mega-tab-4" href="../programs/course-tutoring.html" role="tab" aria-selected="false" aria-controls="mega-panel-4" data-mega-track="4" onmouseenter="queueMegaTrack(4)" onfocus="setMegaTrack(4)" class="programs-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-sm font-bold font-display text-foreground">Course &amp; IB Tutoring</span>
+                      <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                    <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">High School, IB Diploma (HL/SL) &amp; University STEM</span>
+                  </a>
+                  <a id="mega-tab-5" href="../programs/stem-research-mentorship.html" role="tab" aria-selected="false" aria-controls="mega-panel-5" data-mega-track="5" onmouseenter="queueMegaTrack(5)" onfocus="setMegaTrack(5)" class="programs-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-sm font-bold font-display text-foreground">Research &amp; Admissions</span>
+                      <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                    <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">1-on-1 STEM research papers, ISEF &amp; college advising</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Level 2: Elevated Right Stage (Locked min-height eliminates panel jump) -->
+              <div class="col-span-8 p-5 min-h-[21.5rem]">
+                <!-- Panel 0: AP Prep (22 Courses) -->
+                <div id="mega-panel-0" role="tabpanel" aria-labelledby="mega-tab-0" data-mega-panel="0">
+                  <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-border/70">
+                    <div>
+                      <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">AP Courses &amp; Exam Prep</p>
+                      <p class="text-[11px] text-muted-foreground">Available via 1-on-1 Mentorship, Live Group Cohorts, and On-Demand Practice Courses.</p>
+                    </div>
+                    <a href="../programs/ap-prep.html" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">AP Prep Overview &rarr;</a>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2.5 lg:gap-4 text-xs">
+                    <div>
+                      <p class="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground font-display mb-1.5 px-2">AP Sciences</p>
+                      <ul class="space-y-0.5">
+                        <li><a href="../programs/ap-biology.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Biology</span></a></li>
+                        <li><a href="../programs/ap-chemistry.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Chemistry</span></a></li>
+                        <li><a href="../programs/ap-physics-1.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Physics 1</span></a></li>
+                        <li><a href="../programs/ap-physics-2.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Physics 2</span></a></li>
+                        <li><a href="../programs/ap-physics-c-mechanics.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Physics C: Mechanics</span></a></li>
+                        <li><a href="../programs/ap-physics-c-em.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Physics C: E&amp;M</span></a></li>
+                        <li><a href="../programs/ap-environmental-science.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Environmental Science</span></a></li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p class="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground font-display mb-1.5 px-2">AP Math &amp; CS</p>
+                      <ul class="space-y-0.5">
+                        <li><a href="../programs/ap-precalculus.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Precalculus</span></a></li>
+                        <li><a href="../programs/ap-calculus-ab.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Calculus AB</span></a></li>
+                        <li><a href="../programs/ap-calculus-bc.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Calculus BC</span></a></li>
+                        <li><a href="../programs/ap-statistics.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Statistics</span></a></li>
+                        <li><a href="../programs/ap-computer-science-a.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Computer Science A</span></a></li>
+                        <li><a href="../programs/ap-computer-science-principles.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP CS Principles</span></a></li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p class="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground font-display mb-1.5 px-2">Econ, English &amp; History</p>
+                      <ul class="space-y-0.5">
+                        <li><a href="../programs/ap-microeconomics.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Microeconomics</span></a></li>
+                        <li><a href="../programs/ap-macroeconomics.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Macroeconomics</span></a></li>
+                        <li><a href="../programs/ap-psychology.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Psychology</span></a></li>
+                        <li><a href="../programs/ap-english-language.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP English Language</span></a></li>
+                        <li><a href="../programs/ap-english-literature.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP English Literature</span></a></li>
+                        <li><a href="../programs/ap-us-history.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP U.S. History</span></a></li>
+                        <li><a href="../programs/ap-world-history.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP World History</span></a></li>
+                        <li><a href="../programs/ap-us-government.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP U.S. Government</span></a></li>
+                        <li><a href="../programs/ap-human-geography.html" class="mega-list-link px-2 py-1 rounded-lg font-semibold text-foreground"><span class="mega-list-title transition-colors">AP Human Geography</span></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Panel 1: SAT, PSAT & ACT Prep -->
+                <div id="mega-panel-1" role="tabpanel" aria-labelledby="mega-tab-1" data-mega-panel="1" hidden>
+                  <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3.5 border-b border-border/70">
+                    <div>
+                      <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">Digital SAT, PSAT / National Merit &amp; ACT Prep</p>
+                      <p class="text-[11px] text-muted-foreground">Diagnostic-driven preparation built around your target test date.</p>
+                    </div>
+                    <a href="../programs/sat-prep.html" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">SAT Overview &rarr;</a>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <a href="../programs/sat-1-on-1.html" class="mega-item-card group/card p-3.5 rounded-xl flex flex-col justify-between">
+                      <div class="flex items-center justify-between gap-2">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">1-on-1 SAT Mentorship</p>
+                        <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </div>
+                      <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Private coaching built around your diagnostic gaps, pacing, and weekly practice tests.</p>
+                    </a>
+                    <a href="../programs/sat-cohort.html" class="mega-item-card group/card p-3.5 rounded-xl flex flex-col justify-between">
+                      <div class="flex items-center justify-between gap-2">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Live SAT Group Cohort</p>
+                        <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </div>
+                      <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Small-group weekly live classes covering high-yield Reading &amp; Writing and Math strategies.</p>
+                    </a>
+                    <a href="../programs/sat-practice-course.html" class="mega-item-card group/card p-3.5 rounded-xl flex flex-col justify-between">
+                      <div class="flex items-center justify-between gap-2">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">On-Demand SAT Practice Course</p>
+                        <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </div>
+                      <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Self-paced Reading &amp; Writing and Math question banks, walkthroughs, and adaptive practice tests.</p>
+                    </a>
+                    <a href="../programs/act-prep.html" class="mega-item-card group/card p-3.5 rounded-xl flex flex-col justify-between">
+                      <div class="flex items-center justify-between gap-2">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">ACT Prep — All Formats</p>
+                        <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </div>
+                      <p class="text-xs text-muted-foreground mt-1 leading-relaxed">English, Math, Reading, and Science prep via 1-on-1 mentorship, cohorts, and practice sets.</p>
+                    </a>
+                    <a href="../programs/psat-national-merit.html" class="mega-item-card group/card col-span-2 px-4 py-3 rounded-xl flex items-center justify-between gap-4">
+                      <div>
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">PSAT / NMSQT &amp; National Merit Prep</p>
+                        <p class="text-xs text-muted-foreground mt-0.5">Selection Index coaching to clear state Semifinalist cutoffs and unlock university merit scholarships.</p>
+                      </div>
+                      <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/60 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Panel 2: Competition Prep (9 Exams) -->
+                <div id="mega-panel-2" role="tabpanel" aria-labelledby="mega-tab-2" data-mega-panel="2" hidden>
+                  <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-border/70">
+                    <div>
+                      <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">Math, Science &amp; Computing Olympiads</p>
+                      <p class="text-[11px] text-muted-foreground">First-principles problem-solving and proof training across 9 national contests.</p>
+                    </div>
+                    <a href="../programs/competition-prep.html" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">Competition Overview &rarr;</a>
+                  </div>
+                  <div class="grid grid-cols-2 gap-3 lg:gap-5 text-xs">
+                    <div>
+                      <p class="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground font-display mb-1.5 px-2.5">Math Competitions</p>
+                      <ul class="space-y-1">
+                        <li><a href="../programs/amc-8-mathcounts.html" class="mega-list-link px-2.5 py-1.5 rounded-xl"><span><span class="mega-list-title block font-bold text-foreground transition-colors">AMC 8 &amp; MATHCOUNTS</span><span class="block text-[11px] text-muted-foreground">Middle school competition math foundations</span></span></a></li>
+                        <li><a href="../programs/amc-10.html" class="mega-list-link px-2.5 py-1.5 rounded-xl"><span><span class="mega-list-title block font-bold text-foreground transition-colors">AMC 10 Prep</span><span class="block text-[11px] text-muted-foreground">Grades 9–10 &bull; AIME qualification track</span></span></a></li>
+                        <li><a href="../programs/amc-12.html" class="mega-list-link px-2.5 py-1.5 rounded-xl"><span><span class="mega-list-title block font-bold text-foreground transition-colors">AMC 12 Prep</span><span class="block text-[11px] text-muted-foreground">Grades 11–12 &bull; Honor Roll &amp; AIME track</span></span></a></li>
+                        <li><a href="../programs/aime-usamo.html" class="mega-list-link px-2.5 py-1.5 rounded-xl"><span><span class="mega-list-title block font-bold text-foreground transition-colors">AIME &amp; USA(J)MO / USAMO</span><span class="block text-[11px] text-muted-foreground">Invitational problem-solving &amp; Olympiad proofs</span></span></a></li>
+                        <li><a href="../programs/waterloo-cemc-contests.html" class="mega-list-link px-2.5 py-1.5 rounded-xl"><span><span class="mega-list-title block font-bold text-foreground transition-colors">Waterloo / CEMC Contests</span><span class="block text-[11px] text-muted-foreground">Gauss, Pascal, Cayley, Fermat &amp; Euclid</span></span></a></li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p class="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground font-display mb-1.5 px-2.5">Science &amp; Computing Olympiads</p>
+                      <ul class="space-y-1">
+                        <li><a href="../programs/fma-usapho.html" class="mega-list-link px-2.5 py-1.5 rounded-xl"><span><span class="mega-list-title block font-bold text-foreground transition-colors">F=ma &amp; USAPhO</span><span class="block text-[11px] text-muted-foreground">USA Physics Olympiad mechanics &amp; calculus</span></span></a></li>
+                        <li><a href="../programs/usnco-chemistry-olympiad.html" class="mega-list-link px-2.5 py-1.5 rounded-xl"><span><span class="mega-list-title block font-bold text-foreground transition-colors">USNCO</span><span class="block text-[11px] text-muted-foreground">U.S. National Chemistry Olympiad (Local &amp; National)</span></span></a></li>
+                        <li><a href="../programs/usabo-biology-olympiad.html" class="mega-list-link px-2.5 py-1.5 rounded-xl"><span><span class="mega-list-title block font-bold text-foreground transition-colors">USABO</span><span class="block text-[11px] text-muted-foreground">USA Biology Olympiad Open &amp; Semifinal prep</span></span></a></li>
+                        <li><a href="../programs/usaco-computing-olympiad.html" class="mega-list-link px-2.5 py-1.5 rounded-xl"><span><span class="mega-list-title block font-bold text-foreground transition-colors">USACO</span><span class="block text-[11px] text-muted-foreground">Bronze, Silver, Gold &amp; Platinum algorithms</span></span></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Panel 3: MCAT & DAT Pre-Health Prep -->
+                <div id="mega-panel-3" role="tabpanel" aria-labelledby="mega-tab-3" data-mega-panel="3" hidden>
+                  <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3.5 border-b border-border/70">
+                    <div>
+                      <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">MCAT &amp; DAT Pre-Health Prep</p>
+                      <p class="text-[11px] text-muted-foreground">Concept-first science, CARS, and Perceptual Ability coaching for future doctors and dentists.</p>
+                    </div>
+                    <a href="../programs/mcat-prep.html" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">MCAT Overview &rarr;</a>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <a href="../programs/mcat-1-on-1.html" class="mega-item-card group/card p-3.5 rounded-xl flex flex-col justify-between">
+                      <div class="flex items-center justify-between gap-2">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">1-on-1 MCAT Mentorship</p>
+                        <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </div>
+                      <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Custom study plan, passage dissection, and full-length practice test reviews across all 4 sections.</p>
+                    </a>
+                    <a href="../programs/mcat-cohort.html" class="mega-item-card group/card p-3.5 rounded-xl flex flex-col justify-between">
+                      <div class="flex items-center justify-between gap-2">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Live MCAT Group Cohort</p>
+                        <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </div>
+                      <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Structured weekly small-group classes covering Chem/Phys, CARS, Bio/Biochem, and Psych/Soc.</p>
+                    </a>
+                    <a href="../programs/mcat-practice-course.html" class="mega-item-card group/card p-3.5 rounded-xl flex flex-col justify-between">
+                      <div class="flex items-center justify-between gap-2">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">On-Demand MCAT Practice Course</p>
+                        <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </div>
+                      <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Self-paced experimental passages, discrete science questions, and CARS practice sets.</p>
+                    </a>
+                    <a href="../programs/dat-prep.html" class="mega-item-card group/card p-3.5 rounded-xl flex flex-col justify-between">
+                      <div class="flex items-center justify-between gap-2">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">DAT Prep — Dental Admission Test</p>
+                        <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </div>
+                      <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Natural Sciences, Perceptual Ability (PAT), Reading, and Quantitative Reasoning with dental faculty.</p>
+                    </a>
+                    <a href="../programs/mcat-dat-prep.html" class="mega-item-card group/card col-span-2 px-4 py-3 rounded-xl flex items-center justify-between gap-4">
+                      <div>
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Pre-Health Hub — MCAT vs. DAT Timelines &amp; Formats</p>
+                        <p class="text-xs text-muted-foreground mt-0.5">Compare undergraduate prerequisites, ideal testing windows, and 1-on-1 vs. cohort prep.</p>
+                      </div>
+                      <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/60 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Panel 4: Course & IB Tutoring (3 Academic Levels) -->
+                <div id="mega-panel-4" role="tabpanel" aria-labelledby="mega-tab-4" data-mega-panel="4" hidden>
+                  <div class="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-border/70">
+                    <div>
+                      <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">Syllabus-Matched &amp; IB Diploma Tutoring</p>
+                      <p class="text-[11px] text-muted-foreground">Private 1-on-1 mentorship tailored to your exact school, IB, or university syllabus.</p>
+                    </div>
+                    <a href="../programs/course-tutoring.html" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">Tutoring Overview &rarr;</a>
+                  </div>
+                  <div class="space-y-2.5">
+                    <a href="../programs/high-school-tutoring.html" class="mega-item-card group/card px-4 py-3 rounded-xl flex items-center justify-between gap-4">
+                      <div>
+                        <div class="flex items-center gap-2.5">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">High School &amp; Honors Tutoring</p>
+                          <span class="text-[11px] font-semibold text-muted-foreground/80">Grades 8–12</span>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Algebra, Geometry, Precalculus, Biology, Chemistry, Physics &amp; English matched directly to your teacher’s syllabus.</p>
+                      </div>
+                      <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                    <a href="../programs/ib-diploma-prep.html" class="mega-item-card group/card px-4 py-3 rounded-xl flex items-center justify-between gap-4">
+                      <div>
+                        <div class="flex items-center gap-2.5">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">IB Diploma Prep (HL &amp; SL)</p>
+                          <span class="text-[11px] font-semibold text-muted-foreground/80">Level-7 Prep</span>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">IB Mathematics AA/AI, Physics, Chemistry, Biology &amp; Economics—covering Papers 1–3 and Internal Assessments (IAs).</p>
+                      </div>
+                      <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                    <a href="../programs/university-tutoring.html" class="mega-item-card group/card px-4 py-3 rounded-xl flex items-center justify-between gap-4">
+                      <div>
+                        <div class="flex items-center gap-2.5">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">University &amp; Pre-Med STEM</p>
+                          <span class="text-[11px] font-semibold text-muted-foreground/80">Undergraduate</span>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Calculus I–III, Linear Algebra, Differential Equations, General &amp; Organic Chemistry, Physics &amp; Statistics.</p>
+                      </div>
+                      <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                  </div>
+                  <div class="mt-3 pt-2.5 flex items-center justify-between gap-3 border-t border-border/60 text-xs text-muted-foreground">
+                    <span>Taking a specialized school, IB, or university course? We match custom syllabi 1-on-1.</span>
+                    <button type="button" onclick="openConsultationModal()" class="font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">Match With a Mentor &rarr;</button>
+                  </div>
+                </div>
+
+                <!-- Panel 5: STEM Research & Selective College Admissions -->
+                <div id="mega-panel-5" role="tabpanel" aria-labelledby="mega-tab-5" data-mega-panel="5" hidden>
+                  <div class="flex items-center justify-between gap-2 pb-3 mb-3.5 border-b border-border/70">
+                    <div>
+                      <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">STEM Research &amp; Selective College Advising</p>
+                      <p class="text-[11px] text-muted-foreground">1-on-1 mentorship with university researchers, doctors, and senior academic advisors.</p>
+                    </div>
+                    <button type="button" onclick="openConsultationModal()" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">Book Consultation &rarr;</button>
+                  </div>
+                  <div class="space-y-3">
+                    <a href="../programs/stem-research-mentorship.html" class="mega-item-card group/card p-4 rounded-xl flex items-center justify-between gap-4">
+                      <div>
+                        <div class="flex items-center gap-2.5">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">1-on-1 STEM Research Mentorship</p>
+                          <span class="text-[11px] font-semibold text-muted-foreground/80">PhD &amp; Academic Faculty</span>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1.5 leading-relaxed">Develop original computational, quantitative, or life-science research projects from literature review to final paper for Regeneron STS, ISEF, science fairs, and student journals.</p>
+                      </div>
+                      <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                    <a href="../programs/college-admissions-counseling.html" class="mega-item-card group/card p-4 rounded-xl flex items-center justify-between gap-4">
+                      <div>
+                        <div class="flex items-center gap-2.5">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Selective College &amp; Pre-Med Advising</p>
+                          <span class="text-[11px] font-semibold text-muted-foreground/80">U.S. &amp; Canadian Admissions</span>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1.5 leading-relaxed">9th–12th grade course &amp; extracurricular positioning, selective summer program applications (MIT RSI, Simons, SSP), university lists, and STEM / BS-MD essays.</p>
+                      </div>
+                      <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                  </div>
+                  <div class="mt-3.5 pt-3 flex items-center justify-between gap-3 border-t border-border/60 text-xs text-muted-foreground">
+                    <span>Map out a multi-year research, summer program, and university admissions plan with our team.</span>
+                    <button type="button" onclick="openConsultationModal()" class="font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">Speak With an Advisor &rarr;</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Full-Width Bottom Utility Bar -->
+            <div class="mega-footer-bar px-5 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-[11px] font-bold text-muted-foreground">Ways to learn:</span>
+                <a href="../programs/1-on-1-mentorship.html" class="font-semibold px-2.5 py-0.5 rounded-full bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-white/10 text-foreground hover:border-indigo-500/40 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors">1-on-1 Mentorship</a>
+                <a href="../programs/live-cohorts.html" class="font-semibold px-2.5 py-0.5 rounded-full bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-white/10 text-foreground hover:border-indigo-500/40 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors">Live Group Cohorts</a>
+                <a href="../programs/practice-courses.html" class="font-semibold px-2.5 py-0.5 rounded-full bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-white/10 text-foreground hover:border-indigo-500/40 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors">On-Demand Practice Courses</a>
+              </div>
+              <div class="flex items-center gap-4">
+                <a href="../pricing.html" class="font-bold text-muted-foreground hover:text-foreground transition-colors">Plans &amp; Tuition</a>
+                <a href="../programs/index.html" class="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">Explore All 47 Programs &rarr;</a>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+
+        <!-- Two-Level Free Resources Mega-Menu (6 Complete SEO & Lead Pillars) -->
+        <div id="resources-mega-wrapper" class="mega-wrapper relative group h-20 flex items-center">
+          <button id="resources-mega-trigger" type="button" aria-expanded="false" aria-controls="resources-mega-menu" onclick="toggleResourcesMegaMenu()" class="mega-trigger-btn text-sm font-bold text-muted-foreground transition-all flex items-center gap-1 lg:gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-full px-2.5 lg:px-3.5 py-1.5 whitespace-nowrap">
+            Free Resources
+            <svg aria-hidden="true" class="lucide mega-trigger-chevron w-3.5 h-3.5 opacity-60 transition-transform duration-200" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+
+          <div id="resources-mega-menu" class="mega-dropdown-layer fixed left-1/2 top-20 pt-2 z-50">
+            <div class="programs-mega-panel rounded-[1.75rem] overflow-hidden">
+              <div class="grid grid-cols-12">
+                <!-- Level 1: 6 Free Resource Categories Recessed Rail -->
+                <div class="col-span-4 mega-rail-surface p-3 flex flex-col justify-center" onmouseleave="cancelResourceTrackIntent()">
+                  <div class="flex flex-col gap-1" role="tablist" aria-orientation="vertical" aria-label="Free resource categories">
+                    <a id="resource-tab-0" href="../practice/index.html" role="tab" aria-selected="true" aria-controls="resource-panel-0" data-resource-track="0" onmouseenter="queueResourceTrack(0)" onfocus="setResourceTrack(0)" class="resources-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="text-sm font-bold font-display text-foreground">Practice &amp; Flashcards</span>
+                        <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                      </div>
+                      <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">Topic quizzes, flashcards &amp; worked problems</span>
+                    </a>
+                    <a id="resource-tab-1" href="../mock-exams/index.html" role="tab" aria-selected="false" aria-controls="resource-panel-1" data-resource-track="1" onmouseenter="queueResourceTrack(1)" onfocus="setResourceTrack(1)" class="resources-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="text-sm font-bold font-display text-foreground">Diagnostic Practice Tests</span>
+                        <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                      </div>
+                      <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">Baseline tests for Digital SAT, APs &amp; AMC</span>
+                    </a>
+                    <a id="resource-tab-2" href="../solutions/index.html" role="tab" aria-selected="false" aria-controls="resource-panel-2" data-resource-track="2" onmouseenter="queueResourceTrack(2)" onfocus="setResourceTrack(2)" class="resources-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="text-sm font-bold font-display text-foreground">Past Exam Solutions</span>
+                        <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                      </div>
+                      <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">Step-by-step solutions for AP FRQs &amp; Olympiads</span>
+                    </a>
+                    <a id="resource-tab-3" href="../tools/index.html" role="tab" aria-selected="false" aria-controls="resource-panel-3" data-resource-track="3" onmouseenter="queueResourceTrack(3)" onfocus="setResourceTrack(3)" class="resources-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="text-sm font-bold font-display text-foreground">Score Calculators &amp; Tools</span>
+                        <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                      </div>
+                      <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">AP, SAT &amp; AMC calculators, GPA &amp; study planner</span>
+                    </a>
+                    <a id="resource-tab-4" href="../guides/index.html" role="tab" aria-selected="false" aria-controls="resource-panel-4" data-resource-track="4" onmouseenter="queueResourceTrack(4)" onfocus="setResourceTrack(4)" class="resources-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="text-sm font-bold font-display text-foreground">Study Guides &amp; Videos</span>
+                        <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                      </div>
+                      <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">Formula sheets, concept videos &amp; live workshops</span>
+                    </a>
+                    <a id="resource-tab-5" href="../guides/college-admissions-roadmaps.html" role="tab" aria-selected="false" aria-controls="resource-panel-5" data-resource-track="5" onmouseenter="queueResourceTrack(5)" onfocus="setResourceTrack(5)" class="resources-mega-track flex flex-col px-3.5 py-2 rounded-xl border border-transparent hover:bg-white/70 dark:hover:bg-white/5 transition-all">
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="text-sm font-bold font-display text-foreground">College, Scholarships &amp; Summer</span>
+                        <svg aria-hidden="true" class="lucide mega-track-chevron w-4 h-4 text-muted-foreground/60 transition-transform" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                      </div>
+                      <span class="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">Summer research, merit scholarships &amp; roadmaps</span>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Level 2: Elevated Right Stage (Locked min-height eliminates panel jump) -->
+                <div class="col-span-8 p-5 min-h-[21.5rem]">
+                  <!-- Panel 0: Practice & Flashcards -->
+                  <div id="resource-panel-0" role="tabpanel" aria-labelledby="resource-tab-0" data-resource-panel="0">
+                    <div class="flex items-center justify-between gap-2 pb-3 mb-3.5 border-b border-border/70">
+                      <div>
+                        <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">Practice Questions &amp; Flashcards</p>
+                        <p class="text-[11px] text-muted-foreground">Free topic quizzes, flashcards, and worked problems with step-by-step explanations.</p>
+                      </div>
+                      <a href="../practice/index.html" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">View All Practice &rarr;</a>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5">
+                      <a href="../practice/ap-practice-questions.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">AP Practice Questions &amp; Quizzes</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Unit quizzes and free-response practice across all 22 AP courses.</p>
+                      </a>
+                      <a href="../practice/sat-practice-questions.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Digital SAT Practice Questions</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Reading &amp; Writing passages and challenging Module 2 Math questions.</p>
+                      </a>
+                      <a href="../practice/competition-problems.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">AMC, AIME &amp; Olympiad Problems</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Worked competition problems for AMC 8/10/12, AIME, Waterloo, F=ma &amp; USACO.</p>
+                      </a>
+                      <a href="../practice/ap-flashcards.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">AP Flashcards</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Key-term and concept decks for AP Biology, Psychology, History, Gov &amp; Chemistry.</p>
+                      </a>
+                      <a href="../practice/university-stem-problems.html" class="mega-item-card group/card col-span-2 px-4 py-3 rounded-xl flex items-center justify-between gap-4">
+                        <div>
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">University STEM Practice Problems</p>
+                          <p class="text-xs text-muted-foreground mt-0.5">Worked problems for Calculus I–III, Linear Algebra, Organic Chemistry &amp; Physics.</p>
+                        </div>
+                        <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/60 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Panel 1: Diagnostic Practice Tests -->
+                  <div id="resource-panel-1" role="tabpanel" aria-labelledby="resource-tab-1" data-resource-panel="1" hidden>
+                    <div class="flex items-center justify-between gap-2 pb-3 mb-4 border-b border-border/70">
+                      <div>
+                        <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">Free Diagnostic Practice Tests</p>
+                        <p class="text-[11px] text-muted-foreground">See where you stand today and find out which topics will raise your score fastest.</p>
+                      </div>
+                      <a href="../mock-exams/index.html" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">View All Diagnostics &rarr;</a>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3">
+                      <a href="../mock-exams/digital-sat-diagnostic.html" class="mega-item-card group/card p-4 rounded-xl flex flex-col justify-between">
+                        <div>
+                          <div class="flex items-center justify-between gap-2">
+                            <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Digital SAT Diagnostic</p>
+                            <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                          </div>
+                          <p class="text-xs text-muted-foreground mt-2 leading-relaxed">Adaptive Reading &amp; Writing and Math diagnostic with built-in Desmos and a score breakdown.</p>
+                        </div>
+                      </a>
+                      <a href="../mock-exams/ap-diagnostics.html" class="mega-item-card group/card p-4 rounded-xl flex flex-col justify-between">
+                        <div>
+                          <div class="flex items-center justify-between gap-2">
+                            <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">AP Readiness Tests</p>
+                            <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                          </div>
+                          <p class="text-xs text-muted-foreground mt-2 leading-relaxed">Check your readiness on a 1–5 scale across AP Biology, Chemistry, Physics, Calculus, Stats &amp; CS.</p>
+                        </div>
+                      </a>
+                      <a href="../mock-exams/amc-placement-test.html" class="mega-item-card group/card p-4 rounded-xl flex flex-col justify-between">
+                        <div>
+                          <div class="flex items-center justify-between gap-2">
+                            <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">AMC 8 / 10 / 12</p>
+                            <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                          </div>
+                          <p class="text-xs text-muted-foreground mt-2 leading-relaxed">A 40-minute placement check covering algebra, geometry, counting, and number theory.</p>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mt-3">
+                      <a href="../mock-exams/act-diagnostic.html" class="mega-item-card group/card px-4 py-3 rounded-xl flex items-center justify-between gap-3">
+                        <div>
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">ACT Baseline Diagnostic</p>
+                          <p class="text-xs text-muted-foreground mt-0.5">English, Math, Reading &amp; Science timing check.</p>
+                        </div>
+                        <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/60 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </a>
+                      <a href="../mock-exams/mcat-dat-diagnostics.html" class="mega-item-card group/card px-4 py-3 rounded-xl flex items-center justify-between gap-3">
+                        <div>
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">MCAT &amp; DAT Diagnostic</p>
+                          <p class="text-xs text-muted-foreground mt-0.5">Science passage, CARS &amp; PAT readiness check.</p>
+                        </div>
+                        <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/60 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Panel 2: Past Exam Solutions -->
+                  <div id="resource-panel-2" role="tabpanel" aria-labelledby="resource-tab-2" data-resource-panel="2" hidden>
+                    <div class="flex items-center justify-between gap-2 pb-3 mb-3.5 border-b border-border/70">
+                      <div>
+                        <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">Past Exam &amp; FRQ Solutions</p>
+                        <p class="text-[11px] text-muted-foreground">Clear, step-by-step written and video walkthroughs for official past exams.</p>
+                      </div>
+                      <a href="../solutions/index.html" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">View All Solutions &rarr;</a>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5">
+                      <a href="../solutions/ap-frq-solutions.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Past AP Free-Response Solutions</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Year-by-year FRQ solutions and scoring commentary across all 22 AP subjects.</p>
+                      </a>
+                      <a href="../solutions/amc-aime-solutions.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">AMC 8, 10, 12 &amp; AIME Solutions</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Intuitive solutions and faster contest-day approaches for past AMC and AIME papers.</p>
+                      </a>
+                      <a href="../solutions/waterloo-euclid-solutions.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Waterloo Euclid &amp; Fermat Solutions</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Model full-solution write-ups for Pascal, Cayley, Fermat, and Euclid contests.</p>
+                      </a>
+                      <a href="../solutions/olympiad-solutions.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Science &amp; CS Olympiad Solutions</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Worked derivations and code walkthroughs for F=ma, USAPhO, USNCO, USABO &amp; USACO.</p>
+                      </a>
+                      <a href="../solutions/index.html" class="mega-item-card group/card col-span-2 px-4 py-3 rounded-xl flex items-center justify-between gap-4">
+                        <div>
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Browse Full Searchable Solutions Archive</p>
+                          <p class="text-xs text-muted-foreground mt-0.5">Filter step-by-step past exam solutions by exam, year, topic, and question number.</p>
+                        </div>
+                        <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/60 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Panel 3: Score Calculators & Tools -->
+                  <div id="resource-panel-3" role="tabpanel" aria-labelledby="resource-tab-3" data-resource-panel="3" hidden>
+                    <div class="flex items-center justify-between gap-2 pb-3 mb-3.5 border-b border-border/70">
+                      <div>
+                        <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">Score Calculators &amp; Study Planners</p>
+                        <p class="text-[11px] text-muted-foreground">Estimate your exam score, calculate weighted GPA, or map out a weekly study schedule.</p>
+                      </div>
+                      <a href="../tools/index.html" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">View All Tools &rarr;</a>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5">
+                      <a href="../tools/ap-score-calculators.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">AP Score Calculators</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Estimate your 1–5 score from raw MCQ and FRQ points across all 22 AP exams.</p>
+                      </a>
+                      <a href="../tools/digital-sat-score-calculator.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Digital SAT Score Calculator</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Project your 400–1600 score across Reading &amp; Writing and Math modules.</p>
+                      </a>
+                      <a href="../tools/amc-aime-cutoff-calculator.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">AMC &amp; AIME Cutoff Calculator</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Compare your answered and blank counts against historical AIME qualification cutoffs.</p>
+                      </a>
+                      <a href="../tools/gpa-calculator.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Weighted &amp; AP GPA Calculator</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Calculate unweighted and weighted Honors/AP GPA by semester.</p>
+                      </a>
+                      <a href="../tools/study-schedule-planner.html" class="mega-item-card group/card col-span-2 px-4 py-3 rounded-xl flex items-center justify-between gap-4">
+                        <div>
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Exam Countdown &amp; Study Schedule Planner</p>
+                          <p class="text-xs text-muted-foreground mt-0.5">Look up official exam dates and build a week-by-week review schedule.</p>
+                        </div>
+                        <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/60 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Panel 4: Study Guides & Videos -->
+                  <div id="resource-panel-4" role="tabpanel" aria-labelledby="resource-tab-4" data-resource-panel="4" hidden>
+                    <div class="flex items-center justify-between gap-2 pb-3 mb-3.5 border-b border-border/70">
+                      <div>
+                        <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">Study Guides, Videos &amp; Free Workshops</p>
+                        <p class="text-[11px] text-muted-foreground">Printable formula sheets, concept videos, and seasonal live review sessions.</p>
+                      </div>
+                      <a href="../guides/index.html" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">View All Guides &rarr;</a>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2.5">
+                      <a href="../guides/ap-study-guides.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">AP Study Guides</p>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Printable equation sheets, unit summaries, and FRQ checklists.</p>
+                      </a>
+                      <a href="../guides/sat-prep-guides.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">SAT &amp; Desmos Guides</p>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Grammar rules, Desmos graphing tips, and test-day pacing.</p>
+                      </a>
+                      <a href="../guides/olympiad-roadmaps.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Olympiad Roadmaps</p>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">How to prepare for AMC, AIME, F=ma, USNCO, USABO &amp; USACO.</p>
+                      </a>
+                      <a href="../guides/university-stem-guides.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">University Reference Sheets</p>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Summary sheets for Calc I–III, Linear Algebra, Organic Chem &amp; Physics.</p>
+                      </a>
+                      <a href="../guides/video-lessons.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Concept Video Library</p>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Short, clear video lessons on tough AP, SAT, and math topics.</p>
+                      </a>
+                      <a href="../workshops/index.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Free Live Workshops</p>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Seasonal exam review sessions and live Q&amp;As for families.</p>
+                      </a>
+                      <a href="../guides/mcat-dat-study-guides.html" class="mega-item-card group/card col-span-3 px-4 py-2.5 rounded-xl flex items-center justify-between gap-3">
+                        <div>
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">MCAT &amp; DAT High-Yield Science Guides</p>
+                          <p class="text-xs text-muted-foreground mt-0.5">Biochemistry pathways, physics equations, CARS strategy, and PAT checklists.</p>
+                        </div>
+                        <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/60 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Panel 5: College, Scholarships & Summer Programs -->
+                  <div id="resource-panel-5" role="tabpanel" aria-labelledby="resource-tab-5" data-resource-panel="5" hidden>
+                    <div class="flex items-center justify-between gap-2 pb-3 mb-3.5 border-b border-border/70">
+                      <div>
+                        <p class="text-xs font-black font-display uppercase tracking-wider text-foreground">College Admissions, Scholarships &amp; Summer Programs</p>
+                        <p class="text-[11px] text-muted-foreground">Guides for parents and students planning competitive STEM applications, summer research, and merit aid.</p>
+                      </div>
+                      <a href="../guides/parent-academic-guides.html" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">Parent Hub &rarr;</a>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5">
+                      <a href="../guides/stem-summer-programs.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">STEM Summer Programs &amp; Internships</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">MIT RSI, MITES, Simons, SSP, PROMYS, Ross, SUMaC, and lab internships.</p>
+                      </a>
+                      <a href="../guides/scholarships-and-merit-aid.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Scholarships, National Merit &amp; Score ROI</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">How Digital SAT, PSAT/National Merit, ACT, and AP 5s unlock merit scholarships &amp; college credit.</p>
+                      </a>
+                      <a href="../guides/college-admissions-roadmaps.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">College Admissions &amp; University Roadmaps</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">9th–12th grade planning for MIT, Ivies, Stanford, U of T, Waterloo &amp; UBC.</p>
+                      </a>
+                      <a href="../guides/parent-academic-guides.html" class="mega-item-card group/card p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between gap-2">
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">Guides for Parents</p>
+                          <svg aria-hidden="true" class="lucide w-3.5 h-3.5 text-muted-foreground/50 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                        <p class="text-xs text-muted-foreground mt-1 leading-relaxed">Practical guidance on Honors vs. AP course loads, testing timelines, and balanced schedules.</p>
+                      </a>
+                      <a href="../blog/index.html" class="mega-item-card group/card col-span-2 px-4 py-3 rounded-xl flex items-center justify-between gap-4">
+                        <div>
+                          <p class="text-sm font-bold font-display text-foreground group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors">College Admissions &amp; Exam Articles</p>
+                          <p class="text-xs text-muted-foreground mt-0.5">Application timeline updates, university spotlights, test-policy changes, and AP/SAT score distributions.</p>
+                        </div>
+                        <svg aria-hidden="true" class="lucide w-4 h-4 text-muted-foreground/60 group-hover/card:text-indigo-500 group-hover/card:translate-x-0.5 transition-all shrink-0" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Full-Width Bottom Utility Bar -->
+              <div class="mega-footer-bar px-5 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <span class="text-muted-foreground">Save diagnostic scores, flashcards &amp; study schedules: <a href="../signup.html" class="font-bold text-emerald-600 dark:text-emerald-400 hover:underline">Create a free Student or Parent account &rarr;</a></span>
+                <a href="../resources/index.html" class="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">Explore All Free Resources &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a href="../results.html" class="px-1.5 py-1.5 text-sm font-bold text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap">
+          Results
+        </a>
+        <span aria-hidden="true" class="h-4 w-px bg-border"></span>
+        <button type="button" class="p-2 rounded-full hover:bg-muted transition-colors" aria-label="Toggle theme" onclick="toggleTheme()">
+          <svg aria-hidden="true" class="lucide w-5 h-5 dark:hidden" viewBox="0 0 24 24"><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/><circle cx="12" cy="12" r="4"/></svg>
+          <svg aria-hidden="true" class="lucide w-5 h-5 hidden dark:block" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
         </button>
-        <a href="../login.html" class="text-xs sm:text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors whitespace-nowrap">Sign In</a>
-        <a href="../book-consultation.html" class="px-4 sm:px-5 py-2 rounded-full bg-slate-950 text-white dark:bg-white dark:text-slate-950 text-xs sm:text-sm font-bold hover:opacity-90 transition-opacity whitespace-nowrap">Book a Consultation</a>
+        <a href="../login.html" class="px-1.5 py-1.5 text-sm font-bold text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap">
+          Sign In
+        </a>
+        <button type="button" onclick="openConsultationModal()" class="px-3.5 lg:px-6 py-2.5 rounded-full bg-foreground text-background text-xs lg:text-sm font-bold hover:scale-105 active:scale-95 transition-all shadow-lg whitespace-nowrap">
+          Book a Consultation
+        </button>
       </nav>
+    </div>
+
+    <!-- Mobile Header -->
+    <div class="flex md:hidden px-4 h-16 items-center justify-between w-full gap-2">
+      <a href="../index.html" class="flex items-center gap-1 min-w-0 shrink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg">
+        <img src="../logo/logo.svg" alt="Master Your Courses Logo" width="24" height="24" class="w-6 h-6 object-contain dark:brightness-0 dark:invert shrink-0" onerror="this.style.display='none'" />
+        <span class="text-sm sm:text-base font-black font-display tracking-tight text-foreground truncate">
+          Master<span class="text-indigo-500">Your</span>Courses
+        </span>
+      </a>
+      
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button type="button" class="p-1.5 rounded-full hover:bg-muted transition-colors text-muted-foreground" aria-label="Toggle theme" onclick="toggleTheme()">
+          <svg aria-hidden="true" class="lucide w-4 h-4 dark:hidden" viewBox="0 0 24 24"><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/><circle cx="12" cy="12" r="4"/></svg>
+          <svg aria-hidden="true" class="lucide w-4 h-4 hidden dark:block" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </button>
+        
+        <button type="button" onclick="openConsultationModal()" class="px-3 py-2 rounded-full bg-foreground text-background text-[10px] sm:text-xs font-bold active:scale-95 transition-all shadow-md whitespace-nowrap">
+          Book a Consultation
+        </button>
+
+        <nav aria-label="Mobile">
+          <button
+            type="button"
+            class="mobile-menu-trigger p-2 rounded-full hover:bg-muted transition-colors text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            popovertarget="mobile-nav-menu"
+            popovertargetaction="toggle"
+            aria-controls="mobile-nav-menu"
+          >
+            <svg aria-hidden="true" class="lucide w-5 h-5" viewBox="0 0 24 24"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            <span class="sr-only">Menu</span>
+          </button>
+          <ul id="mobile-nav-menu" class="mobile-nav-popover" popover="auto">
+            <li class="px-3 pt-2 pb-1 flex items-center justify-between">
+              <span class="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground font-display">Programs</span>
+              <a href="../programs/index.html" class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">View All &rarr;</a>
+            </li>
+            <li>
+              <button type="button" class="mobile-submenu-trigger w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-muted transition-colors text-left" aria-expanded="false" aria-controls="mobile-sub-ap">
+                <span><span class="block text-sm font-bold text-foreground">AP Prep</span><span class="block text-[11px] text-muted-foreground">22 AP courses &bull; All subjects</span></span>
+                <svg aria-hidden="true" class="lucide mobile-submenu-chevron w-4 h-4 text-muted-foreground transition-transform" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <ul id="mobile-sub-ap" hidden class="pl-3 pr-1 py-1 space-y-1 border-l-2 border-indigo-500/30 ml-3 my-1 text-xs">
+                <li><a href="../programs/ap-prep.html" class="block px-2.5 py-1.5 rounded-lg font-bold text-indigo-600 dark:text-indigo-400 hover:bg-muted">AP Prep Overview &rarr;</a></li>
+                <li><a href="../programs/ap-biology.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Biology</a></li>
+                <li><a href="../programs/ap-chemistry.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Chemistry</a></li>
+                <li><a href="../programs/ap-physics-1.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Physics 1</a></li>
+                <li><a href="../programs/ap-physics-2.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Physics 2</a></li>
+                <li><a href="../programs/ap-physics-c-mechanics.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Physics C: Mechanics</a></li>
+                <li><a href="../programs/ap-physics-c-em.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Physics C: E&amp;M</a></li>
+                <li><a href="../programs/ap-environmental-science.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Environmental Science</a></li>
+                <li><a href="../programs/ap-precalculus.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Precalculus</a></li>
+                <li><a href="../programs/ap-calculus-ab.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Calculus AB</a></li>
+                <li><a href="../programs/ap-calculus-bc.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Calculus BC</a></li>
+                <li><a href="../programs/ap-statistics.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Statistics</a></li>
+                <li><a href="../programs/ap-computer-science-a.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Computer Science A</a></li>
+                <li><a href="../programs/ap-computer-science-principles.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP CS Principles</a></li>
+                <li><a href="../programs/ap-microeconomics.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Microeconomics</a></li>
+                <li><a href="../programs/ap-macroeconomics.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Macroeconomics</a></li>
+                <li><a href="../programs/ap-psychology.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Psychology</a></li>
+                <li><a href="../programs/ap-english-language.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP English Language</a></li>
+                <li><a href="../programs/ap-english-literature.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP English Literature</a></li>
+                <li><a href="../programs/ap-us-history.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP U.S. History</a></li>
+                <li><a href="../programs/ap-world-history.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP World History</a></li>
+                <li><a href="../programs/ap-us-government.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP U.S. Government</a></li>
+                <li><a href="../programs/ap-human-geography.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AP Human Geography</a></li>
+              </ul>
+            </li>
+            <li>
+              <button type="button" class="mobile-submenu-trigger w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-muted transition-colors text-left" aria-expanded="false" aria-controls="mobile-sub-sat">
+                <span><span class="block text-sm font-bold text-foreground">SAT, PSAT &amp; ACT Prep</span><span class="block text-[11px] text-muted-foreground">Digital SAT, National Merit &amp; ACT</span></span>
+                <svg aria-hidden="true" class="lucide mobile-submenu-chevron w-4 h-4 text-muted-foreground transition-transform" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <ul id="mobile-sub-sat" hidden class="pl-3 pr-1 py-1 space-y-1 border-l-2 border-indigo-500/30 ml-3 my-1 text-xs">
+                <li><a href="../programs/sat-prep.html" class="block px-2.5 py-1.5 rounded-lg font-bold text-indigo-600 dark:text-indigo-400 hover:bg-muted">Digital SAT Overview &rarr;</a></li>
+                <li><a href="../programs/sat-1-on-1.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">1-on-1 SAT Mentorship</a></li>
+                <li><a href="../programs/sat-cohort.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Live SAT Group Cohort</a></li>
+                <li><a href="../programs/sat-practice-course.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">On-Demand SAT Practice Course</a></li>
+                <li><a href="../programs/psat-national-merit.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">PSAT / National Merit Prep</a></li>
+                <li><a href="../programs/act-prep.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">ACT Prep (All Formats)</a></li>
+              </ul>
+            </li>
+            <li>
+              <button type="button" class="mobile-submenu-trigger w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-muted transition-colors text-left" aria-expanded="false" aria-controls="mobile-sub-comp">
+                <span><span class="block text-sm font-bold text-foreground">Competition Prep</span><span class="block text-[11px] text-muted-foreground">AMC, AIME, F=ma &amp; Olympiads</span></span>
+                <svg aria-hidden="true" class="lucide mobile-submenu-chevron w-4 h-4 text-muted-foreground transition-transform" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <ul id="mobile-sub-comp" hidden class="pl-3 pr-1 py-1 space-y-1 border-l-2 border-indigo-500/30 ml-3 my-1 text-xs">
+                <li><a href="../programs/competition-prep.html" class="block px-2.5 py-1.5 rounded-lg font-bold text-indigo-600 dark:text-indigo-400 hover:bg-muted">Competition Overview &rarr;</a></li>
+                <li><a href="../programs/amc-8-mathcounts.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AMC 8 &amp; MATHCOUNTS</a></li>
+                <li><a href="../programs/amc-10.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AMC 10 Prep</a></li>
+                <li><a href="../programs/amc-12.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AMC 12 Prep</a></li>
+                <li><a href="../programs/aime-usamo.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">AIME &amp; USA(J)MO / USAMO</a></li>
+                <li><a href="../programs/waterloo-cemc-contests.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Waterloo / CEMC Contests</a></li>
+                <li><a href="../programs/fma-usapho.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">F=ma &amp; USAPhO</a></li>
+                <li><a href="../programs/usnco-chemistry-olympiad.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">USNCO Chemistry Olympiad</a></li>
+                <li><a href="../programs/usabo-biology-olympiad.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">USABO Biology Olympiad</a></li>
+                <li><a href="../programs/usaco-computing-olympiad.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">USACO Computing Olympiad</a></li>
+              </ul>
+            </li>
+            <li>
+              <button type="button" class="mobile-submenu-trigger w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-muted transition-colors text-left" aria-expanded="false" aria-controls="mobile-sub-mcat">
+                <span><span class="block text-sm font-bold text-foreground">MCAT &amp; DAT Prep</span><span class="block text-[11px] text-muted-foreground">Pre-med &amp; pre-dental exam prep</span></span>
+                <svg aria-hidden="true" class="lucide mobile-submenu-chevron w-4 h-4 text-muted-foreground transition-transform" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <ul id="mobile-sub-mcat" hidden class="pl-3 pr-1 py-1 space-y-1 border-l-2 border-indigo-500/30 ml-3 my-1 text-xs">
+                <li><a href="../programs/mcat-dat-prep.html" class="block px-2.5 py-1.5 rounded-lg font-bold text-indigo-600 dark:text-indigo-400 hover:bg-muted">MCAT &amp; DAT Overview &rarr;</a></li>
+                <li><a href="../programs/mcat-prep.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">MCAT Prep Overview</a></li>
+                <li><a href="../programs/mcat-1-on-1.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">1-on-1 MCAT Mentorship</a></li>
+                <li><a href="../programs/mcat-cohort.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Live MCAT Group Cohort</a></li>
+                <li><a href="../programs/mcat-practice-course.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">On-Demand MCAT Practice Course</a></li>
+                <li><a href="../programs/dat-prep.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">DAT Prep (Dental)</a></li>
+              </ul>
+            </li>
+            <li>
+              <button type="button" class="mobile-submenu-trigger w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-muted transition-colors text-left" aria-expanded="false" aria-controls="mobile-sub-tutor">
+                <span><span class="block text-sm font-bold text-foreground">Course &amp; IB Tutoring</span><span class="block text-[11px] text-muted-foreground">High school, IB HL/SL &amp; university</span></span>
+                <svg aria-hidden="true" class="lucide mobile-submenu-chevron w-4 h-4 text-muted-foreground transition-transform" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <ul id="mobile-sub-tutor" hidden class="pl-3 pr-1 py-1 space-y-1 border-l-2 border-indigo-500/30 ml-3 my-1 text-xs">
+                <li><a href="../programs/course-tutoring.html" class="block px-2.5 py-1.5 rounded-lg font-bold text-indigo-600 dark:text-indigo-400 hover:bg-muted">Course Tutoring Overview &rarr;</a></li>
+                <li><a href="../programs/high-school-tutoring.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">High School &amp; Honors Tutoring</a></li>
+                <li><a href="../programs/ib-diploma-prep.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">IB Diploma (HL &amp; SL) Prep</a></li>
+                <li><a href="../programs/university-tutoring.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">University &amp; Pre-Med STEM</a></li>
+              </ul>
+            </li>
+            <li>
+              <button type="button" class="mobile-submenu-trigger w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-muted transition-colors text-left" aria-expanded="false" aria-controls="mobile-sub-research">
+                <span><span class="block text-sm font-bold text-foreground">Research &amp; Admissions</span><span class="block text-[11px] text-muted-foreground">STEM research papers &amp; college advising</span></span>
+                <svg aria-hidden="true" class="lucide mobile-submenu-chevron w-4 h-4 text-muted-foreground transition-transform" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <ul id="mobile-sub-research" hidden class="pl-3 pr-1 py-1 space-y-1 border-l-2 border-indigo-500/30 ml-3 my-1 text-xs">
+                <li><a href="../programs/stem-research-mentorship.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">1-on-1 STEM Research Mentorship</a></li>
+                <li><a href="../programs/college-admissions-counseling.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">College &amp; Pre-Med Admissions Advising</a></li>
+              </ul>
+            </li>
+            <li aria-hidden="true" class="my-1 border-t border-border"></li>
+            <li class="px-3 pt-1 pb-1 text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground font-display">Formats</li>
+            <li><a href="../programs/1-on-1-mentorship.html" class="block px-3 py-1.5 rounded-xl text-xs font-bold text-foreground hover:bg-muted transition-colors">1-on-1 Mentorship</a></li>
+            <li><a href="../programs/live-cohorts.html" class="block px-3 py-1.5 rounded-xl text-xs font-bold text-foreground hover:bg-muted transition-colors">Live Group Cohorts</a></li>
+            <li><a href="../programs/practice-courses.html" class="block px-3 py-1.5 rounded-xl text-xs font-bold text-foreground hover:bg-muted transition-colors">On-Demand Practice Courses</a></li>
+            <li><a href="../pricing.html" class="block px-3 py-1.5 rounded-xl text-xs font-bold text-foreground hover:bg-muted transition-colors">Plans &amp; Tuition</a></li>
+            <li aria-hidden="true" class="my-1 border-t border-border"></li>
+            <li>
+              <button type="button" class="mobile-submenu-trigger w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-muted transition-colors text-left" aria-expanded="false" aria-controls="mobile-sub-resources">
+                <span><span class="block text-sm font-bold text-foreground">Free Resources</span><span class="block text-[11px] text-muted-foreground">Quizzes, past FRQs, tools, videos &amp; guides</span></span>
+                <svg aria-hidden="true" class="lucide mobile-submenu-chevron w-4 h-4 text-muted-foreground transition-transform" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <ul id="mobile-sub-resources" hidden class="pl-3 pr-1 py-1 space-y-1 border-l-2 border-indigo-500/30 ml-3 my-1 text-xs">
+                <li><a href="../resources/index.html" class="block px-2.5 py-1.5 rounded-lg font-bold text-indigo-600 dark:text-indigo-400 hover:bg-muted">All Free Resources &rarr;</a></li>
+                <li><a href="../practice/index.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Practice, Quizzes &amp; Flashcards</a></li>
+                <li><a href="../mock-exams/index.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Free Diagnostic Mock Exams</a></li>
+                <li><a href="../solutions/index.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Past Exam &amp; FRQ Solutions</a></li>
+                <li><a href="../tools/index.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Score Calculators &amp; Study Planner</a></li>
+                <li><a href="../guides/index.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Study Guides &amp; Formula Sheets</a></li>
+                <li><a href="../guides/stem-summer-programs.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">STEM Summer Programs &amp; Internships</a></li>
+                <li><a href="../guides/scholarships-and-merit-aid.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Scholarships &amp; National Merit</a></li>
+                <li><a href="../guides/college-admissions-roadmaps.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">College Admissions Roadmaps</a></li>
+                <li><a href="../guides/parent-academic-guides.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Parent Academic &amp; STEM Guides</a></li>
+                <li><a href="../guides/video-lessons.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Concept Video Library</a></li>
+                <li><a href="../workshops/index.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Free Live Workshops</a></li>
+                <li><a href="../blog/index.html" class="block px-2.5 py-1 rounded-lg text-foreground hover:bg-muted">Exam Updates &amp; Articles</a></li>
+              </ul>
+            </li>
+            <li aria-hidden="true" class="my-1 border-t border-border"></li>
+            <li><a href="../about.html" class="block px-3 py-2 rounded-xl text-sm font-bold text-foreground hover:bg-muted transition-colors">About Us</a></li>
+            <li><a href="../methodology.html" class="block px-3 py-2 rounded-xl text-sm font-bold text-foreground hover:bg-muted transition-colors">How It Works</a></li>
+            <li><a href="../mentors.html" class="block px-3 py-2 rounded-xl text-sm font-bold text-foreground hover:bg-muted transition-colors">Mentors</a></li>
+            <li><a href="../results.html" class="block px-3 py-2 rounded-xl text-sm font-bold text-foreground hover:bg-muted transition-colors">Results</a></li>
+            <li><a href="../schools.html" class="block px-3 py-2 rounded-xl text-sm font-bold text-foreground hover:bg-muted transition-colors">For Schools &amp; Educators</a></li>
+            <li><a href="../faq.html" class="block px-3 py-2 rounded-xl text-sm font-bold text-foreground hover:bg-muted transition-colors">FAQ</a></li>
+            <li><a href="../contact.html" class="block px-3 py-2 rounded-xl text-sm font-bold text-foreground hover:bg-muted transition-colors">Contact Us</a></li>
+            <li aria-hidden="true" class="my-1 border-t border-border"></li>
+            <li class="flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl bg-muted/50">
+              <a href="../login.html" class="text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:underline">Sign In &rarr;</a>
+              <a href="../signup.html" class="text-xs font-bold text-muted-foreground hover:text-foreground transition-colors">New? Create Account</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </header>
 
-  <main class="flex-1">
+  <main class="flex-1 pt-16 md:pt-20">
 
     <section class="relative overflow-hidden py-16 sm:py-24 px-6">
       <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[42rem] h-[24rem] bg-indigo-500/15 dark:bg-indigo-500/20 rounded-full blur-[110px] pointer-events-none"></div>
       <div class="max-w-3xl mx-auto relative z-10 text-center">
         <nav aria-label="Breadcrumb" class="text-xs sm:text-sm font-medium text-slate-500 dark:text-zinc-400 mb-6 flex flex-wrap items-center justify-center gap-2">
-          <a href="../index.html" class="hover:text-indigo-500 transition-colors">Home</a> <span aria-hidden="true" class="text-slate-400">/</span> <a href="../resources/index.html" class="hover:text-indigo-500 transition-colors">Free Resources</a> <span aria-hidden="true" class="text-slate-400">/</span> <span class="text-slate-900 dark:text-white font-bold">Live Workshops &amp; Seminars</span>
+          <a href="../index.html" class="hover:text-indigo-500 transition-colors">Home</a> <span aria-hidden="true" class="text-slate-400">/</span> <a href="../resources/index.html" class="hover:text-indigo-500 transition-colors">Free Resources</a> <span aria-hidden="true" class="text-slate-400">/</span> <span class="text-slate-900 dark:text-white font-bold" aria-current="page">Live Workshops &amp; Seminars</span>
         </nav>
 
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-700 dark:text-indigo-300 text-xs font-extrabold uppercase tracking-widest font-display mb-6">
@@ -75,7 +1363,7 @@
           Coming Soon
         </div>
 
-        <h1 id="page-main-heading" class="text-3xl sm:text-5xl md:text-6xl font-black font-display tracking-tight leading-[1.08]">
+        <h1 id="main-heading" tabindex="-1" class="text-3xl sm:text-5xl md:text-6xl font-black font-display tracking-tight leading-[1.08]">
           Free Live Workshops &amp; Parent Strategy Seminars
         </h1>
 
@@ -119,17 +1407,512 @@
     </section>
   </main>
 
-  <footer class="border-t border-slate-200 dark:border-white/10 bg-white dark:bg-black py-8">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-500 dark:text-zinc-400">
-      <p>&copy; 2026 Master Your Courses Inc. All rights reserved.</p>
-      <div class="flex flex-wrap items-center justify-center gap-5 font-semibold">
-        <a href="../privacy.html" class="hover:text-indigo-500 transition-colors">Privacy Policy</a>
-        <a href="../terms.html" class="hover:text-indigo-500 transition-colors">Terms of Service</a>
-        <a href="../refund-policy.html" class="hover:text-indigo-500 transition-colors">Returns &amp; Refunds</a>
-        <a href="../cookies.html" class="hover:text-indigo-500 transition-colors">Cookie Policy</a>
-        <a href="../sitemap.html" class="hover:text-indigo-500 transition-colors">Site Map</a>
-      </div>
-    </div>
+  <footer class="section-space-dense border-t border-white/10 bg-black">
+     <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-10 mb-10 md:mb-16">
+           
+           <!-- Brand & Info -->
+           <div class="sm:col-span-2 lg:col-span-3">
+              <a href="../index.html" class="inline-flex items-center gap-2 mb-4 md:mb-6">
+                 <img src="../logo/logo.svg" alt="Master Your Courses Logo" width="36" height="36" loading="lazy" class="w-9 h-9 object-contain brightness-0 invert opacity-90" />
+                 <span class="text-xl md:text-2xl font-black tracking-tight text-white">
+                    Master<span class="text-indigo-400">Your</span>Courses
+                 </span>
+              </a>
+              <p class="text-slate-400 leading-relaxed mb-6 max-w-sm text-sm">
+                 Helping ambitious students excel across 22 AP exams, the Digital SAT, STEM Olympiads, and university coursework through first-principles instruction and personalized mentorship.
+              </p>
+              <div class="flex gap-3">
+                 <a href="../social.html?platform=facebook" aria-label="Visit our Facebook" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-indigo-500 hover:text-white transition-colors shadow-sm">
+                    <svg aria-hidden="true" class="lucide w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                 </a>
+                 <a href="../social.html?platform=instagram" aria-label="Visit our Instagram" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-pink-600 hover:text-white transition-colors shadow-sm">
+                    <svg aria-hidden="true" class="lucide w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                 </a>
+                 <a href="../social.html?platform=x" aria-label="Visit our X (formerly Twitter)" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-slate-800 hover:text-white transition-colors shadow-sm">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                 </a>
+                 <a href="../social.html?platform=youtube" aria-label="Visit our YouTube channel" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-colors shadow-sm">
+                    <svg aria-hidden="true" class="lucide w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+                 </a>
+                 <a href="../social.html?platform=tiktok" aria-label="Visit our TikTok" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-[#ff0050] hover:text-white transition-colors shadow-sm">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93v7.2c0 2.22-1.28 4.22-3.32 5.06-2.05.84-4.52.48-6.16-1.04-1.64-1.52-2.31-3.92-1.74-6.07.57-2.15 2.45-3.8 4.67-4.13.06 1.34.09 2.68.14 4.02-.91.24-1.72.93-2.08 1.83-.36.9-.17 1.96.48 2.67.65.71 1.68 1.02 2.6.78.92-.24 1.6-.98 1.8-1.92.2-1.03.14-2.08.14-3.12V.02h-.68z"/></svg>
+                 </a>
+              </div>
+           </div>
+
+           <!-- Column 1: AP, SAT, ACT & Pre-Health -->
+           <div class="lg:col-span-2">
+              <h4 class="font-bold text-white mb-4 md:mb-5 uppercase tracking-widest text-[10px] md:text-xs font-display">Test &amp; AP Prep</h4>
+              <ul class="space-y-2.5 text-sm">
+                 <li><a href="../programs/ap-prep.html" class="text-indigo-400 hover:text-indigo-300 transition-colors font-bold">All 22 AP Courses &rarr;</a></li>
+                 <li><a href="../programs/ap-biology.html" class="text-slate-400 hover:text-white transition-colors font-medium">AP Biology</a></li>
+                 <li><a href="../programs/ap-chemistry.html" class="text-slate-400 hover:text-white transition-colors font-medium">AP Chemistry</a></li>
+                 <li><a href="../programs/ap-physics-1.html" class="text-slate-400 hover:text-white transition-colors font-medium">AP Physics 1</a></li>
+                 <li><a href="../programs/ap-calculus-bc.html" class="text-slate-400 hover:text-white transition-colors font-medium">AP Calculus BC</a></li>
+                 <li><a href="../programs/sat-prep.html" class="text-slate-400 hover:text-white transition-colors font-medium">Digital SAT Prep</a></li>
+                 <li><a href="../programs/act-prep.html" class="text-slate-400 hover:text-white transition-colors font-medium">ACT Prep</a></li>
+                 <li><a href="../programs/mcat-prep.html" class="text-slate-400 hover:text-white transition-colors font-medium">MCAT Prep</a></li>
+                 <li><a href="../programs/dat-prep.html" class="text-slate-400 hover:text-white transition-colors font-medium">DAT Prep</a></li>
+              </ul>
+           </div>
+
+           <!-- Column 2: Olympiads, Formats & Books -->
+           <div class="lg:col-span-2">
+              <h4 class="font-bold text-white mb-4 md:mb-5 uppercase tracking-widest text-[10px] md:text-xs font-display">Olympiads &amp; Formats</h4>
+              <ul class="space-y-2.5 text-sm">
+                 <li><a href="../programs/competition-prep.html" class="text-indigo-400 hover:text-indigo-300 transition-colors font-bold">All 9 Olympiads &rarr;</a></li>
+                 <li><a href="../programs/amc-10.html" class="text-slate-400 hover:text-white transition-colors font-medium">AMC 10 &amp; 12 Prep</a></li>
+                 <li><a href="../programs/aime-usamo.html" class="text-slate-400 hover:text-white transition-colors font-medium">AIME &amp; USAMO</a></li>
+                 <li><a href="../programs/fma-usapho.html" class="text-slate-400 hover:text-white transition-colors font-medium">F=ma &amp; USAPhO</a></li>
+                 <li><a href="../programs/usaco-computing-olympiad.html" class="text-slate-400 hover:text-white transition-colors font-medium">USACO Computing</a></li>
+                 <li><a href="../programs/1-on-1-mentorship.html" class="text-slate-400 hover:text-white transition-colors font-medium">1-on-1 Mentorship</a></li>
+                 <li><a href="../programs/live-cohorts.html" class="text-slate-400 hover:text-white transition-colors font-medium">Live Group Cohorts</a></li>
+                 <li><a href="../programs/practice-courses.html" class="text-slate-400 hover:text-white transition-colors font-medium">Practice Courses</a></li>
+                 <li><a href="../books/index.html" class="text-slate-400 hover:text-white transition-colors font-medium">Textbooks &amp; Workbooks</a></li>
+              </ul>
+           </div>
+
+           <!-- Column 3: Free Resources & SEO Tools -->
+           <div class="lg:col-span-3">
+              <h4 class="font-bold text-white mb-4 md:mb-5 uppercase tracking-widest text-[10px] md:text-xs font-display">Free Resources &amp; Tools</h4>
+              <ul class="space-y-2.5 text-sm">
+                 <li><a href="../resources/index.html" class="text-indigo-400 hover:text-indigo-300 transition-colors font-bold">Free Learning Hub &rarr;</a></li>
+                 <li><a href="../practice/index.html" class="text-slate-400 hover:text-white transition-colors font-medium">Practice, Quizzes &amp; Flashcards</a></li>
+                 <li><a href="../mock-exams/index.html" class="text-slate-400 hover:text-white transition-colors font-medium">Free Diagnostic Mock Exams</a></li>
+                 <li><a href="../solutions/index.html" class="text-slate-400 hover:text-white transition-colors font-medium">Past Exam &amp; FRQ Solutions</a></li>
+                 <li><a href="../tools/ap-score-calculators.html" class="text-slate-400 hover:text-white transition-colors font-medium">AP Score Calculators</a></li>
+                 <li><a href="../tools/digital-sat-score-calculator.html" class="text-slate-400 hover:text-white transition-colors font-medium">Digital SAT Score Calculator</a></li>
+                 <li><a href="../tools/study-schedule-planner.html" class="text-slate-400 hover:text-white transition-colors font-medium">Exam Countdown &amp; Study Planner</a></li>
+                 <li><a href="../guides/index.html" class="text-slate-400 hover:text-white transition-colors font-medium">Study Guides &amp; Formula Sheets</a></li>
+                 <li><a href="../guides/stem-summer-programs.html" class="text-slate-400 hover:text-white transition-colors font-medium">STEM Summer Programs</a></li>
+                 <li><a href="../guides/scholarships-and-merit-aid.html" class="text-slate-400 hover:text-white transition-colors font-medium">Scholarships &amp; National Merit</a></li>
+                 <li><a href="../guides/college-admissions-roadmaps.html" class="text-slate-400 hover:text-white transition-colors font-medium">College Admissions Guides</a></li>
+                 <li><a href="../guides/video-lessons.html" class="text-slate-400 hover:text-white transition-colors font-medium">Concept Video Library</a></li>
+                 <li><a href="../workshops/index.html" class="text-slate-400 hover:text-white transition-colors font-medium">Free Live Workshops</a></li>
+                 <li><a href="../blog/index.html" class="text-slate-400 hover:text-white transition-colors font-medium">Exam Updates &amp; Articles</a></li>
+              </ul>
+           </div>
+
+           <!-- Column 4: Tutoring & Company -->
+           <div class="lg:col-span-2">
+              <h4 class="font-bold text-white mb-4 md:mb-5 uppercase tracking-widest text-[10px] md:text-xs font-display">Company &amp; Tutoring</h4>
+              <ul class="space-y-2.5 text-sm">
+                 <li><a href="../programs/high-school-tutoring.html" class="text-slate-400 hover:text-white transition-colors font-medium">High School Tutoring</a></li>
+                 <li><a href="../programs/ib-diploma-prep.html" class="text-slate-400 hover:text-white transition-colors font-medium">IB Diploma (HL/SL)</a></li>
+                 <li><a href="../programs/university-tutoring.html" class="text-slate-400 hover:text-white transition-colors font-medium">University STEM</a></li>
+                 <li><a href="../programs/stem-research-mentorship.html" class="text-slate-400 hover:text-white transition-colors font-medium">STEM Research Mentorship</a></li>
+                 <li><a href="../programs/college-admissions-counseling.html" class="text-slate-400 hover:text-white transition-colors font-medium">College Admissions Advising</a></li>
+                 <li><a href="../pricing.html" class="text-slate-400 hover:text-white transition-colors font-medium">Plans &amp; Tuition</a></li>
+                 <li><a href="../schools.html" class="text-slate-400 hover:text-white transition-colors font-medium">For Schools &amp; Educators</a></li>
+                 <li><a href="../about.html" class="text-slate-400 hover:text-white transition-colors font-medium">About Us</a></li>
+                 <li><a href="../methodology.html" class="text-slate-400 hover:text-white transition-colors font-medium">How It Works</a></li>
+                 <li><a href="../mentors.html" class="text-slate-400 hover:text-white transition-colors font-medium">Meet Our Mentors</a></li>
+                 <li><a href="../results.html" class="text-slate-400 hover:text-white transition-colors font-medium">Student Results</a></li>
+                 <li><a href="../faq.html" class="text-slate-400 hover:text-white transition-colors font-medium">FAQ</a></li>
+                 <li><a href="../contact.html" class="text-slate-400 hover:text-white transition-colors font-medium">Contact Us</a></li>
+                 <li><a href="../careers.html" class="text-slate-400 hover:text-white transition-colors font-medium">Become a Mentor</a></li>
+                 <li><a href="../login.html" class="text-slate-400 hover:text-white transition-colors font-medium">Sign In</a></li>
+                 <li><a href="../signup.html" class="text-slate-400 hover:text-white transition-colors font-medium">Create Free Account</a></li>
+                 <li><button type="button" onclick="openConsultationModal()" class="text-indigo-400 hover:text-indigo-300 transition-colors font-bold text-left">Book a Consultation &rarr;</button></li>
+              </ul>
+           </div>
+        </div>
+
+        <div class="pt-6 md:pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+           <p class="text-xs md:text-sm font-medium text-slate-400">
+              &copy; 2026 Master Your Courses Inc. All rights reserved.
+           </p>
+           <div class="flex flex-wrap justify-center items-center gap-4 md:gap-6 text-xs md:text-sm font-bold text-slate-400">
+              <a href="../privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+              <a href="../terms.html" class="hover:text-white transition-colors">Terms of Service</a>
+              <a href="../refund-policy.html" class="hover:text-white transition-colors">Returns &amp; Refunds</a>
+              <a href="../cookies.html" class="hover:text-white transition-colors">Cookie Policy</a>
+              <a href="../sitemap.html" class="hover:text-white transition-colors">Site Map</a>
+           </div>
+        </div>
+     </div>
   </footer>
+  <dialog id="consultation-modal" closedby="any" aria-labelledby="consultation-modal-title">
+    <div class="flex items-start justify-between gap-4 px-6 pt-6 pb-4 border-b border-border">
+      <div>
+        <span class="inline-block text-[11px] font-extrabold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-display mb-1">Academic Consultation</span>
+        <h2 id="consultation-modal-title" class="text-xl sm:text-2xl font-black font-display tracking-tight text-foreground">Book an Academic Consultation</h2>
+        <p class="text-xs sm:text-sm text-muted-foreground mt-1">Answer a few quick questions so we can match you with the right advisor and program options.</p>
+      </div>
+      <button type="button" id="consultation-modal-close" aria-label="Close consultation dialog" class="shrink-0 w-11 h-11 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+        <svg aria-hidden="true" class="lucide w-5 h-5" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <form id="consultation-qualifier-form" action="../book-consultation.html" method="GET" class="overflow-y-auto px-6 py-5 space-y-5">
+      <fieldset class="space-y-2">
+        <legend class="text-xs font-extrabold uppercase tracking-wider text-foreground font-display">1. Are you a parent or a student? <span aria-hidden="true" class="text-rose-500">*</span></legend>
+        <div class="grid grid-cols-2 gap-2.5 pt-1">
+          <div class="flex items-center gap-2.5 rounded-xl border border-border px-3.5 py-3 bg-muted/30">
+            <input type="radio" id="qual-role-parent" name="role" value="Parent / Guardian" checked required autofocus />
+            <label for="qual-role-parent" class="text-sm font-bold text-foreground cursor-pointer flex-1">Parent / Guardian</label>
+          </div>
+          <div class="flex items-center gap-2.5 rounded-xl border border-border px-3.5 py-3 bg-muted/30">
+            <input type="radio" id="qual-role-student" name="role" value="Student" required />
+            <label for="qual-role-student" class="text-sm font-bold text-foreground cursor-pointer flex-1">Student</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label for="qual-grade" class="text-xs font-extrabold uppercase tracking-wider text-foreground font-display">2. Student’s Grade <span aria-hidden="true" class="text-rose-500">*</span></label>
+          <select id="qual-grade" name="grade" required class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+            <option value="">Select grade level...</option>
+            <option value="Grades 6–8">Grades 6–8 (Middle School)</option>
+            <option value="Grade 9">Grade 9 (Freshman)</option>
+            <option value="Grade 10">Grade 10 (Sophomore)</option>
+            <option value="Grade 11">Grade 11 (Junior)</option>
+            <option value="Grade 12">Grade 12 (Senior)</option>
+            <option value="University / Pre-Med">University / Pre-Med</option>
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="qual-goal" class="text-xs font-extrabold uppercase tracking-wider text-foreground font-display">3. What are you preparing for? <span aria-hidden="true" class="text-rose-500">*</span></label>
+          <select id="qual-goal" name="goal" required class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+            <option value="">Select primary goal...</option>
+            <option value="AP Courses or AP Exams">AP Courses or AP Exams</option>
+            <option value="IB Diploma (HL / SL) Prep">IB Diploma (HL / SL) Prep</option>
+            <option value="Digital SAT, PSAT or ACT Prep">Digital SAT, PSAT or ACT Prep</option>
+            <option value="Math Competitions (AMC, AIME, Waterloo)">Math Competitions (AMC, AIME, Waterloo)</option>
+            <option value="Science or Computing Olympiads">Science or Computing Olympiads</option>
+            <option value="MCAT or DAT Prep">MCAT or DAT Prep (Pre-Med / Pre-Dental)</option>
+            <option value="High School or University Tutoring">High School or University Tutoring</option>
+            <option value="STEM Research or College Admissions Advising">STEM Research or College Admissions Advising</option>
+            <option value="Multiple Subjects / Not Sure Yet">Multiple Subjects / Not Sure Yet</option>
+          </select>
+        </div>
+      </div>
+
+      <fieldset class="space-y-2">
+        <legend class="text-xs font-extrabold uppercase tracking-wider text-foreground font-display">4. Which format interests you most? <span aria-hidden="true" class="text-rose-500">*</span></legend>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+          <div class="flex items-center gap-2.5 rounded-xl border border-border px-3.5 py-2.5 bg-muted/30">
+            <input type="radio" id="qual-format-1on1" name="format" value="1-on-1 Mentorship" checked required />
+            <label for="qual-format-1on1" class="text-sm font-semibold text-foreground cursor-pointer flex-1">1-on-1 Mentorship</label>
+          </div>
+          <div class="flex items-center gap-2.5 rounded-xl border border-border px-3.5 py-2.5 bg-muted/30">
+            <input type="radio" id="qual-format-cohort" name="format" value="Live Group Cohort" required />
+            <label for="qual-format-cohort" class="text-sm font-semibold text-foreground cursor-pointer flex-1">Live Group Cohort</label>
+          </div>
+          <div class="flex items-center gap-2.5 rounded-xl border border-border px-3.5 py-2.5 bg-muted/30">
+            <input type="radio" id="qual-format-course" name="format" value="On-Demand Practice Course" required />
+            <label for="qual-format-course" class="text-sm font-semibold text-foreground cursor-pointer flex-1">On-Demand Practice Course</label>
+          </div>
+          <div class="flex items-center gap-2.5 rounded-xl border border-border px-3.5 py-2.5 bg-muted/30">
+            <input type="radio" id="qual-format-advise" name="format" value="Not Sure — Recommend Best Fit" required />
+            <label for="qual-format-advise" class="text-sm font-semibold text-foreground cursor-pointer flex-1">Not sure — recommend the best fit</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="space-y-2">
+        <legend class="text-xs font-extrabold uppercase tracking-wider text-foreground font-display">5. When would you like to start? <span aria-hidden="true" class="text-rose-500">*</span></legend>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+          <div class="flex items-center gap-2 rounded-xl border border-border px-3 py-2.5 bg-muted/30">
+            <input type="radio" id="qual-time-now" name="timeline" value="Right Away" checked required />
+            <label for="qual-time-now" class="text-xs sm:text-sm font-semibold text-foreground cursor-pointer flex-1">Right away</label>
+          </div>
+          <div class="flex items-center gap-2 rounded-xl border border-border px-3 py-2.5 bg-muted/30">
+            <input type="radio" id="qual-time-month" name="timeline" value="Within 1–2 Months" required />
+            <label for="qual-time-month" class="text-xs sm:text-sm font-semibold text-foreground cursor-pointer flex-1">Within 1–2 months</label>
+          </div>
+          <div class="flex items-center gap-2 rounded-xl border border-border px-3 py-2.5 bg-muted/30">
+            <input type="radio" id="qual-time-term" name="timeline" value="Next Semester" required />
+            <label for="qual-time-term" class="text-xs sm:text-sm font-semibold text-foreground cursor-pointer flex-1">Next semester</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="flex flex-col gap-1.5">
+        <label for="qual-email" class="text-xs font-extrabold uppercase tracking-wider text-foreground font-display">6. Your Email Address <span aria-hidden="true" class="text-rose-500">*</span></label>
+        <input type="email" id="qual-email" name="email" autocomplete="email" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="done" required aria-describedby="qual-email-hint" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" />
+        <span id="qual-email-hint" class="text-xs text-muted-foreground">We’ll only use this to send your calendar confirmation.</span>
+      </div>
+
+      <p id="consultation-form-status" class="text-xs font-bold text-rose-500" role="status" aria-live="polite" hidden></p>
+
+      <div class="pt-2 flex flex-col sm:flex-row items-center justify-end gap-3 border-t border-border">
+        <button type="button" id="consultation-modal-cancel" class="w-full sm:w-auto px-5 py-3 rounded-full border border-border text-sm font-bold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+          Cancel
+        </button>
+        <button type="submit" id="consultation-modal-submit" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-black font-display shadow-lg transition-colors flex items-center justify-center gap-2">
+          Continue to Available Times
+          <svg aria-hidden="true" class="lucide w-4 h-4" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    let megaIntentTimer = 0;
+    let resourceIntentTimer = 0;
+
+    function setMegaTrack(index) {
+      clearTimeout(megaIntentTimer);
+      document.querySelectorAll("[data-mega-track]").forEach((tab, idx) => {
+        tab.setAttribute("aria-selected", String(idx === index));
+      });
+      document.querySelectorAll("[data-mega-panel]").forEach((panel, idx) => {
+        panel.hidden = idx !== index;
+      });
+    }
+    function queueMegaTrack(index) {
+      clearTimeout(megaIntentTimer);
+      megaIntentTimer = window.setTimeout(() => setMegaTrack(index), 95);
+    }
+    function cancelMegaTrackIntent() {
+      clearTimeout(megaIntentTimer);
+    }
+    function setResourceTrack(index) {
+      clearTimeout(resourceIntentTimer);
+      document.querySelectorAll("[data-resource-track]").forEach((tab, idx) => {
+        tab.setAttribute("aria-selected", String(idx === index));
+      });
+      document.querySelectorAll("[data-resource-panel]").forEach((panel, idx) => {
+        panel.hidden = idx !== index;
+      });
+    }
+    function queueResourceTrack(index) {
+      clearTimeout(resourceIntentTimer);
+      resourceIntentTimer = window.setTimeout(() => setResourceTrack(index), 95);
+    }
+    function cancelResourceTrackIntent() {
+      clearTimeout(resourceIntentTimer);
+    }
+    function closeAllMegaMenus({ restoreFocusTo = null } = {}) {
+      document.querySelectorAll(".mega-wrapper").forEach(wrapper => {
+        clearTimeout(megaLeaveTimers.get(wrapper));
+        wrapper.classList.remove("is-pinned", "is-hovered");
+        wrapper.classList.add("mega-force-closed");
+        wrapper.querySelector("button[aria-expanded]")?.setAttribute("aria-expanded", "false");
+      });
+      if (restoreFocusTo) {
+        restoreFocusTo.focus();
+      } else if (document.activeElement?.closest(".mega-wrapper")) {
+        document.activeElement.blur();
+      }
+    }
+    function toggleMegaWrapper(wrapperId, triggerId) {
+      const wrapper = document.getElementById(wrapperId);
+      const trigger = document.getElementById(triggerId);
+      if (!wrapper || !trigger) return;
+      const willOpen = !wrapper.classList.contains("is-pinned");
+      document.querySelectorAll(".mega-wrapper").forEach(other => {
+        if (other !== wrapper) {
+          clearTimeout(megaLeaveTimers.get(other));
+          other.classList.remove("is-pinned", "is-hovered");
+          other.querySelector("button[aria-expanded]")?.setAttribute("aria-expanded", "false");
+          if (other.contains(document.activeElement)) document.activeElement.blur();
+        }
+      });
+      wrapper.classList.remove("mega-force-closed");
+      wrapper.classList.toggle("is-pinned", willOpen);
+      trigger.setAttribute("aria-expanded", String(willOpen));
+      if (!willOpen) wrapper.classList.add("mega-force-closed");
+    }
+    function toggleProgramsMegaMenu() {
+      toggleMegaWrapper("programs-mega-wrapper", "programs-mega-trigger");
+    }
+    function toggleResourcesMegaMenu() {
+      toggleMegaWrapper("resources-mega-wrapper", "resources-mega-trigger");
+    }
+    const megaLeaveTimers = new WeakMap();
+    document.querySelectorAll(".mega-wrapper").forEach(wrapper => {
+      wrapper.addEventListener("pointerenter", event => {
+        if (event.pointerType === "touch") return;
+        clearTimeout(megaLeaveTimers.get(wrapper));
+        wrapper.classList.remove("mega-force-closed");
+        wrapper.classList.add("is-hovered");
+        document.querySelectorAll(".mega-wrapper").forEach(other => {
+          if (other !== wrapper) {
+            clearTimeout(megaLeaveTimers.get(other));
+            other.classList.remove("is-hovered", "is-pinned");
+            other.querySelector("button[aria-expanded]")?.setAttribute("aria-expanded", "false");
+            if (other.contains(document.activeElement)) document.activeElement.blur();
+          }
+        });
+      });
+      wrapper.addEventListener("pointerleave", event => {
+        if (event.pointerType === "touch") return;
+        clearTimeout(megaLeaveTimers.get(wrapper));
+        const timer = window.setTimeout(() => {
+          wrapper.classList.remove("is-hovered", "mega-force-closed");
+        }, 220);
+        megaLeaveTimers.set(wrapper, timer);
+      });
+      wrapper.addEventListener("focusout", event => {
+        if (event.relatedTarget && !wrapper.contains(event.relatedTarget)) {
+          wrapper.classList.remove("is-pinned", "is-hovered");
+          wrapper.querySelector("button[aria-expanded]")?.setAttribute("aria-expanded", "false");
+        }
+      });
+    });
+    document.querySelectorAll('header nav[aria-label="Primary"] > :not(.mega-wrapper), header > div > a').forEach(sibling => {
+      sibling.addEventListener("pointerenter", event => {
+        if (event.pointerType === "touch") return;
+        document.querySelectorAll(".mega-wrapper").forEach(wrapper => {
+          clearTimeout(megaLeaveTimers.get(wrapper));
+          wrapper.classList.remove("is-hovered", "is-pinned");
+          wrapper.querySelector("button[aria-expanded]")?.setAttribute("aria-expanded", "false");
+          if (wrapper.contains(document.activeElement)) document.activeElement.blur();
+        });
+      });
+    });
+    document.addEventListener("click", event => {
+      if (!event.target.closest(".mega-wrapper")) {
+        document.querySelectorAll(".mega-wrapper.is-pinned").forEach(wrapper => {
+          wrapper.classList.remove("is-pinned");
+          wrapper.querySelector("button[aria-expanded]")?.setAttribute("aria-expanded", "false");
+        });
+      }
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        const activeWrapper = document.activeElement?.closest(".mega-wrapper") || document.querySelector(".mega-wrapper:hover, .mega-wrapper.is-hovered, .mega-wrapper.is-pinned");
+        if (activeWrapper) {
+          const trigger = activeWrapper.querySelector("button[aria-expanded]");
+          closeAllMegaMenus({ restoreFocusTo: document.activeElement?.closest(".mega-dropdown-layer") ? trigger : null });
+        }
+        return;
+      }
+      const triggerBtn = event.target.closest?.(".mega-trigger-btn");
+      if (triggerBtn && event.key === "ArrowDown") {
+        event.preventDefault();
+        const wrapper = triggerBtn.closest(".mega-wrapper");
+        if (wrapper && !wrapper.classList.contains("is-pinned")) {
+          toggleMegaWrapper(wrapper.id, triggerBtn.id);
+        }
+        wrapper?.querySelector('[role="tab"][aria-selected="true"]')?.focus();
+        return;
+      }
+      const tabEl = event.target.closest?.("[data-mega-track], [data-resource-track]");
+      if (tabEl) {
+        const isProgramTab = tabEl.hasAttribute("data-mega-track");
+        const tabs = [...document.querySelectorAll(isProgramTab ? "[data-mega-track]" : "[data-resource-track]")];
+        const currentIdx = tabs.indexOf(tabEl);
+        if (event.key === "ArrowDown" || event.key === "ArrowUp" || event.key === "Home" || event.key === "End") {
+          event.preventDefault();
+          let nextIdx = currentIdx;
+          if (event.key === "ArrowDown") nextIdx = (currentIdx + 1) % tabs.length;
+          else if (event.key === "ArrowUp") nextIdx = (currentIdx - 1 + tabs.length) % tabs.length;
+          else if (event.key === "Home") nextIdx = 0;
+          else if (event.key === "End") nextIdx = tabs.length - 1;
+          if (isProgramTab) setMegaTrack(nextIdx);
+          else setResourceTrack(nextIdx);
+          tabs[nextIdx]?.focus();
+        } else if (event.key === "ArrowRight") {
+          const panelId = tabEl.getAttribute("aria-controls");
+          const firstLink = panelId ? document.getElementById(panelId)?.querySelector("a[href], button:not([disabled])") : null;
+          if (firstLink) {
+            event.preventDefault();
+            firstLink.focus();
+          }
+        }
+        return;
+      }
+      const panelEl = event.target.closest?.("[data-mega-panel], [data-resource-panel]");
+      if (panelEl && event.key === "ArrowLeft") {
+        const labelId = panelEl.getAttribute("aria-labelledby");
+        const ownerTab = labelId ? document.getElementById(labelId) : null;
+        if (ownerTab) {
+          event.preventDefault();
+          ownerTab.focus();
+        }
+      }
+    });
+
+    const consultationDialog = document.getElementById("consultation-modal");
+    const consultationForm = document.getElementById("consultation-qualifier-form");
+    const consultationStatus = document.getElementById("consultation-form-status");
+
+    function openConsultationModal() {
+      closeAllMegaMenus();
+      if (consultationDialog && !consultationDialog.open) {
+        consultationDialog.showModal();
+      }
+    }
+
+    document.getElementById("consultation-modal-close")?.addEventListener("click", () => consultationDialog?.close());
+    document.getElementById("consultation-modal-cancel")?.addEventListener("click", () => consultationDialog?.close());
+    consultationDialog?.addEventListener("close", () => {
+      consultationDialog.returnValue = "";
+    });
+
+    if (typeof HTMLDialogElement !== "undefined" && !("closedBy" in HTMLDialogElement.prototype) && consultationDialog) {
+      let pressedOutside = false;
+      const isOutsideDialog = (event, dialog) => {
+        const rect = dialog.getBoundingClientRect();
+        return event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+      };
+      consultationDialog.addEventListener("pointerdown", event => {
+        pressedOutside = isOutsideDialog(event, consultationDialog);
+      });
+      consultationDialog.addEventListener("pointerup", event => {
+        if (pressedOutside && isOutsideDialog(event, consultationDialog)) consultationDialog.close();
+      });
+    }
+
+    if (consultationForm) {
+      const validatedControls = [...consultationForm.querySelectorAll('select, input[type="email"]')];
+      validatedControls.forEach(control => {
+        control.addEventListener("blur", () => {
+          if (control.value && !control.checkValidity()) control.setAttribute("aria-invalid", "true");
+        });
+        control.addEventListener("input", () => {
+          if (control.checkValidity()) {
+            control.removeAttribute("aria-invalid");
+            if (consultationStatus) {
+              consultationStatus.hidden = true;
+              consultationStatus.textContent = "";
+            }
+          }
+        });
+      });
+      consultationForm.addEventListener("submit", event => {
+        if (!consultationForm.checkValidity()) {
+          event.preventDefault();
+          const firstInvalid = validatedControls.find(ctrl => !ctrl.checkValidity());
+          if (firstInvalid) {
+            firstInvalid.setAttribute("aria-invalid", "true");
+            firstInvalid.focus();
+          }
+          if (consultationStatus) {
+            consultationStatus.textContent = "Please complete all required fields to continue to scheduling.";
+            consultationStatus.hidden = false;
+          }
+        }
+      });
+    }
+  </script>
+  <script type="module">
+    if (!Object.hasOwn(HTMLElement.prototype, "popover")) {
+      import("https://unpkg.com/@oddbird/popover-polyfill@0.7.3/dist/popover.min.js");
+    }
+    document.getElementById("mobile-nav-menu")?.addEventListener("click", event => {
+      const submenuTrigger = event.target.closest(".mobile-submenu-trigger");
+      if (submenuTrigger) {
+        const submenuId = submenuTrigger.getAttribute("aria-controls");
+        const submenu = submenuId ? document.getElementById(submenuId) : null;
+        if (submenu) {
+          const willOpen = submenu.hidden;
+          submenu.hidden = !willOpen;
+          submenuTrigger.setAttribute("aria-expanded", String(willOpen));
+        }
+        return;
+      }
+      if (event.target.closest("a")) {
+        document.getElementById("mobile-nav-menu")?.hidePopover?.();
+      }
+    });
+  </script>
+
 </body>
 </html>

@@ -1,6 +1,10 @@
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { escapeHtml, renderSharedShell } from "./site_shell.mjs";
+import { renderProgramsDirectoryPage } from "./programs_directory_page.mjs";
+import { renderLoginPage, renderSignupPage } from "./auth_pages.mjs";
+import { BREADCRUMB_HUB_URLS, buildBreadcrumbSchema, toCanonicalUrl } from "./seo_schemas.mjs";
 
 const rootDir = dirname(fileURLToPath(import.meta.url));
 
@@ -11,15 +15,16 @@ export const SITEMAP_PAGES = [
   // Hub & Track Overviews
   {
     path: "programs/index.html",
+    status: "live",
     group: "Programs Hub",
     breadcrumb: ["Programs"],
     title: "All Programs Directory",
-    subtitle: "Explore every AP exam, Digital SAT track, Math/Science Olympiad, and 1-on-1 course tutoring pathway.",
+    subtitle: "Explore all 22 AP courses, Digital SAT & ACT prep, 9 Math/Science/CS Olympiads, MCAT & DAT prep, and 1-on-1 course tutoring.",
     formats: FORMATS_EXAM,
     planned: [
-      "Interactive filter by grade level, subject, exam date, and learning format",
+      "Interactive filter by goal track, course/exam keyword, and learning format",
       "Side-by-side comparison of 1-on-1 Mentorship, Live Group Cohorts, and On-Demand Practice Courses",
-      "Direct links to all 22 AP courses, Digital SAT, 9 Olympiad tracks, and Course Tutoring"
+      "Direct links to all 22 AP courses, Digital SAT & ACT, 9 Olympiad tracks, MCAT & DAT, and Course Tutoring"
     ]
   },
   {
@@ -349,6 +354,19 @@ export const SITEMAP_PAGES = [
     planned: ["Topic-by-topic Reading & Writing and Math drill banks", "Step-by-step explanations for every question", "Real-time score projection dashboard"]
   },
   {
+    path: "programs/psat-national-merit.html",
+    group: "SAT & ACT Prep",
+    breadcrumb: ["Programs", "Digital SAT Prep", "PSAT & National Merit"],
+    title: "PSAT / NMSQT & National Merit Prep",
+    subtitle: "Selection Index strategy across Digital PSAT Reading & Writing and Math to clear state National Merit Semifinalist cutoffs and unlock major merit scholarships.",
+    formats: FORMATS_EXAM,
+    planned: [
+      "How the National Merit Selection Index weights Reading & Writing twice as heavily as Math",
+      "State-by-state Semifinalist cutoff targets and dual PSAT + Digital SAT preparation timeline",
+      "1-on-1 Mentorship, Fall PSAT Bootcamps & Adaptive Practice Sets"
+    ]
+  },
+  {
     path: "programs/act-prep.html",
     group: "SAT & ACT Prep",
     breadcrumb: ["Programs", "ACT Prep"],
@@ -603,6 +621,19 @@ export const SITEMAP_PAGES = [
     planned: ["Unit test & midterm/final exam preparation ahead of school pacing", "Custom homework & lab-report mastery without crutch shortcuts", "Direct parent progress updates"]
   },
   {
+    path: "programs/ib-diploma-prep.html",
+    group: "1-on-1 Course Tutoring",
+    breadcrumb: ["Programs", "Course Tutoring", "IB Diploma (HL & SL)"],
+    title: "IB Diploma (HL & SL) Tutoring & Exam Prep",
+    subtitle: "First-principles mentorship for IB Math AA/AI (HL & SL), IB Physics, IB Chemistry, IB Biology, and IB Economics—covering Papers 1–3 and Internal Assessments (IAs).",
+    formats: FORMATS_EXAM,
+    planned: [
+      "Level-7 exam mastery across IB HL and SL Mathematics (Analysis & Approaches / Applications), Sciences & Economics",
+      "Ethical, structured guidance on IB Internal Assessments (IAs) and Extended Essay (EE) quantitative framing",
+      "1-on-1 Mentorship, May Exam Review Cohorts & Past-Paper Practice"
+    ]
+  },
+  {
     path: "programs/university-tutoring.html",
     group: "1-on-1 Course Tutoring",
     breadcrumb: ["Programs", "Course Tutoring", "University & Pre-Med STEM"],
@@ -610,6 +641,32 @@ export const SITEMAP_PAGES = [
     subtitle: "Rigorous 1-on-1 support from graduate-level researchers and doctors across Calculus I–III, Linear Algebra, Gen Chem, Organic Chem, Physics, and Stats.",
     formats: FORMATS_TUTORING,
     planned: ["Matched directly to your university professor’s syllabus & problem sets", "Pre-med weed-out course protection (Gen Chem, Organic Chem, Physics, Biochem)", "Midterm & final exam simulation"]
+  },
+  {
+    path: "programs/stem-research-mentorship.html",
+    group: "Research & College Admissions",
+    breadcrumb: ["Programs", "Research & Admissions", "STEM Research Mentorship"],
+    title: "1-on-1 STEM Research & Science Fair Mentorship",
+    subtitle: "Work directly with PhD researchers and university faculty to design, execute, and write original quantitative, AI/CS, physics, or life-science research projects.",
+    formats: FORMATS_TUTORING,
+    planned: [
+      "Original research topic scoping, literature review, methodology, and data/computational modeling",
+      "Preparation for Regeneron STS, ISEF, regional science fairs, AP Research, and student journal submissions",
+      "1-on-1 mentorship matched with active academic researchers in your field"
+    ]
+  },
+  {
+    path: "programs/college-admissions-counseling.html",
+    group: "Research & College Admissions",
+    breadcrumb: ["Programs", "Research & Admissions", "College Admissions Advising"],
+    title: "Selective College & Pre-Med Admissions Advising",
+    subtitle: "Strategic 9th–12th grade academic planning, prestigious summer program applications (RSI, Simons, SSP), university list building, and STEM / BS-MD essay mentorship.",
+    formats: FORMATS_TUTORING,
+    planned: [
+      "Multi-year course rigor, testing, competition, and extracurricular roadmap (Grades 8–12)",
+      "Summer research & prestigious program application advising (MIT RSI, MITES, Simons, SSP, PROMYS)",
+      "Selective U.S. & Canadian university positioning (MIT, Ivies, Stanford, U of T, Waterloo, UBC & BS-MD programs)"
+    ]
   },
 
   // Root Company, Conversion, Portal & Legal Pages (15)
@@ -1071,8 +1128,47 @@ export const SITEMAP_PAGES = [
     ]
   },
   {
+    path: "guides/stem-summer-programs.html",
+    group: "Free Resources — College, Scholarships & Summer",
+    breadcrumb: ["Free Resources", "Study Guides", "STEM Summer Programs"],
+    title: "Prestigious STEM Summer Programs & High School Research Internships",
+    subtitle: "Searchable parent and student guide to MIT RSI, MITES, Simons Summer Research, SSP, PROMYS, Ross, SUMaC, Clark Scholars, Waterloo Catalyst, and university lab internships.",
+    formats: [],
+    planned: [
+      "Filterable directory by current grade (8th–11th), STEM discipline, cost/financial aid, and application deadline",
+      "Candid breakdown of acceptance selectivity and how AP 5s + AMC/AIME/F=ma/USACO distinctions strengthen applications",
+      "Timeline for cold-emailing university research labs, securing teacher recommendations, and framing STEM essays"
+    ]
+  },
+  {
+    path: "guides/scholarships-and-merit-aid.html",
+    group: "Free Resources — College, Scholarships & Summer",
+    breadcrumb: ["Free Resources", "Study Guides", "Scholarships & Merit Aid"],
+    title: "Scholarships, National Merit & How SAT, ACT & AP Scores Unlock Aid",
+    subtitle: "A clear family guide to PSAT/National Merit cutoffs, SAT/ACT university merit scholarship tiers, Canadian Schulich Leader awards, STEM competitions, and AP college-credit tuition savings.",
+    formats: [],
+    planned: [
+      "State-by-state PSAT/NMSQT National Merit Semifinalist cutoffs and full-tuition Finalist university packages",
+      "How raising Digital SAT / ACT scores unlocks automatic and competitive merit scholarships across U.S. & Canadian universities",
+      "Major STEM awards (Schulich Leader, Regeneron STS, Loran, Coca-Cola) plus how AP 4s and 5s save thousands in college credits"
+    ]
+  },
+  {
+    path: "guides/college-admissions-roadmaps.html",
+    group: "Free Resources — College, Scholarships & Summer",
+    breadcrumb: ["Free Resources", "Study Guides", "College Admissions Roadmaps"],
+    title: "College Admissions & Selective University STEM Roadmaps",
+    subtitle: "Grade-by-grade (9th–12th) academic planning and school-by-school breakdowns of what MIT, Stanford, the Ivies, Duke, NYU, U of T, Waterloo, and UBC look for in STEM and Pre-Med applicants.",
+    formats: [],
+    planned: [
+      "Year-by-year 9th–12th grade course rigor, standardized testing, and Olympiad / research milestones",
+      "University STEM spotlight profiles (MIT, Harvard, Stanford, Caltech, Penn, U of T Engineering Science, Waterloo CS/SE, UBC Science)",
+      "Engineering & CS vs. Pre-Med / BS-MD admissions positioning and current SAT/ACT testing policies"
+    ]
+  },
+  {
     path: "guides/parent-academic-guides.html",
-    group: "Free Resources — Guides, Videos & Workshops",
+    group: "Free Resources — College, Scholarships & Summer",
     breadcrumb: ["Free Resources", "Study Guides", "Parent Guides"],
     title: "Parent Guides — AP Course Loads & STEM Admissions Strategy",
     subtitle: "Practical, candid advice for parents navigating Honors vs. AP placement, SAT timing, STEM competitions, and balanced student schedules.",
@@ -1239,6 +1335,8 @@ export const SITEMAP_PAGES = [
   },
   {
     path: "login.html",
+    status: "live",
+    noindex: true,
     group: "Conversion & Portal",
     breadcrumb: ["Sign In"],
     title: "Sign In to Master Your Courses",
@@ -1253,6 +1351,8 @@ export const SITEMAP_PAGES = [
   },
   {
     path: "signup.html",
+    status: "live",
+    noindex: true,
     group: "Conversion & Portal",
     breadcrumb: ["Sign In", "Create Free Account"],
     title: "Create Your Free Account",
@@ -1317,105 +1417,6 @@ export const SITEMAP_PAGES = [
   }
 ];
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, ch => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[ch]);
-}
-
-function renderSharedShell({ prefix, title, description = "", jsonLd = null, bodyHtml }) {
-  const metaDesc = description
-    ? `\n  <meta name="description" content="${escapeHtml(description)}" />`
-    : "";
-  const schemaTag = jsonLd
-    ? `\n  <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`
-    : "";
-  return `<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${escapeHtml(title)} — Master Your Courses</title>${metaDesc}
-  <link rel="icon" href="${prefix}logo/logo.svg" type="image/svg+xml" />${schemaTag}
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    (function () {
-      const saved = localStorage.getItem("theme");
-      const theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-      document.documentElement.classList.toggle("dark", theme === "dark");
-    })();
-    function toggleTheme() {
-      const nextDark = !document.documentElement.classList.contains("dark");
-      document.documentElement.classList.toggle("dark", nextDark);
-      localStorage.setItem("theme", nextDark ? "dark" : "light");
-    }
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ["Inter", "sans-serif"],
-            display: ["Outfit", "sans-serif"]
-          }
-        }
-      }
-    };
-  </script>
-</head>
-<body class="min-h-screen flex flex-col bg-slate-50 text-slate-950 dark:bg-zinc-950 dark:text-zinc-50 antialiased font-sans">
-  <header class="sticky top-0 z-50 border-b border-slate-200/80 dark:border-white/10 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-xl">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between gap-4">
-      <a href="${prefix}index.html" class="flex items-center gap-2 min-w-0">
-        <img src="${prefix}logo/logo.svg" alt="Master Your Courses Logo" class="w-7 h-7 md:w-8 md:h-8 object-contain dark:brightness-0 dark:invert shrink-0" />
-        <span class="text-lg md:text-2xl font-black font-display tracking-tight truncate">
-          Master<span class="text-indigo-500">Your</span>Courses
-        </span>
-      </a>
-      <nav aria-label="Primary" class="flex items-center gap-3 sm:gap-5 lg:gap-6">
-        <a href="${prefix}programs/index.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Programs</a>
-        <a href="${prefix}resources/index.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Free Resources</a>
-        <a href="${prefix}results.html" class="hidden md:inline text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors">Results</a>
-        <span aria-hidden="true" class="hidden md:block h-4 w-px bg-slate-200 dark:bg-white/15"></span>
-        <button type="button" onclick="toggleTheme()" aria-label="Toggle theme" class="p-2 rounded-full hover:bg-slate-200/70 dark:hover:bg-white/10 transition-colors">
-          <svg aria-hidden="true" class="w-5 h-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2m-7.07-15.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-          <svg aria-hidden="true" class="w-5 h-5 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-        </button>
-        <a href="${prefix}login.html" class="text-xs sm:text-sm font-bold text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white transition-colors whitespace-nowrap">Sign In</a>
-        <a href="${prefix}book-consultation.html" class="px-4 sm:px-5 py-2 rounded-full bg-slate-950 text-white dark:bg-white dark:text-slate-950 text-xs sm:text-sm font-bold hover:opacity-90 transition-opacity whitespace-nowrap">Book a Consultation</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="flex-1">
-${bodyHtml}
-  </main>
-
-  <footer class="border-t border-slate-200 dark:border-white/10 bg-white dark:bg-black py-8">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-500 dark:text-zinc-400">
-      <p>&copy; 2026 Master Your Courses Inc. All rights reserved.</p>
-      <div class="flex flex-wrap items-center justify-center gap-5 font-semibold">
-        <a href="${prefix}privacy.html" class="hover:text-indigo-500 transition-colors">Privacy Policy</a>
-        <a href="${prefix}terms.html" class="hover:text-indigo-500 transition-colors">Terms of Service</a>
-        <a href="${prefix}refund-policy.html" class="hover:text-indigo-500 transition-colors">Returns &amp; Refunds</a>
-        <a href="${prefix}cookies.html" class="hover:text-indigo-500 transition-colors">Cookie Policy</a>
-        <a href="${prefix}sitemap.html" class="hover:text-indigo-500 transition-colors">Site Map</a>
-      </div>
-    </div>
-  </footer>
-</body>
-</html>
-`;
-}
-
 function renderComingSoonPage(page) {
   const isNested = page.path.includes("/");
   const prefix = isNested ? "../" : "./";
@@ -1423,49 +1424,12 @@ function renderComingSoonPage(page) {
   const crumbs = [
     `<a href="${prefix}index.html" class="hover:text-indigo-500 transition-colors">Home</a>`,
     ...page.breadcrumb.map((item, idx) => {
-      if (idx === 0 && item === "Programs" && page.breadcrumb.length > 1) {
-        return `<a href="${prefix}programs/index.html" class="hover:text-indigo-500 transition-colors">Programs</a>`;
+      const isLast = idx === page.breadcrumb.length - 1;
+      const hubPath = BREADCRUMB_HUB_URLS[item];
+      if (!isLast && hubPath) {
+        return `<a href="${prefix}${hubPath}" class="hover:text-indigo-500 transition-colors">${escapeHtml(item)}</a>`;
       }
-      if (idx === 1 && item === "AP Prep" && page.breadcrumb.length > 2) {
-        return `<a href="${prefix}programs/ap-prep.html" class="hover:text-indigo-500 transition-colors">AP Prep</a>`;
-      }
-      if (idx === 1 && item === "Digital SAT Prep" && page.breadcrumb.length > 2) {
-        return `<a href="${prefix}programs/sat-prep.html" class="hover:text-indigo-500 transition-colors">Digital SAT Prep</a>`;
-      }
-      if (idx === 1 && item === "Competition Prep" && page.breadcrumb.length > 2) {
-        return `<a href="${prefix}programs/competition-prep.html" class="hover:text-indigo-500 transition-colors">Competition Prep</a>`;
-      }
-      if (idx === 1 && item === "MCAT & DAT Prep" && page.breadcrumb.length > 2) {
-        return `<a href="${prefix}programs/mcat-dat-prep.html" class="hover:text-indigo-500 transition-colors">MCAT &amp; DAT Prep</a>`;
-      }
-      if (idx === 0 && item === "Textbooks & Workbooks" && page.breadcrumb.length > 1) {
-        return `<a href="${prefix}books/index.html" class="hover:text-indigo-500 transition-colors">Textbooks &amp; Workbooks</a>`;
-      }
-      if (idx === 1 && item === "Course Tutoring" && page.breadcrumb.length > 2) {
-        return `<a href="${prefix}programs/course-tutoring.html" class="hover:text-indigo-500 transition-colors">Course Tutoring</a>`;
-      }
-      if (idx === 0 && item === "Free Resources" && page.breadcrumb.length > 1) {
-        return `<a href="${prefix}resources/index.html" class="hover:text-indigo-500 transition-colors">Free Resources</a>`;
-      }
-      if (idx === 1 && item === "Tools & Calculators" && page.breadcrumb.length > 2) {
-        return `<a href="${prefix}tools/index.html" class="hover:text-indigo-500 transition-colors">Tools &amp; Calculators</a>`;
-      }
-      if (idx === 1 && item === "Practice & Quizzes" && page.breadcrumb.length > 2) {
-        return `<a href="${prefix}practice/index.html" class="hover:text-indigo-500 transition-colors">Practice &amp; Quizzes</a>`;
-      }
-      if (idx === 1 && item === "Past Exam Solutions" && page.breadcrumb.length > 2) {
-        return `<a href="${prefix}solutions/index.html" class="hover:text-indigo-500 transition-colors">Past Exam Solutions</a>`;
-      }
-      if (idx === 1 && item === "Diagnostic Mock Exams" && page.breadcrumb.length > 2) {
-        return `<a href="${prefix}mock-exams/index.html" class="hover:text-indigo-500 transition-colors">Diagnostic Mock Exams</a>`;
-      }
-      if (idx === 1 && item === "Study Guides" && page.breadcrumb.length > 2) {
-        return `<a href="${prefix}guides/index.html" class="hover:text-indigo-500 transition-colors">Study Guides</a>`;
-      }
-      if (idx === 0 && item === "Sign In" && page.breadcrumb.length > 1) {
-        return `<a href="${prefix}login.html" class="hover:text-indigo-500 transition-colors">Sign In</a>`;
-      }
-      return `<span class="text-slate-900 dark:text-white font-bold">${escapeHtml(item)}</span>`;
+      return `<span class="text-slate-900 dark:text-white font-bold"${isLast ? ' aria-current="page"' : ""}>${escapeHtml(item)}</span>`;
     })
   ].join(` <span aria-hidden="true" class="text-slate-400">/</span> `);
 
@@ -1548,14 +1512,12 @@ function renderComingSoonPage(page) {
             const channel = new URLSearchParams(window.location.search).get("platform");
             if (!channel) return;
             const label = { facebook: "Facebook", instagram: "Instagram", x: "X (Twitter)", youtube: "YouTube", tiktok: "TikTok" }[channel.toLowerCase()];
-            if (label) document.getElementById("page-main-heading").textContent = "Master Your Courses on " + label;
+            if (label) document.getElementById("main-heading").textContent = "Master Your Courses on " + label;
           })();
         </script>`
       : "";
 
-  const secondaryAction = page.path === "programs/index.html"
-    ? `<a href="${prefix}book-consultation.html" class="w-full sm:w-auto px-8 py-4 rounded-full border border-slate-300 dark:border-white/15 bg-white/70 dark:bg-white/5 font-bold text-sm sm:text-base hover:bg-slate-100 dark:hover:bg-white/10 transition-colors text-center">Book a Consultation &rarr;</a>`
-    : `<a href="${prefix}programs/index.html" class="w-full sm:w-auto px-8 py-4 rounded-full border border-slate-300 dark:border-white/15 bg-white/70 dark:bg-white/5 font-bold text-sm sm:text-base hover:bg-slate-100 dark:hover:bg-white/10 transition-colors text-center">Explore All Programs &rarr;</a>`;
+  const secondaryAction = `<a href="${prefix}programs/index.html" class="w-full sm:w-auto px-8 py-4 rounded-full border border-slate-300 dark:border-white/15 bg-white/70 dark:bg-white/5 font-bold text-sm sm:text-base hover:bg-slate-100 dark:hover:bg-white/10 transition-colors text-center">Explore All Programs &rarr;</a>`;
 
   const bodyHtml = `
     <section class="relative overflow-hidden py-16 sm:py-24 px-6">
@@ -1570,7 +1532,7 @@ function renderComingSoonPage(page) {
           Coming Soon
         </div>
 
-        <h1 id="page-main-heading" class="text-3xl sm:text-5xl md:text-6xl font-black font-display tracking-tight leading-[1.08]">
+        <h1 id="main-heading" tabindex="-1" class="text-3xl sm:text-5xl md:text-6xl font-black font-display tracking-tight leading-[1.08]">
           ${escapeHtml(page.title)}
         </h1>
 
@@ -1607,22 +1569,15 @@ function renderComingSoonPage(page) {
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://masteryourcourses.com/" },
-      ...page.breadcrumb.map((name, idx) => ({
-        "@type": "ListItem",
-        position: idx + 2,
-        name,
-        ...(idx === page.breadcrumb.length - 1 ? { item: `https://masteryourcourses.com/${page.path}` } : {})
-      }))
-    ]
+    "@graph": [buildBreadcrumbSchema(page.path, page.breadcrumb)]
   };
 
   return renderSharedShell({
     prefix,
     title: page.title,
     description: page.subtitle,
+    canonicalPath: page.isSocialDestination ? "" : page.path,
+    noindex: true,
     jsonLd: breadcrumbSchema,
     bodyHtml
   });
@@ -1635,26 +1590,35 @@ function renderSitemapOverviewPage() {
     groups.get(page.group).push(page);
   }
 
+  const liveInnerCount = SITEMAP_PAGES.filter(p => p.status === "live").length;
+  const totalLiveCount = 1 + liveInnerCount;
+  const comingSoonCount = SITEMAP_PAGES.length - liveInnerCount;
+
   const groupCards = [...groups.entries()].map(([groupName, pages]) => `
     <section class="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/90 p-6 sm:p-8 shadow-sm">
       <div class="flex items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-4 mb-5">
         <h2 class="text-xl sm:text-2xl font-black font-display tracking-tight">${escapeHtml(groupName)}</h2>
         <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">${pages.length} ${pages.length === 1 ? "page" : "pages"}</span>
       </div>
-      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        ${pages.map(p => `
+      <ul role="list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        ${pages.map(p => {
+          const badge = p.status === "live"
+            ? `<span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">Live</span>`
+            : `<span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>`;
+          return `
           <li>
             <a href="./${escapeHtml(p.path)}" class="group flex flex-col justify-between h-full rounded-2xl border border-slate-200/80 dark:border-white/10 bg-slate-50/70 dark:bg-zinc-950/60 p-4 hover:border-indigo-500/50 hover:bg-indigo-500/[0.04] transition-all">
               <div>
                 <div class="flex items-center justify-between gap-2 mb-1.5">
                   <span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">${escapeHtml(p.title)}</span>
-                  <span class="shrink-0 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">Soon</span>
+                  ${badge}
                 </div>
                 <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">${escapeHtml(p.subtitle)}</p>
               </div>
               <span class="mt-3 text-[11px] font-mono text-slate-400 dark:text-zinc-500">/${escapeHtml(p.path)} &rarr;</span>
             </a>
-          </li>`).join("")}
+          </li>`;
+        }).join("")}
       </ul>
     </section>
   `).join("\n");
@@ -1665,11 +1629,11 @@ function renderSitemapOverviewPage() {
         <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs font-extrabold uppercase tracking-widest font-display mb-4">
           Architecture Overview
         </span>
-        <h1 class="text-3xl sm:text-5xl font-black font-display tracking-tight mb-4">
+        <h1 id="main-heading" tabindex="-1" class="text-3xl sm:text-5xl font-black font-display tracking-tight mb-4">
           Master Your Courses — Complete Site Map
         </h1>
         <p class="text-base sm:text-lg text-slate-600 dark:text-zinc-300 leading-relaxed">
-          Every page in the Master Your Courses platform (${SITEMAP_PAGES.length + 1} routes total). Click any card below to inspect its Coming Soon route, breadcrumb hierarchy, and planned page structure before we build each page one by one.
+          Every page in the Master Your Courses platform (${SITEMAP_PAGES.length + 1} routes total: ${totalLiveCount} live pages and ${comingSoonCount} Coming Soon routes). Click any card below to inspect live pages or planned page structures.
         </p>
       </div>
 
@@ -1693,18 +1657,26 @@ function renderSitemapOverviewPage() {
     </section>
   `;
 
-  return renderSharedShell({ prefix: "./", title: "Complete Visual Site Map", bodyHtml });
+  return renderSharedShell({
+    prefix: "./",
+    title: "Complete Visual Site Map",
+    description: `Visual site map of all ${SITEMAP_PAGES.length + 1} routes across Master Your Courses.`,
+    canonicalPath: "sitemap.html",
+    noindex: true,
+    bodyHtml
+  });
 }
 
 function renderSitemapXml() {
-  const baseUrl = "https://masteryourcourses.com";
-  const excluded = new Set(["social.html"]);
+  const lastmod = "2026-11-22";
+  const excluded = new Set(["social.html", "login.html", "signup.html", "sitemap.html"]);
   const urls = [
-    { loc: `${baseUrl}/`, priority: "1.0", changefreq: "weekly" },
+    { loc: toCanonicalUrl("index.html"), lastmod, priority: "1.0", changefreq: "weekly" },
     ...SITEMAP_PAGES
-      .filter(p => !excluded.has(p.path))
+      .filter(p => p.status === "live" && !p.noindex && !excluded.has(p.path))
       .map(p => ({
-        loc: `${baseUrl}/${p.path.replace(/index\.html$/, "")}`,
+        loc: toCanonicalUrl(p.path),
+        lastmod,
         priority: p.path.endsWith("index.html") || p.group === "Goal Track Hubs" ? "0.9" : "0.8",
         changefreq: p.group.startsWith("Free Resources") ? "weekly" : "monthly"
       }))
@@ -1713,6 +1685,7 @@ function renderSitemapXml() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url>
     <loc>${escapeHtml(u.loc)}</loc>
+    <lastmod>${u.lastmod}</lastmod>
     <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority}</priority>
   </url>`).join("\n")}
@@ -1725,9 +1698,17 @@ rmSync(join(rootDir, "resources.html"), { force: true });
 for (const page of SITEMAP_PAGES) {
   const fullPath = join(rootDir, page.path);
   mkdirSync(dirname(fullPath), { recursive: true });
-  writeFileSync(fullPath, renderComingSoonPage(page), "utf8");
+  const htmlOutput = page.path === "programs/index.html"
+    ? renderProgramsDirectoryPage()
+    : page.path === "login.html"
+      ? renderLoginPage()
+      : page.path === "signup.html"
+        ? renderSignupPage()
+        : renderComingSoonPage(page);
+  writeFileSync(fullPath, htmlOutput, "utf8");
 }
 
+const liveCount = SITEMAP_PAGES.filter(p => p.status === "live").length + 1;
 writeFileSync(join(rootDir, "sitemap.html"), renderSitemapOverviewPage(), "utf8");
 writeFileSync(join(rootDir, "sitemap.xml"), renderSitemapXml(), "utf8");
-console.log(`Generated ${SITEMAP_PAGES.length} Coming Soon pages + sitemap.html + sitemap.xml.`);
+console.log(`Generated ${SITEMAP_PAGES.length} routes (${liveCount} live pages total) + sitemap.html + sitemap.xml.`);
